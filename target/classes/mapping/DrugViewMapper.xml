@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.DrugViewDAO">
+	<resultMap id="DrugView" type="drug.model.DrugView">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="strainNo" jdbcType="VARCHAR" property="strainno" />
+		<result column="strainAlias" jdbcType="VARCHAR" property="strainalias" />
+		<result column="sampleNo" jdbcType="VARCHAR" property="sampleno" />
+		<result column="sampleDate" jdbcType="DATE" property="sampledate" />
+		<result column="sampleProvince" jdbcType="VARCHAR" property="sampleprovince" />
+		<result column="farmName" jdbcType="VARCHAR" property="farmname" />
+		<result column="sampleFarmAddr" jdbcType="VARCHAR" property="samplefarmaddr" />
+		<result column="animalNo" jdbcType="INTEGER" property="animalno" />
+		<result column="animalName" jdbcType="VARCHAR" property="animalname" />
+		<result column="sampleCollectionPartNo" jdbcType="VARCHAR"
+			property="samplecollectionpartno" />
+		<result column="sampleCollectionPart" jdbcType="VARCHAR"
+			property="samplecollectionpart" />
+		<result column="sampleAnimalAge" jdbcType="VARCHAR" property="sampleanimalage" />
+		<result column="sampleSource" jdbcType="VARCHAR" property="samplesource" />
+		<result column="sampleCollector" jdbcType="VARCHAR" property="samplecollector" />
+		<result column="sampleMedicalHistory" jdbcType="VARCHAR"
+			property="samplemedicalhistory" />
+		<result column="sampleRemarks" jdbcType="VARCHAR" property="sampleremarks" />
+		<result column="strainCategory" jdbcType="VARCHAR" property="straincategory" />
+		<result column="strainType" jdbcType="VARCHAR" property="straintype" />
+		<result column="strainStorageDate" jdbcType="DATE" property="strainstoragedate" />
+		<result column="serotype" jdbcType="VARCHAR" property="serotype" />
+		<result column="strainMLST" jdbcType="VARCHAR" property="strainmlst" />
+		<result column="strainPLG" jdbcType="VARCHAR" property="strainplg" />
+		<result column="strainOperator" jdbcType="VARCHAR" property="strainoperator" />
+		<result column="strainParter" jdbcType="VARCHAR" property="strainparter" />
+		<result column="strainRemarks" jdbcType="VARCHAR" property="strainremarks" />
+		<result column="amk" jdbcType="DOUBLE" property="amk" />
+		<result column="amp" jdbcType="DOUBLE" property="amp" />
+		<result column="apr" jdbcType="DOUBLE" property="apr" />
+		<result column="azm" jdbcType="DOUBLE" property="azm" />
+		<result column="caz" jdbcType="DOUBLE" property="caz" />
+		<result column="cfz" jdbcType="DOUBLE" property="cfz" />
+		<result column="chl" jdbcType="DOUBLE" property="chl" />
+		<result column="cip" jdbcType="DOUBLE" property="cip" />
+		<result column="cl" jdbcType="DOUBLE" property="cl" />
+		<result column="cli" jdbcType="DOUBLE" property="cli" />
+		<result column="cqm" jdbcType="DOUBLE" property="cqm" />
+		<result column="cro" jdbcType="DOUBLE" property="cro" />
+		<result column="ctx" jdbcType="DOUBLE" property="ctx" />
+		<result column="dox" jdbcType="DOUBLE" property="dox" />
+		<result column="ery" jdbcType="DOUBLE" property="ery" />
+		<result column="fep" jdbcType="DOUBLE" property="fep" />
+		<result column="ffc" jdbcType="DOUBLE" property="ffc" />
+		<result column="fos" jdbcType="DOUBLE" property="fos" />
+		<result column="fox" jdbcType="DOUBLE" property="fox" />
+		<result column="gen" jdbcType="DOUBLE" property="gen" />
+		<result column="imp" jdbcType="DOUBLE" property="imp" />
+		<result column="lev" jdbcType="DOUBLE" property="lev" />
+		<result column="lzd" jdbcType="DOUBLE" property="lzd" />
+		<result column="mem" jdbcType="DOUBLE" property="mem" />
+		<result column="min" jdbcType="DOUBLE" property="min" />
+		<result column="nal" jdbcType="DOUBLE" property="nal" />
+		<result column="neo" jdbcType="DOUBLE" property="neo" />
+		<result column="net" jdbcType="DOUBLE" property="net" />
+		<result column="nit" jdbcType="DOUBLE" property="nit" />
+		<result column="nor" jdbcType="DOUBLE" property="nor" />
+		<result column="ofx" jdbcType="DOUBLE" property="ofx" />
+		<result column="oqx" jdbcType="DOUBLE" property="oqx" />
+		<result column="oxa" jdbcType="DOUBLE" property="oxa" />
+		<result column="pen" jdbcType="DOUBLE" property="pen" />
+		<result column="pip" jdbcType="DOUBLE" property="pip" />
+		<result column="rif" jdbcType="DOUBLE" property="rif" />
+		<result column="str" jdbcType="DOUBLE" property="str" />
+		<result column="sxt" jdbcType="DOUBLE" property="sxt" />
+		<result column="tec" jdbcType="DOUBLE" property="tec" />
+		<result column="tet" jdbcType="DOUBLE" property="tet" />
+		<result column="tia" jdbcType="DOUBLE" property="tia" />
+		<result column="tmp" jdbcType="DOUBLE" property="tmp" />
+		<result column="tob" jdbcType="DOUBLE" property="tob" />
+		<result column="tzp" jdbcType="DOUBLE" property="tzp" />
+		<result column="val" jdbcType="DOUBLE" property="val" />
+		<result column="van" jdbcType="DOUBLE" property="van" />
+		<result column="micOperator" jdbcType="VARCHAR" property="micoperator" />
+		<result column="micdetectionType" jdbcType="VARCHAR" property="micdetectiontype" />
+		<result column="micRemarks" jdbcType="VARCHAR" property="micremarks" />
+		<result column="genname" jdbcType="VARCHAR" property="genname" />
+		<result column="Iseq" jdbcType="VARCHAR" property="iseq" />
+		<result column="Replicon" jdbcType="VARCHAR" property="replicon" />
+		<result column="genTC" jdbcType="VARCHAR" property="gentc" />
+		<result column="genOperator" jdbcType="VARCHAR" property="genoperator" />
+		<result column="gramStain" jdbcType="VARCHAR" property="gramstain" />
+	</resultMap>
+	<sql id="column">
+		id, strainNo, strainAlias,sampleNo,sampleDate,sampleProvince,
+		farmName,sampleFarmAddr,animalNo,animalName,sampleCollectionPartNo,
+		sampleCollectionPart,sampleAnimalAge,sampleSource,sampleCollector,
+		sampleMedicalHistory,sampleRemarks,strainCategory,strainType,strainStorageDate,
+		serotype,strainMLST,strainPLG,strainOperator,strainParter,strainRemarks,amk,
+		amp,apr,azm,caz,cfz,chl,cip,cl,cli,cqm,cro,ctx,dox,ery,fep,ffc,fos,fox,gen,
+		imp,lev,lzd,mem,min,nal,neo,net,nit,nor,ofx,oqx,oxa,pen,pip,rif,str,sxt,tec,
+		tet,tia,tmp,tob,tzp,val,van,micOperator,micdetectionType,micRemarks,
+		genname,Iseq,Replicon,genTC,genOperator,gramStain
+	</sql>
+	<sql id="list_where">
+		<where>
+			<if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+				and gramStain like '%' #{gram,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo like '%' #{strainno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				and strainAlias like '%' #{strainalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and strainStorageDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and strainStorageDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+			<if test="province != null and province.length &gt;0">
+				and sampleProvince in
+				<foreach collection="province" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%' #{farmname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmaddr != null and !&quot;&quot;.equals(farmaddr.trim())">
+				and sampleFarmAddr like '%' #{farmaddr,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if test="category != null and category.length &gt;0">
+				and strainCategory in
+				<foreach collection="category" open="(" close=")" separator=","
+					item="item">
+					#{item,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="animalName != null and animalName.length &gt;0">
+				and animalName in
+				<foreach collection="animalName" open="(" close=")"
+					separator="," item="name">
+					#{name,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="partName != null and partName.length &gt;0">
+				and sampleCollectionPart in
+				<foreach collection="partName" open="(" close=")" separator=","
+					item="name">
+					#{name,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="source != null and source.length &gt;0">
+				and sampleSource in
+				<foreach collection="source" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="animalAge != null and !&quot;&quot;.equals(animalAge.trim())">
+				and sampleAnimalAge like '%'
+				#{animalAge,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="amk1!=null">
+				and AMK <![CDATA[>=]]>
+				#{amk1,jdbcType=DOUBLE}
+			</if>
+			<if test="amk2!=null">
+				and AMK <![CDATA[<=]]>
+				#{amk2,jdbcType=DOUBLE}
+			</if>
+			<if test="amp1!=null">
+				and AMP <![CDATA[>=]]>
+				#{amp1,jdbcType=DOUBLE}
+			</if>
+			<if test="amp2!=null">
+				and AMP <![CDATA[<=]]>
+				#{amp2,jdbcType=DOUBLE}
+			</if>
+			<if test="apr1!=null">
+				and APR <![CDATA[>=]]>
+				#{apr1,jdbcType=DOUBLE}
+			</if>
+			<if test="apr2!=null">
+				and APR <![CDATA[<=]]>
+				#{apr2,jdbcType=DOUBLE}
+			</if>
+			<if test="azm1!=null">
+				and AZM <![CDATA[>=]]>
+				#{azm1,jdbcType=DOUBLE}
+			</if>
+			<if test="azm2!=null">
+				and AZM <![CDATA[<=]]>
+				#{azm2,jdbcType=DOUBLE}
+			</if>
+			<if test="cfz1!=null">
+				and CFZ <![CDATA[>=]]>
+				#{cfz1,jdbcType=DOUBLE}
+			</if>
+			<if test="cfz2!=null">
+				and CFZ <![CDATA[<=]]>
+				#{cfz2,jdbcType=DOUBLE}
+			</if>
+			<if test="fep1!=null">
+				and FEP <![CDATA[>=]]>
+				#{fep1,jdbcType=DOUBLE}
+			</if>
+			<if test="fep2!=null">
+				and FEP <![CDATA[<=]]>
+				#{fep2,jdbcType=DOUBLE}
+			</if>
+			<if test="ctx1!=null">
+				and CTX <![CDATA[>=]]>
+				#{ctx1,jdbcType=DOUBLE}
+			</if>
+			<if test="ctx2!=null">
+				and CTX <![CDATA[<=]]>
+				#{ctx2,jdbcType=DOUBLE}
+			</if>
+			<if test="fox1!=null">
+				and FOX <![CDATA[>=]]>
+				#{fox1,jdbcType=DOUBLE}
+			</if>
+			<if test="fox2!=null">
+				and FOX <![CDATA[<=]]>
+				#{fox2,jdbcType=DOUBLE}
+			</if>
+			<if test="caz1!=null">
+				and CAZ <![CDATA[>=]]>
+				#{caz1,jdbcType=DOUBLE}
+			</if>
+			<if test="caz2!=null">
+				and CAZ <![CDATA[<=]]>
+				#{caz2,jdbcType=DOUBLE}
+			</if>
+			<if test="cro1!=null">
+				and CRO <![CDATA[>=]]>
+				#{cro1,jdbcType=DOUBLE}
+			</if>
+			<if test="cro2!=null">
+				and CRO <![CDATA[<=]]>
+				#{cro2,jdbcType=DOUBLE}
+			</if>
+			<if test="cqm1!=null">
+				and CQM <![CDATA[>=]]>
+				#{cqm1,jdbcType=DOUBLE}
+			</if>
+			<if test="cqm2!=null">
+				and CQM <![CDATA[<=]]>
+				#{cqm2,jdbcType=DOUBLE}
+			</if>
+			<if test="chl1!=null">
+				and CHL <![CDATA[>=]]>
+				#{chl1,jdbcType=DOUBLE}
+			</if>
+			<if test="chl2!=null">
+				and CHL <![CDATA[<=]]>
+				#{chl2,jdbcType=DOUBLE}
+			</if>
+			<if test="cip1!=null">
+				and CIP <![CDATA[>=]]>
+				#{cip1,jdbcType=DOUBLE}
+			</if>
+			<if test="cip2!=null">
+				and CIP <![CDATA[<=]]>
+				#{cip2,jdbcType=DOUBLE}
+			</if>
+			<if test="tia1!=null">
+				and TIA <![CDATA[>=]]>
+				#{tia1,jdbcType=DOUBLE}
+			</if>
+			<if test="tia2!=null">
+				and TIA <![CDATA[<=]]>
+				#{tia2,jdbcType=DOUBLE}
+			</if>
+			<if test="cli1!=null">
+				and CLI <![CDATA[>=]]>
+				#{cli1,jdbcType=DOUBLE}
+			</if>
+			<if test="cli2!=null">
+				and CLI <![CDATA[<=]]>
+				#{cli2,jdbcType=DOUBLE}
+			</if>
+			<if test="cl1!=null">
+				and CL <![CDATA[>=]]>
+				#{cl1,jdbcType=DOUBLE}
+			</if>
+			<if test="cl2!=null">
+				and CL <![CDATA[<=]]>
+				#{cl2,jdbcType=DOUBLE}
+			</if>
+			<if test="dox1!=null">
+				and DOX <![CDATA[>=]]>
+				#{dox1,jdbcType=DOUBLE}
+			</if>
+			<if test="dox2!=null">
+				and DOX <![CDATA[<=]]>
+				#{dox2,jdbcType=DOUBLE}
+			</if>
+			<if test="val1!=null">
+				and VAL <![CDATA[>=]]>
+				#{val1,jdbcType=DOUBLE}
+			</if>
+			<if test="val2!=null">
+				and VAL <![CDATA[<=]]>
+				#{val2,jdbcType=DOUBLE}
+			</if>
+			<if test="ery1!=null">
+				and ERY <![CDATA[>=]]>
+				#{ery1,jdbcType=DOUBLE}
+			</if>
+			<if test="ery2!=null">
+				and ERY <![CDATA[<=]]>
+				#{ery2,jdbcType=DOUBLE}
+			</if>
+			<if test="ffc1!=null">
+				and FFC <![CDATA[>=]]>
+				#{ffc1,jdbcType=DOUBLE}
+			</if>
+			<if test="ffc2!=null">
+				and FFC <![CDATA[<=]]>
+				#{ffc2,jdbcType=DOUBLE}
+			</if>
+			<if test="fos1!=null">
+				and FOS <![CDATA[>=]]>
+				#{fos1,jdbcType=DOUBLE}
+			</if>
+			<if test="fos2!=null">
+				and FOS <![CDATA[<=]]>
+				#{fos2,jdbcType=DOUBLE}
+			</if>
+			<if test="gen1!=null">
+				and GEN <![CDATA[>=]]>
+				#{gen1,jdbcType=DOUBLE}
+			</if>
+			<if test="gen2!=null">
+				and GEN <![CDATA[<=]]>
+				#{gen2,jdbcType=DOUBLE}
+			</if>
+			<if test="imp1!=null">
+				and IMP <![CDATA[>=]]>
+				#{imp1,jdbcType=DOUBLE}
+			</if>
+			<if test="imp2!=null">
+				and IMP <![CDATA[<=]]>
+				#{imp2,jdbcType=DOUBLE}
+			</if>
+			<if test="lev1!=null">
+				and LEV <![CDATA[>=]]>
+				#{lev1,jdbcType=DOUBLE}
+			</if>
+			<if test="lev2!=null">
+				and LEV <![CDATA[<=]]>
+				#{lev2,jdbcType=DOUBLE}
+			</if>
+			<if test="lzd1!=null">
+				and LZD <![CDATA[>=]]>
+				#{lzd1,jdbcType=DOUBLE}
+			</if>
+			<if test="lzd2!=null">
+				and LZD <![CDATA[<=]]>
+				#{lzd2,jdbcType=DOUBLE}
+			</if>
+			<if test="mem1!=null">
+				and MEM <![CDATA[>=]]>
+				#{mem1,jdbcType=DOUBLE}
+			</if>
+			<if test="mem2!=null">
+				and MEM <![CDATA[<=]]>
+				#{mem2,jdbcType=DOUBLE}
+			</if>
+			<if test="min1!=null">
+				and MIN <![CDATA[>=]]>
+				#{min1,jdbcType=DOUBLE}
+			</if>
+			<if test="min2!=null">
+				and MIN <![CDATA[<=]]>
+				#{min2,jdbcType=DOUBLE}
+			</if>
+			<if test="nal1!=null">
+				and NAL <![CDATA[>=]]>
+				#{nal1,jdbcType=DOUBLE}
+			</if>
+			<if test="nal2!=null">
+				and NAL <![CDATA[<=]]>
+				#{nal2,jdbcType=DOUBLE}
+			</if>
+			<if test="neo1!=null">
+				and NEO <![CDATA[>=]]>
+				#{neo1,jdbcType=DOUBLE}
+			</if>
+			<if test="neo2!=null">
+				and NEO <![CDATA[<=]]>
+				#{neo2,jdbcType=DOUBLE}
+			</if>
+			<if test="net1!=null">
+				and NET <![CDATA[>=]]>
+				#{net1,jdbcType=DOUBLE}
+			</if>
+			<if test="net2!=null">
+				and NET <![CDATA[<=]]>
+				#{net2,jdbcType=DOUBLE}
+			</if>
+			<if test="nit1!=null">
+				and NIT <![CDATA[>=]]>
+				#{nit1,jdbcType=DOUBLE}
+			</if>
+			<if test="nit2!=null">
+				and NIT <![CDATA[<=]]>
+				#{nit2,jdbcType=DOUBLE}
+			</if>
+			<if test="nor1!=null">
+				and NOR <![CDATA[>=]]>
+				#{nor1,jdbcType=DOUBLE}
+			</if>
+			<if test="nor2!=null">
+				and NOR <![CDATA[<=]]>
+				#{nor2,jdbcType=DOUBLE}
+			</if>
+			<if test="ofx1!=null">
+				and OFX <![CDATA[>=]]>
+				#{ofx1,jdbcType=DOUBLE}
+			</if>
+			<if test="ofx2!=null">
+				and OFX <![CDATA[<=]]>
+				#{ofx2,jdbcType=DOUBLE}
+			</if>
+			<if test="oxa1!=null">
+				and OXA <![CDATA[>=]]>
+				#{oxa1,jdbcType=DOUBLE}
+			</if>
+			<if test="oxa2!=null">
+				and OXA <![CDATA[<=]]>
+				#{oxa2,jdbcType=DOUBLE}
+			</if>
+			<if test="pen1!=null">
+				and PEN <![CDATA[>=]]>
+				#{pen1,jdbcType=DOUBLE}
+			</if>
+			<if test="pen2!=null">
+				and PEN <![CDATA[<=]]>
+				#{pen2,jdbcType=DOUBLE}
+			</if>
+			<if test="pip1!=null">
+				and PIP <![CDATA[>=]]>
+				#{pip1,jdbcType=DOUBLE}
+			</if>
+			<if test="pip2!=null">
+				and PIP <![CDATA[<=]]>
+				#{pip2,jdbcType=DOUBLE}
+			</if>
+			<if test="tzp1!=null">
+				and TZP <![CDATA[>=]]>
+				#{tzp1,jdbcType=DOUBLE}
+			</if>
+			<if test="tzp2!=null">
+				and TZP <![CDATA[<=]]>
+				#{tzp2,jdbcType=DOUBLE}
+			</if>
+			<if test="rif1!=null">
+				and RIF <![CDATA[>=]]>
+				#{rif1,jdbcType=DOUBLE}
+			</if>
+			<if test="rif2!=null">
+				and RIF <![CDATA[<=]]>
+				#{rif2,jdbcType=DOUBLE}
+			</if>
+			<if test="str1!=null">
+				and STR <![CDATA[>=]]>
+				#{str1,jdbcType=DOUBLE}
+			</if>
+			<if test="str2!=null">
+				and STR <![CDATA[<=]]>
+				#{str2,jdbcType=DOUBLE}
+			</if>
+			<if test="tec1!=null">
+				and TEC <![CDATA[>=]]>
+				#{tec1,jdbcType=DOUBLE}
+			</if>
+			<if test="tec2!=null">
+				and TEC <![CDATA[<=]]>
+				#{tec2,jdbcType=DOUBLE}
+			</if>
+			<if test="tet1!=null">
+				and TET <![CDATA[>=]]>
+				#{tet1,jdbcType=DOUBLE}
+			</if>
+			<if test="tet2!=null">
+				and TET <![CDATA[<=]]>
+				#{tet2,jdbcType=DOUBLE}
+			</if>
+			<if test="tob1!=null">
+				and TOB <![CDATA[>=]]>
+				#{tob1,jdbcType=DOUBLE}
+			</if>
+			<if test="tob2!=null">
+				and TOB <![CDATA[<=]]>
+				#{tob2,jdbcType=DOUBLE}
+			</if>
+			<if test="tmp1!=null">
+				and TMP <![CDATA[>=]]>
+				#{tmp1,jdbcType=DOUBLE}
+			</if>
+			<if test="tmp2!=null">
+				and TMP <![CDATA[<=]]>
+				#{tmp2,jdbcType=DOUBLE}
+			</if>
+			<if test="sxt1!=null">
+				and SXT <![CDATA[>=]]>
+				#{sxt1,jdbcType=DOUBLE}
+			</if>
+			<if test="sxt2!=null">
+				and SXT <![CDATA[<=]]>
+				#{sxt2,jdbcType=DOUBLE}
+			</if>
+			<if test="van1!=null">
+				and VAN <![CDATA[>=]]>
+				#{van1,jdbcType=DOUBLE}
+			</if>
+			<if test="van2!=null">
+				and VAN <![CDATA[<=]]>
+				#{van2,jdbcType=DOUBLE}
+			</if>
+			<if test="oqx1!=null">
+				and OQX <![CDATA[>=]]>
+				#{oqx1,jdbcType=DOUBLE}
+			</if>
+			<if test="oqx2!=null">
+				and OQX <![CDATA[<=]]>
+				#{oqx2,jdbcType=DOUBLE}
+			</if>
+		</where>
+	</sql>
+	<select id="selectList" parameterType="drug.dto.listModel.LDrugViewAll"
+		resultMap="DrugView">
+		select
+		<include refid="column" />
+		from drugview
+		<include refid="list_where" />
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+			order by ${order}
+			<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+				${sort}
+			</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	
+	<select id="selectById" parameterType="java.lang.String"
+		resultMap="DrugView">
+		select
+		<include refid="column" />
+		from drugview
+		where id in
+		<foreach collection="ids" separator="," open="(" close=")" item="id">
+			#{id}
+		</foreach>
+		<if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+			and gramStain like #{gram}
+		</if>
+	</select>
+	
+	<select id="count" parameterType="drug.dto.listModel.LDrugViewAll" resultType="java.lang.Integer">
+		select count(id) from drugview
+		<include refid="list_where" />
+	</select>
+	<select id="drugResistance" parameterType="drug.dto.analysisModel.ADrugView"
+		 statementType="CALLABLE" resultType="java.util.Map">
+		 call drugResistancePro(
+		 #{drug, jdbcType=VARCHAR},
+		 #{strain, jdbcType=VARCHAR},
+		 #{timeWay, jdbcType=VARCHAR},
+		 "
+		 <if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+				and gramStain like '%${gram}%'
+			</if>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo like '%${strainno}%'
+			</if>
+			<if test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				and strainAlias like '%${strainalias}%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and strainStorageDate <![CDATA[>=]]>
+				'${beginDate}'
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and strainStorageDate <![CDATA[<=]]>
+				'${endDate}'
+			</if>
+			<if test="province != null and province.length &gt;0">
+				and sampleProvince in
+				<foreach collection="province" open="(" close=")" separator=","
+					item="no">
+					'${no}'
+				</foreach>
+			</if>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%${farmname}%'
+			</if>
+			<if test="farmaddr != null and !&quot;&quot;.equals(farmaddr.trim())">
+				and sampleFarmAddr like '%${farmaddr}%'
+			</if>
+			<if test="category != null and category.length &gt;0">
+				and strainCategory in
+				<foreach collection="category" open="(" close=")" separator=","
+					item="item">
+					'${item}'
+				</foreach>
+			</if>
+			<if test="animalName != null and animalName.length &gt;0">
+				and animalName in
+				<foreach collection="animalName" open="(" close=")"
+					separator="," item="name">
+					'${name}'
+				</foreach>
+			</if>
+			<if test="partName != null and partName.length &gt;0">
+				and sampleCollectionPart in
+				<foreach collection="partName" open="(" close=")" separator=","
+					item="name">
+					'${name}'
+				</foreach>
+			</if>
+			<if test="source != null and source.length &gt;0">
+				and sampleSource in
+				<foreach collection="source" open="(" close=")" separator=","
+					item="no">
+					'${no}'
+				</foreach>
+			</if>
+			<if test="animalAge != null and !&quot;&quot;.equals(animalAge.trim())">
+				and sampleAnimalAge like '%${animalAge}%'
+			</if>
+			<if test="amk1!=null">
+				and AMK <![CDATA[>=]]>
+				${amk1}
+			</if>
+			<if test="amk2!=null">
+				and AMK <![CDATA[<=]]>
+				${amk2}
+			</if>
+			<if test="amp1!=null">
+				and AMP <![CDATA[>=]]>
+				${amp1}
+			</if>
+			<if test="amp2!=null">
+				and AMP <![CDATA[<=]]>
+				${amp2}
+			</if>
+			<if test="apr1!=null">
+				and APR <![CDATA[>=]]>
+				${apr1}
+			</if>
+			<if test="apr2!=null">
+				and APR <![CDATA[<=]]>
+				${apr2}
+			</if>
+			<if test="azm1!=null">
+				and AZM <![CDATA[>=]]>
+				${azm1}
+			</if>
+			<if test="azm2!=null">
+				and AZM <![CDATA[<=]]>
+				${azm2}
+			</if>
+			<if test="cfz1!=null">
+				and CFZ <![CDATA[>=]]>
+				${cfz1}
+			</if>
+			<if test="cfz2!=null">
+				and CFZ <![CDATA[<=]]>
+				${cfz2}
+			</if>
+			<if test="fep1!=null">
+				and FEP <![CDATA[>=]]>
+				${fep1}
+			</if>
+			<if test="fep2!=null">
+				and FEP <![CDATA[<=]]>
+				${fep2}
+			</if>
+			<if test="ctx1!=null">
+				and CTX <![CDATA[>=]]>
+				${ctx1}
+			</if>
+			<if test="ctx2!=null">
+				and CTX <![CDATA[<=]]>
+				${ctx2}
+			</if>
+			<if test="fox1!=null">
+				and FOX <![CDATA[>=]]>
+				${fox1}
+			</if>
+			<if test="fox2!=null">
+				and FOX <![CDATA[<=]]>
+				${fox2}
+			</if>
+			<if test="caz1!=null">
+				and CAZ <![CDATA[>=]]>
+				${caz1}
+			</if>
+			<if test="caz2!=null">
+				and CAZ <![CDATA[<=]]>
+				${caz2}
+			</if>
+			<if test="cro1!=null">
+				and CRO <![CDATA[>=]]>
+				${cro1}
+			</if>
+			<if test="cro2!=null">
+				and CRO <![CDATA[<=]]>
+				${cro2}
+			</if>
+			<if test="cqm1!=null">
+				and CQM <![CDATA[>=]]>
+				${cqm1}
+			</if>
+			<if test="cqm2!=null">
+				and CQM <![CDATA[<=]]>
+				${cqm2}
+			</if>
+			<if test="chl1!=null">
+				and CHL <![CDATA[>=]]>
+				${chl1}
+			</if>
+			<if test="chl2!=null">
+				and CHL <![CDATA[<=]]>
+				${chl2}
+			</if>
+			<if test="cip1!=null">
+				and CIP <![CDATA[>=]]>
+				${cip1}
+			</if>
+			<if test="cip2!=null">
+				and CIP <![CDATA[<=]]>
+				${cip2}
+			</if>
+			<if test="tia1!=null">
+				and TIA <![CDATA[>=]]>
+				${tia1}
+			</if>
+			<if test="tia2!=null">
+				and TIA <![CDATA[<=]]>
+				${tia2}
+			</if>
+			<if test="cli1!=null">
+				and CLI <![CDATA[>=]]>
+				${cli1}
+			</if>
+			<if test="cli2!=null">
+				and CLI <![CDATA[<=]]>
+				${cli2}
+			</if>
+			<if test="cl1!=null">
+				and CL <![CDATA[>=]]>
+				${cl1}
+			</if>
+			<if test="cl2!=null">
+				and CL <![CDATA[<=]]>
+				${cl2}
+			</if>
+			<if test="dox1!=null">
+				and DOX <![CDATA[>=]]>
+				${dox1}
+			</if>
+			<if test="dox2!=null">
+				and DOX <![CDATA[<=]]>
+				${dox2}
+			</if>
+			<if test="val1!=null">
+				and VAL <![CDATA[>=]]>
+				${val1}
+			</if>
+			<if test="val2!=null">
+				and VAL <![CDATA[<=]]>
+				${val2}
+			</if>
+			<if test="ery1!=null">
+				and ERY <![CDATA[>=]]>
+				${ery1}
+			</if>
+			<if test="ery2!=null">
+				and ERY <![CDATA[<=]]>
+				${ery2}
+			</if>
+			<if test="ffc1!=null">
+				and FFC <![CDATA[>=]]>
+				${ffc1}
+			</if>
+			<if test="ffc2!=null">
+				and FFC <![CDATA[<=]]>
+				${ffc2}
+			</if>
+			<if test="fos1!=null">
+				and FOS <![CDATA[>=]]>
+				${fos1}
+			</if>
+			<if test="fos2!=null">
+				and FOS <![CDATA[<=]]>
+				${fos2}
+			</if>
+			<if test="gen1!=null">
+				and GEN <![CDATA[>=]]>
+				${gen1}
+			</if>
+			<if test="gen2!=null">
+				and GEN <![CDATA[<=]]>
+				${gen2}
+			</if>
+			<if test="imp1!=null">
+				and IMP <![CDATA[>=]]>
+				${imp1}
+			</if>
+			<if test="imp2!=null">
+				and IMP <![CDATA[<=]]>
+				${imp2}
+			</if>
+			<if test="lev1!=null">
+				and LEV <![CDATA[>=]]>
+				${lev1}
+			</if>
+			<if test="lev2!=null">
+				and LEV <![CDATA[<=]]>
+				${lev2}
+			</if>
+			<if test="lzd1!=null">
+				and LZD <![CDATA[>=]]>
+				${lzd1}
+			</if>
+			<if test="lzd2!=null">
+				and LZD <![CDATA[<=]]>
+				${lzd2}
+			</if>
+			<if test="mem1!=null">
+				and MEM <![CDATA[>=]]>
+				${mem1}
+			</if>
+			<if test="mem2!=null">
+				and MEM <![CDATA[<=]]>
+				${mem2}
+			</if>
+			<if test="min1!=null">
+				and MIN <![CDATA[>=]]>
+				${min1}
+			</if>
+			<if test="min2!=null">
+				and MIN <![CDATA[<=]]>
+				${min2}
+			</if>
+			<if test="nal1!=null">
+				and NAL <![CDATA[>=]]>
+				${nal1}
+			</if>
+			<if test="nal2!=null">
+				and NAL <![CDATA[<=]]>
+				${nal2}
+			</if>
+			<if test="neo1!=null">
+				and NEO <![CDATA[>=]]>
+				${neo1}
+			</if>
+			<if test="neo2!=null">
+				and NEO <![CDATA[<=]]>
+				${neo2}
+			</if>
+			<if test="net1!=null">
+				and NET <![CDATA[>=]]>
+				${net1}
+			</if>
+			<if test="net2!=null">
+				and NET <![CDATA[<=]]>
+				${net2}
+			</if>
+			<if test="nit1!=null">
+				and NIT <![CDATA[>=]]>
+				${nit1}
+			</if>
+			<if test="nit2!=null">
+				and NIT <![CDATA[<=]]>
+				${nit2}
+			</if>
+			<if test="nor1!=null">
+				and NOR <![CDATA[>=]]>
+				${nor1}
+			</if>
+			<if test="nor2!=null">
+				and NOR <![CDATA[<=]]>
+				${nor2}
+			</if>
+			<if test="ofx1!=null">
+				and OFX <![CDATA[>=]]>
+				${ofx1}
+			</if>
+			<if test="ofx2!=null">
+				and OFX <![CDATA[<=]]>
+				${ofx2}
+			</if>
+			<if test="oxa1!=null">
+				and OXA <![CDATA[>=]]>
+				${oxa1}
+			</if>
+			<if test="oxa2!=null">
+				and OXA <![CDATA[<=]]>
+				${oxa2}
+			</if>
+			<if test="pen1!=null">
+				and PEN <![CDATA[>=]]>
+				${pen1}
+			</if>
+			<if test="pen2!=null">
+				and PEN <![CDATA[<=]]>
+				${pen2}
+			</if>
+			<if test="pip1!=null">
+				and PIP <![CDATA[>=]]>
+				${pip1}
+			</if>
+			<if test="pip2!=null">
+				and PIP <![CDATA[<=]]>
+				${pip2}
+			</if>
+			<if test="tzp1!=null">
+				and TZP <![CDATA[>=]]>
+				${tzp1}
+			</if>
+			<if test="tzp2!=null">
+				and TZP <![CDATA[<=]]>
+				${tzp2}
+			</if>
+			<if test="rif1!=null">
+				and RIF <![CDATA[>=]]>
+				${rif1}
+			</if>
+			<if test="rif2!=null">
+				and RIF <![CDATA[<=]]>
+				${rif2}
+			</if>
+			<if test="str1!=null">
+				and STR <![CDATA[>=]]>
+				${str1}
+			</if>
+			<if test="str2!=null">
+				and STR <![CDATA[<=]]>
+				${str2}
+			</if>
+			<if test="tec1!=null">
+				and TEC <![CDATA[>=]]>
+				${tec1}
+			</if>
+			<if test="tec2!=null">
+				and TEC <![CDATA[<=]]>
+				${tec2}
+			</if>
+			<if test="tet1!=null">
+				and TET <![CDATA[>=]]>
+				${tet1}
+			</if>
+			<if test="tet2!=null">
+				and TET <![CDATA[<=]]>
+				${tet2}
+			</if>
+			<if test="tob1!=null">
+				and TOB <![CDATA[>=]]>
+				${tob1}
+			</if>
+			<if test="tob2!=null">
+				and TOB <![CDATA[<=]]>
+				${tob2}
+			</if>
+			<if test="tmp1!=null">
+				and TMP <![CDATA[>=]]>
+				${tmp1}
+			</if>
+			<if test="tmp2!=null">
+				and TMP <![CDATA[<=]]>
+				${tmp2}
+			</if>
+			<if test="sxt1!=null">
+				and SXT <![CDATA[>=]]>
+				${sxt1}
+			</if>
+			<if test="sxt2!=null">
+				and SXT <![CDATA[<=]]>
+				${sxt2}
+			</if>
+			<if test="van1!=null">
+				and VAN <![CDATA[>=]]>
+				${van1}
+			</if>
+			<if test="van2!=null">
+				and VAN <![CDATA[<=]]>
+				${van2}
+			</if>
+			<if test="oqx1!=null">
+				and OQX <![CDATA[>=]]>
+				${oqx1}
+			</if>
+			<if test="oqx2!=null">
+				and OQX <![CDATA[<=]]>
+				${oqx2}
+			</if>
+		 ",
+		 #{medLimit, jdbcType=FLOAT},
+		 #{statisticsType, jdbcType=VARCHAR}
+		 )
+		 
+ 	</select>
+	
+</mapper>

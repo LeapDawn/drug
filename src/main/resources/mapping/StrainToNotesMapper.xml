@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.StrainToNotesDAO">
+	<resultMap id="StrainToNotes" type="drug.model.StrainToNotes">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="strainName" jdbcType="VARCHAR" property="strainname" />
+		<result column="strainCategory" jdbcType="VARCHAR" property="straincategory" />
+		<result column="strainNotes" jdbcType="VARCHAR" property="strainnotes" />
+		<result column="strainRemark" jdbcType="VARCHAR" property="strainremark" />
+		<result column="others2" jdbcType="VARCHAR" property="others2" />
+		<result column="others1" jdbcType="VARCHAR" property="others1" />
+		<result column="gramStain" jdbcType="VARCHAR" property="gramstain" />
+	</resultMap>
+	<sql id="column">
+		id, strainName, strainCategory, strainNotes, strainRemark,
+		others2,
+		others1, gramStain
+	</sql>
+	
+	<select id="selectAll" parameterType="java.lang.String" resultMap="StrainToNotes">
+		select
+		strainName, strainCategory, strainNotes,gramStain
+		from strain2notes
+	</select>
+	
+	<select id="selectNote" parameterType="java.lang.String" resultMap="StrainToNotes">
+		select
+		strainNotes,gramStain
+		from strain2notes
+		where strainCategory like #{category} and strainName like #{strain}
+	</select>
+
+	<select id="select" parameterType="java.lang.String" resultMap="StrainToNotes">
+		select
+		<include refid="column" />
+		from strain2notes
+		where strainNotes like #{note}
+	</select>
+
+	<select id="selectList" parameterType="drug.dto.pageModel.PStrainToNotes"
+		resultMap="StrainToNotes">
+		select
+		<include refid="column" />
+		from strain2notes
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		select count(id) from strain2notes
+	</select>
+
+	<select id="selectCategory" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select distinct strainCategory from strain2notes
+		<where>
+			<if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+				and gramStain like #{gram}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectStrains" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select distinct strainName from strain2notes
+		<where>
+			<if test="category != null and !&quot;&quot;.equals(category.trim())">
+				and strainCategory like #{category}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		delete from strain2notes where strainNotes in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="strainnotes">
+			#{strainnotes,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.StrainToNotes">
+		insert into strain2notes
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			strainName,
+			<if test="straincategory != null">
+				strainCategory,
+			</if>
+			<if test="strainnotes != null">
+				strainNotes,
+			</if>
+			<if test="strainremark != null">
+				strainRemark,
+			</if>
+			<if test="others2 != null">
+				others2,
+			</if>
+			<if test="others1 != null">
+				others1,
+			</if>
+			gramStain,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<choose>
+				<when
+					test="strainname != null and !&quot;&quot;.equals(strainname.trim())">
+					#{strainname,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<if test="straincategory != null">
+				#{straincategory,jdbcType=VARCHAR},
+			</if>
+			<if test="strainnotes != null">
+				#{strainnotes,jdbcType=VARCHAR},
+			</if>
+			<if test="strainremark != null">
+				#{strainremark,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				#{others2,jdbcType=VARCHAR},
+			</if>
+			<if test="others1 != null">
+				#{others1,jdbcType=VARCHAR},
+			</if>
+			<choose>
+				<when test="gramstain != null and !&quot;&quot;.equals(gramstain.trim())">
+					#{gramstain,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.StrainToNotes">
+		update strain2notes
+		<set>
+			<choose>
+				<when
+					test="strainremark != null and !&quot;&quot;.equals(strainremark.trim())">
+					strainRemark = #{strainremark,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					strainRemark = '',
+				</otherwise>
+			</choose>
+			<if test="others2 != null">
+				others2 = #{others2,jdbcType=VARCHAR},
+			</if>
+			<if test="others1 != null">
+				others1 = #{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="gramstain != null">
+				gramStain = #{gramstain,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where strainNotes like #{strainnotes,jdbcType=INTEGER}
+	</update>
+
+</mapper>

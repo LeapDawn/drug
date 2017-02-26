@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.SourceDAO">
+	<resultMap id="Source" type="drug.model.Source">
+		<id column="sourceNo" jdbcType="INTEGER" property="sourceno" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="sourceName" jdbcType="VARCHAR" property="sourcename" />
+		<result column="other1" jdbcType="VARCHAR" property="other1" />
+		<result column="other2" jdbcType="VARCHAR" property="other2" />
+	</resultMap>
+
+	<sql id="column">
+		sourceNo, remark, sourceName, other1, other2
+	</sql>
+	<sql id="main_column">
+		sourceNo, sourceName
+	</sql>
+
+	<select id="selectNosInSample" resultType="java.lang.Integer">
+		select distinct sourceNo from source inner join sample on sourceName like sampleSource
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		select count(sourceNo) from source
+	</select>
+
+	<select id="select" parameterType="drug.dto.pageModel.PSource"
+		resultMap="Source">
+		select
+		<include refid="column" />
+		from source
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	
+	<select id="selectNoByName" parameterType="java.lang.String" resultType="Integer">
+		select sourceNo
+		from source
+		where sourceName like #{sourceName}
+	</select>
+
+	<select id="selectAll" resultMap="Source">
+		select
+		<include refid="main_column" />
+		from source
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from source
+		where sourceNo in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="sourceno">
+			#{sourceno,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.Source">
+		insert into source
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sourceno != null">
+				sourceNo,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="sourcename != null">
+				sourceName,
+			</if>
+			<if test="other1 != null">
+				other1,
+			</if>
+			<if test="other2 != null">
+				other2,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sourceno != null">
+				#{sourceno,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="sourcename != null and !&quot;&quot;.equals(sourcename.trim())">
+				#{sourcename,jdbcType=VARCHAR},
+			</if>
+			<if test="other1 != null">
+				#{other1,jdbcType=VARCHAR},
+			</if>
+			<if test="other2 != null">
+				#{other2,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.Source">
+		update source
+		<set>
+			<choose>
+				<when test="remark != null">
+					remark = #{remark,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					remark = '',
+				</otherwise>
+			</choose>
+			<if test="other1 != null">
+				other1 = #{other1,jdbcType=VARCHAR},
+			</if>
+			<if test="other2 != null">
+				other2 = #{other2,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where sourceNo = #{sourceno,jdbcType=INTEGER}
+	</update>
+</mapper>

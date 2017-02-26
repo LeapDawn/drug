@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.RoleFunctionMapper">
+  <resultMap id="BaseResultMap" type="drug.model.RoleFunction">
+    <id column="rfNo" jdbcType="INTEGER" property="rfno" />
+    <result column="roleNo" jdbcType="VARCHAR" property="roleno" />
+    <result column="functionNo" jdbcType="VARCHAR" property="functionno" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rfNo, roleNo, functionNo
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from role_function
+    where rfNo = #{rfno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from role_function
+    where rfNo = #{rfno,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="drug.model.RoleFunction">
+    insert into role_function (rfNo, roleNo, functionNo
+      )
+    values (#{rfno,jdbcType=INTEGER}, #{roleno,jdbcType=VARCHAR}, #{functionno,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="drug.model.RoleFunction">
+    insert into role_function
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rfno != null">
+        rfNo,
+      </if>
+      <if test="roleno != null">
+        roleNo,
+      </if>
+      <if test="functionno != null">
+        functionNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rfno != null">
+        #{rfno,jdbcType=INTEGER},
+      </if>
+      <if test="roleno != null">
+        #{roleno,jdbcType=VARCHAR},
+      </if>
+      <if test="functionno != null">
+        #{functionno,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="drug.model.RoleFunction">
+    update role_function
+    <set>
+      <if test="roleno != null">
+        roleNo = #{roleno,jdbcType=VARCHAR},
+      </if>
+      <if test="functionno != null">
+        functionNo = #{functionno,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rfNo = #{rfno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="drug.model.RoleFunction">
+    update role_function
+    set roleNo = #{roleno,jdbcType=VARCHAR},
+      functionNo = #{functionno,jdbcType=VARCHAR}
+    where rfNo = #{rfno,jdbcType=INTEGER}
+  </update>
+</mapper>

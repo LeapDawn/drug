@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.DetailAnimalDAO">
+	<resultMap id="animal" type="drug.model.DetailAnimal">
+		<id column="animalNo" jdbcType="INTEGER" property="animalno" />
+		<result column="animalName" jdbcType="VARCHAR" property="animalname" />
+		<result column="animalRemarks" jdbcType="VARCHAR" property="animalremarks" />
+		<result column="others1" jdbcType="VARCHAR" property="others1" />
+		<result column="others2" jdbcType="VARCHAR" property="others2" />
+	</resultMap>
+	<sql id="column">
+		animalNo, animalName, animalRemarks, others1, others2
+	</sql>
+
+	<sql id="main_column">
+		animalNo, animalName
+	</sql>
+
+	<select id="count" resultType="java.lang.Integer">
+		select count(animalNo) from detailanimal
+	</select>
+
+	<select id="select" parameterType="drug.dto.pageModel.PAnimal"
+		resultMap="animal">
+		select
+		<include refid="column" />
+		from detailanimal
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+
+	<select id="selectAll" resultMap="animal">
+		select
+		<include refid="main_column" />
+		from detailanimal
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from detailanimal
+		where animalNo in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="animalno">
+			#{animalno,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.DetailAnimal">
+		insert into detailanimal
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="animalno != null">
+				animalNo,
+			</if>
+			<if test="animalname != null">
+				animalName,
+			</if>
+			<if test="animalremarks != null">
+				animalRemarks,
+			</if>
+			<if test="others1 != null">
+				others1,
+			</if>
+			<if test="others2 != null">
+				others2,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="animalno != null">
+				#{animalno,jdbcType=INTEGER},
+			</if>
+			<if test="animalname != null and !&quot;&quot;.equals(animalname.trim())">
+				#{animalname,jdbcType=VARCHAR},
+			</if>
+			<if test="animalremarks != null">
+				#{animalremarks,jdbcType=VARCHAR},
+			</if>
+			<if test="others1 != null">
+				#{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				#{others2,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.DetailAnimal">
+		update detailanimal
+		<set>
+			<choose>
+				<when test="animalremarks != null">
+					animalRemarks = #{animalremarks,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					animalRemarks = '',
+				</otherwise>
+			</choose>
+			<if test="others1 != null">
+				others1 = #{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				others2 = #{others2,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where animalNo = #{animalno,jdbcType=INTEGER}
+	</update>
+</mapper>

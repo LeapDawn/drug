@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.SampleDAO">
+	<resultMap id="Sample" type="drug.model.Sample">
+		<id column="sampleNo" jdbcType="VARCHAR" property="sampleno" />
+		<result column="animalNo" jdbcType="INTEGER" property="animalno" />
+		<result column="animalName" jdbcType="VARCHAR" property="animalName" />
+		<result column="sampleSource" jdbcType="VARCHAR" property="samplesource" />
+		<result column="farmName" jdbcType="VARCHAR" property="farmname" />
+		<result column="sampleFarmAddr" jdbcType="VARCHAR" property="samplefarmaddr" />
+		<result column="sampleCollectionPart" jdbcType="VARCHAR"
+			property="samplecollectionpart" />
+		<result column="partName" jdbcType="VARCHAR" property="partName" />
+		<result column="sampleProvince" jdbcType="VARCHAR" property="sampleprovince" />
+		<result column="sampleDate" jdbcType="DATE" property="sampledate" />
+		<result column="sampleMedicalHistory" jdbcType="VARCHAR"
+			property="samplemedicalhistory" />
+		<result column="sampleCollector" jdbcType="VARCHAR" property="samplecollector" />
+		<result column="sampleRemarks" jdbcType="VARCHAR" property="sampleremarks" />
+		<result column="sampleAlias" jdbcType="VARCHAR" property="samplealias" />
+		<result column="sampleAnimalAge" jdbcType="VARCHAR" property="sampleanimalage" />
+		<result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+		<result column="addUser" jdbcType="VARCHAR" property="adduser" />
+	</resultMap>
+	<sql id="column">
+		sampleNo, animalNo, sampleSource, farmName, sampleFarmAddr,
+		sampleCollectionPart,
+		sampleProvince, sampleDate, sampleMedicalHistory,
+		sampleCollector, sampleRemarks,
+		sampleAlias, sampleAnimalAge, addTime,
+		addUser
+	</sql>
+	
+	<select id="selectByNos" parameterType="java.lang.String" resultMap="Sample">
+		select
+		sampleNo,s.animalNo,a.animalName,sampleSource,farmName,sampleFarmAddr,s.sampleCollectionPart,
+		c.partName,sampleProvince,sampleDate,sampleMedicalHistory,sampleCollector,sampleRemarks,sampleAnimalAge
+		from sample s left join detailanimal a on s.animalNo = a.animalNo
+		left join collectionpart c on s.sampleCollectionPart = c.partNo
+		 where sampleNo in 
+		 <foreach collection="array" open="(" close=")" item="no" separator=",">
+		 	#{no}
+		 </foreach>
+	</select>
+
+	<select id="selectList" parameterType="drug.dto.listModel.LSample"
+		resultMap="Sample">
+		select
+		sampleNo,s.animalNo,a.animalName,sampleSource,farmName,sampleFarmAddr,s.sampleCollectionPart,
+		c.partName,sampleProvince,sampleDate,sampleMedicalHistory,sampleCollector,sampleRemarks,sampleAnimalAge
+		from sample s left join detailanimal a on s.animalNo = a.animalNo
+		left join collectionpart c on s.sampleCollectionPart = c.partNo
+		<where>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and sampleNo like '%' #{sampleno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="animalno != null and animalno.length &gt;0">
+				and s.animalNo in
+				<foreach collection="animalno" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=INTEGER}
+				</foreach>
+			</if>
+			<if test="samplesource != null and samplesource.length &gt;0">
+				and sampleSource in
+				<foreach collection="samplesource" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%' #{farmname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="samplefarmaddr != null and !&quot;&quot;.equals(samplefarmaddr.trim())">
+				and sampleFarmAddr like '%' #{samplefarmaddr,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if test="samplecollectionpart != null and samplecollectionpart.length &gt;0">
+				and sampleCollectionPart in
+				<foreach collection="samplecollectionpart" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="sampleprovince != null and sampleprovince.length &gt;0">
+				and sampleProvince in
+				<foreach collection="sampleprovince" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="sampleanimalage != null and !&quot;&quot;.equals(sampleanimalage.trim())">
+				and sampleAnimalAge like '%'
+				#{sampleanimalage,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and sampleDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and sampleDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+		</where>
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+			order by ${order}
+			<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+				${sort}
+			</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+
+	<select id="selectMaxNo" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select max(sam.sampleNo) from sample sam where sam.sampleNo
+		like  #{str,jdbcType=VARCHAR} '%'
+		and length(sam.sampleNo)=
+		(select max(length(s.sampleNo)) from sample s where s.sampleNo like
+		#{str,jdbcType=VARCHAR} '%')
+	</select>
+
+	<select id="count" parameterType="drug.dto.listModel.LSample"
+		resultType="java.lang.Integer">
+		select count(sampleNo) from sample
+		<where>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and sampleNo like '%' #{sampleno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="animalno != null and animalno.length &gt;0">
+				and animalNo in
+				<foreach collection="animalno" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=INTEGER}
+				</foreach>
+			</if>
+			<if test="samplesource != null and samplesource.length &gt;0">
+				and sampleSource in
+				<foreach collection="samplesource" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%' #{farmname,jdbcType=VARCHAR} '%'
+			</if>
+			<if
+				test="samplefarmaddr != null and !&quot;&quot;.equals(samplefarmaddr.trim())">
+				and sampleFarmAddr like '%' #{samplefarmaddr,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if
+				test="samplecollectionpart != null and samplecollectionpart.length &gt;0">
+				and sampleCollectionpart in
+				<foreach collection="samplecollectionpart" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="sampleprovince != null and sampleprovince.length &gt;0">
+				and sampleProvince in
+				<foreach collection="sampleprovince" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if
+				test="sampleanimalage != null and !&quot;&quot;.equals(sampleanimalage.trim())">
+				and sampleAnimalAge like '%'
+				#{sampleanimalage,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and sampleDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and sampleDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+		</where>
+	</select>
+
+	<select id="select" parameterType="java.lang.String" resultType="Sample">
+		select 
+			<include refid="column"/>
+		sampleSource from sample
+		where sampleNo like #{sampleno,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectSources" resultType="java.lang.String">
+		select distinct
+		sampleSource from sample
+	</select>
+	
+	<select id="selectSampleNos" resultType="java.lang.String">
+		select sampleno from
+		sample
+	</select>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete from sample
+		where sampleNo in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="sampleno">
+			#{sampleno,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.Sample">
+		insert into sample (sampleNo, animalNo, sampleSource,
+		farmName,
+		sampleFarmAddr, sampleCollectionPart,
+		sampleProvince, sampleDate,
+		sampleMedicalHistory,
+		sampleCollector, sampleRemarks, sampleAlias,
+		sampleAnimalAge, addTime, addUser
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sampleno != null">
+				#{sampleno,jdbcType=VARCHAR},
+			</if>
+			<if test="animalno != null">
+				#{animalno,jdbcType=INTEGER},
+			</if>
+			<if test="samplesource != null">
+				#{samplesource,jdbcType=VARCHAR},
+			</if>
+			<if test="farmname != null">
+				#{farmname,jdbcType=VARCHAR},
+			</if>
+			<choose>
+				<when
+					test="samplefarmaddr != null and !&quot;&quot;.equals(samplefarmaddr.trim())">
+					#{samplefarmaddr,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<if test="samplecollectionpart != null">
+				#{samplecollectionpart,jdbcType=VARCHAR},
+			</if>
+			<choose>
+				<when
+					test="sampleprovince != null and !&quot;&quot;.equals(sampleprovince.trim())">
+					#{sampleprovince,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="sampledate != null">
+					#{sampledate,jdbcType=DATE},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when
+					test="samplemedicalhistory != null and !&quot;&quot;.equals(samplemedicalhistory.trim())">
+					#{samplemedicalhistory,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when
+					test="samplecollector != null and !&quot;&quot;.equals(samplecollector.trim())">
+					#{samplecollector,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when
+					test="sampleremarks != null and !&quot;&quot;.equals(sampleremarks.trim())">
+					#{sampleremarks,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when
+					test="samplealias != null">
+					#{samplealias,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when
+					test="sampleanimalage != null and !&quot;&quot;.equals(sampleanimalage.trim())">
+					#{sampleanimalage,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="addtime != null">
+					#{addtime,jdbcType=TIMESTAMP},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="adduser != null and !&quot;&quot;.equals(adduser.trim())">
+					#{adduser,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.Sample">
+		update sample
+		<set>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				farmName = #{farmname,jdbcType=VARCHAR},
+			</if>
+			<if test="samplefarmaddr != null">
+				sampleFarmAddr = #{samplefarmaddr,jdbcType=VARCHAR},
+			</if>
+			<if test="samplemedicalhistory != null">
+				sampleMedicalHistory =
+				#{samplemedicalhistory,jdbcType=VARCHAR},
+			</if>
+			<if test="samplecollector != null">
+				sampleCollector = #{samplecollector,jdbcType=VARCHAR},
+			</if>
+			<if test="sampleremarks != null">
+				sampleRemarks = #{sampleremarks,jdbcType=VARCHAR},
+			</if>
+			<if test="samplealias != null">
+				sampleAlias = #{samplealias,jdbcType=VARCHAR},
+			</if>
+			<if test="sampleanimalage != null">
+				sampleAnimalAge = #{sampleanimalage,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where sampleNo = #{sampleno,jdbcType=VARCHAR}
+	</update>
+</mapper>

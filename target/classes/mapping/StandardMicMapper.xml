@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.StandardMicDAO">
+	<resultMap id="StandardMic" type="drug.model.StandardMic">
+		<id column="medicalName" jdbcType="VARCHAR" property="medicalname" />
+		<id column="standardName" jdbcType="VARCHAR" property="standardname" />
+		<id column="strainName" jdbcType="VARCHAR" property="strainname" />
+		<result column="medlimit" jdbcType="REAL" property="medlimit" />
+		<result column="others1" jdbcType="VARCHAR" property="others1" />
+		<result column="others2" jdbcType="VARCHAR" property="others2" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<resultMap id="PStandardMic" type="drug.dto.pageModel.PStandardMic">
+		<id column="medicalName" jdbcType="VARCHAR" property="medicalname" />
+		<id column="standardName" jdbcType="VARCHAR" property="standardname" />
+		<id column="strainName" jdbcType="VARCHAR" property="strainname" />
+		<result column="medlimit" jdbcType="REAL" javaType="java.lang.String" property="medlimit" />
+		<result column="others1" jdbcType="VARCHAR" property="others1" />
+		<result column="others2" jdbcType="VARCHAR" property="others2" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="column">
+		medicalName, standardName, strainName, medlimit, others1,
+		others2, remark
+	</sql>
+	
+	<!-- 
+	<select id="selectPage" parameterType="drug.dto.pageModel.PStandardMic"
+		resultMap="PStandardMic">
+		select
+		<include refid="column" />
+		from standardmic
+		<where>
+			<if test="medicalname != null and !&quot;&quot;.equals(medicalname.trim())">
+				and medicalname like '%' #{medicalname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="standardname != null and !&quot;&quot;.equals(standardname.trim())">
+				and standardname like '%' #{standardname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainname != null and !&quot;&quot;.equals(strainname.trim())">
+				and strainname like '%' #{strainname,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	 -->
+	<select id="selectList" parameterType="drug.dto.pageModel.PStandardMic"
+		resultMap="StandardMic">
+		select
+		<include refid="column" />
+		from standardmic
+		<where>
+			<if test="medicalname != null and !&quot;&quot;.equals(medicalname.trim())">
+				and medicalname like '%' #{medicalname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="standardname != null and !&quot;&quot;.equals(standardname.trim())">
+				and standardname like '%' #{standardname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainname != null and !&quot;&quot;.equals(strainname.trim())">
+				and strainname like '%' #{strainname,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+		limit #{page},#{rows}
+	</select>
+	
+	<select id="selectAll" resultMap="StandardMic">
+		select
+		<include refid="column" />
+		from standardmic
+	</select>
+
+	<select id="selectDrug" resultType="java.lang.String">
+		select distinct medicalName
+		from standardmic
+	</select>
+
+	<select id="selectStrain" resultType="java.lang.String">
+		select distinct strainName
+		from standardmic
+	</select>
+
+	<select id="selectStandard" resultType="java.lang.String">
+		select distinct
+		standardName from standardmic
+	</select>
+
+	<select id="count" parameterType="drug.dto.pageModel.PStandardMic" resultType="java.lang.Integer">
+		select count(*) from standardmic
+		<where>
+			<if test="medicalname != null and !&quot;&quot;.equals(medicalname.trim())">
+				and medicalname like '%' #{medicalname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="standardname != null and !&quot;&quot;.equals(standardname.trim())">
+				and standardname like '%' #{standardname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainname != null and !&quot;&quot;.equals(strainname.trim())">
+				and strainname like '%' #{strainname,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+	</select>
+
+	<delete id="delete" parameterType="drug.model.StandardMicKey">
+		delete from standardmic where
+		<foreach collection="array" item="key" separator="or">
+			(medicalName
+			= #{key.medicalname,jdbcType=VARCHAR}
+			and standardName =
+			#{key.standardname,jdbcType=VARCHAR}
+			and strainName =
+			#{key.strainname,jdbcType=VARCHAR})
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.StandardMic">
+		insert into standardmic
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="medicalname != null">
+				medicalName,
+			</if>
+			<if test="standardname != null">
+				standardName,
+			</if>
+			<if test="strainname != null">
+				strainName,
+			</if>
+			<if test="medlimit != null">
+				medlimit,
+			</if>
+			<if test="others1 != null">
+				others1,
+			</if>
+			<if test="others2 != null">
+				others2,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if
+				test="medicalname != null and !&quot;&quot;.equals(medicalname.trim())">
+				#{medicalname,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="standardname != null and !&quot;&quot;.equals(standardname.trim())">
+				#{standardname,jdbcType=VARCHAR},
+			</if>
+			<if test="strainname != null and !&quot;&quot;.equals(strainname.trim())">
+				#{strainname,jdbcType=VARCHAR},
+			</if>
+			<if test="medlimit != null">
+				#{medlimit,jdbcType=REAL},
+			</if>
+			<if test="others1 != null">
+				#{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				#{others2,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.StandardMic">
+		update standardmic
+		<set>
+			<choose>
+				<when test="remark != null">
+					remark = #{remark,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					remark = ''
+				</otherwise>
+			</choose>
+			<if test="medlimit != null">
+				medlimit = #{medlimit,jdbcType=REAL},
+			</if>
+			<if test="others1 != null">
+				others1 = #{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				others2 = #{others2,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where medicalName = #{medicalname,jdbcType=VARCHAR}
+		and standardName =
+		#{standardname,jdbcType=VARCHAR}
+		and strainName =
+		#{strainname,jdbcType=VARCHAR}
+	</update>
+</mapper>

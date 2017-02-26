@@ -1,0 +1,1495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.StrainMicDAO">
+	<resultMap id="StrainMic" type="drug.model.StrainMic">
+		<id column="strainNo" jdbcType="VARCHAR" property="strainno" />
+		<result column="AMK" jdbcType="DOUBLE" property="amk" />
+		<result column="AMP" jdbcType="DOUBLE" property="amp" />
+		<result column="APR" jdbcType="DOUBLE" property="apr" />
+		<result column="AZM" jdbcType="DOUBLE" property="azm" />
+		<result column="CFZ" jdbcType="DOUBLE" property="cfz" />
+		<result column="FEP" jdbcType="DOUBLE" property="fep" />
+		<result column="CTX" jdbcType="DOUBLE" property="ctx" />
+		<result column="FOX" jdbcType="DOUBLE" property="fox" />
+		<result column="CAZ" jdbcType="DOUBLE" property="caz" />
+		<result column="CRO" jdbcType="DOUBLE" property="cro" />
+		<result column="CQM" jdbcType="DOUBLE" property="cqm" />
+		<result column="CHL" jdbcType="DOUBLE" property="chl" />
+		<result column="CIP" jdbcType="DOUBLE" property="cip" />
+		<result column="TIA" jdbcType="DOUBLE" property="tia" />
+		<result column="CLI" jdbcType="DOUBLE" property="cli" />
+		<result column="CL" jdbcType="DOUBLE" property="cl" />
+		<result column="DOX" jdbcType="DOUBLE" property="dox" />
+		<result column="VAL" jdbcType="DOUBLE" property="val" />
+		<result column="ERY" jdbcType="DOUBLE" property="ery" />
+		<result column="FFC" jdbcType="DOUBLE" property="ffc" />
+		<result column="FOS" jdbcType="DOUBLE" property="fos" />
+		<result column="GEN" jdbcType="DOUBLE" property="gen" />
+		<result column="IMP" jdbcType="DOUBLE" property="imp" />
+		<result column="LEV" jdbcType="DOUBLE" property="lev" />
+		<result column="LZD" jdbcType="DOUBLE" property="lzd" />
+		<result column="MEM" jdbcType="DOUBLE" property="mem" />
+		<result column="MIN" jdbcType="DOUBLE" property="min" />
+		<result column="NAL" jdbcType="DOUBLE" property="nal" />
+		<result column="NEO" jdbcType="DOUBLE" property="neo" />
+		<result column="NET" jdbcType="DOUBLE" property="net" />
+		<result column="NIT" jdbcType="DOUBLE" property="nit" />
+		<result column="NOR" jdbcType="DOUBLE" property="nor" />
+		<result column="OFX" jdbcType="DOUBLE" property="ofx" />
+		<result column="OXA" jdbcType="DOUBLE" property="oxa" />
+		<result column="PEN" jdbcType="DOUBLE" property="pen" />
+		<result column="PIP" jdbcType="DOUBLE" property="pip" />
+		<result column="TZP" jdbcType="DOUBLE" property="tzp" />
+		<result column="RIF" jdbcType="DOUBLE" property="rif" />
+		<result column="STR" jdbcType="DOUBLE" property="str" />
+		<result column="TEC" jdbcType="DOUBLE" property="tec" />
+		<result column="TET" jdbcType="DOUBLE" property="tet" />
+		<result column="TOB" jdbcType="DOUBLE" property="tob" />
+		<result column="TMP" jdbcType="DOUBLE" property="tmp" />
+		<result column="SXT" jdbcType="DOUBLE" property="sxt" />
+		<result column="VAN" jdbcType="DOUBLE" property="van" />
+		<result column="OQX" jdbcType="DOUBLE" property="oqx" />
+		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="micdetectionType" jdbcType="VARCHAR" property="micdetectiontype" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="micAlias" jdbcType="VARCHAR" property="micalias" />
+		<result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+		<result column="addUser" jdbcType="VARCHAR" property="adduser" />
+		<result column="gramStain" jdbcType="VARCHAR" property="gramstain" />
+	</resultMap>
+	<sql id="column">
+		strainNo, AMK, AMP, APR, AZM, CFZ, FEP, CTX, FOX, CAZ, CRO,
+		CQM, CHL, CIP, TIA,
+		CLI,
+		CL, DOX, VAL, ERY, FFC, FOS, GEN, IMP, LEV,
+		LZD, MEM, MIN, NAL, NEO, NET,
+		NIT, NOR,
+		OFX, OXA, PEN, PIP, TZP, RIF,
+		STR, TEC, TET, TOB, TMP, SXT, VAN, OQX,
+		operator, micdetectionType,
+		remark, micAlias, addTime, addUser, gramStain
+	</sql>
+
+	<select id="selectByNos" parameterType="java.lang.String" resultType="StrainMic">
+		select
+		<include refid="column"/>
+		from strainmic
+		where strainNo in
+		<foreach collection="strainnos" open="(" close=")" separator="," item="no">
+			#{no}
+		</foreach>
+		and gramStain = #{gram}
+	</select>
+
+	<select id="count" parameterType="drug.dto.listModel.LStrainMic"
+		resultType="java.lang.Integer">
+		select count(strainNo) from strainmic mic
+		left
+		join straincoding c
+		using(strainNo)
+		<where>
+			 and mic.gramStain = #{gram,jdbcType=VARCHAR}
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and mic.strainNo like '%' #{strainno,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if test="micalias != null and !&quot;&quot;.equals(micalias.trim())">
+				and micAlias like '%' #{micalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+				and mic.gramStain like #{gram,jdbcType=VARCHAR}
+			</if>
+			<if test="category != null and category.length &gt;0">
+				and c.strainCategory in
+				<foreach collection="category" open="(" close=")" separator=","
+					item="alias">
+					#{alias,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="amk1!=null">
+				and AMK <![CDATA[>=]]>
+				#{amk1,jdbcType=DOUBLE}
+			</if>
+			<if test="amk2!=null">
+				and AMK <![CDATA[<=]]>
+				#{amk2,jdbcType=DOUBLE}
+			</if>
+			<if test="amp1!=null">
+				and AMP <![CDATA[>=]]>
+				#{amp1,jdbcType=DOUBLE}
+			</if>
+			<if test="amp2!=null">
+				and AMP <![CDATA[<=]]>
+				#{amp2,jdbcType=DOUBLE}
+			</if>
+			<if test="apr1!=null">
+				and APR <![CDATA[>=]]>
+				#{apr1,jdbcType=DOUBLE}
+			</if>
+			<if test="apr2!=null">
+				and APR <![CDATA[<=]]>
+				#{apr2,jdbcType=DOUBLE}
+			</if>
+			<if test="azm1!=null">
+				and AZM <![CDATA[>=]]>
+				#{azm1,jdbcType=DOUBLE}
+			</if>
+			<if test="azm2!=null">
+				and AZM <![CDATA[<=]]>
+				#{azm2,jdbcType=DOUBLE}
+			</if>
+			<if test="cfz1!=null">
+				and CFZ <![CDATA[>=]]>
+				#{cfz1,jdbcType=DOUBLE}
+			</if>
+			<if test="cfz2!=null">
+				and CFZ <![CDATA[<=]]>
+				#{cfz2,jdbcType=DOUBLE}
+			</if>
+			<if test="fep1!=null">
+				and FEP <![CDATA[>=]]>
+				#{fep1,jdbcType=DOUBLE}
+			</if>
+			<if test="fep2!=null">
+				and FEP <![CDATA[<=]]>
+				#{fep2,jdbcType=DOUBLE}
+			</if>
+			<if test="ctx1!=null">
+				and CTX <![CDATA[>=]]>
+				#{ctx1,jdbcType=DOUBLE}
+			</if>
+			<if test="ctx2!=null">
+				and CTX <![CDATA[<=]]>
+				#{ctx2,jdbcType=DOUBLE}
+			</if>
+			<if test="fox1!=null">
+				and FOX <![CDATA[>=]]>
+				#{fox1,jdbcType=DOUBLE}
+			</if>
+			<if test="fox2!=null">
+				and FOX <![CDATA[<=]]>
+				#{fox2,jdbcType=DOUBLE}
+			</if>
+			<if test="caz1!=null">
+				and CAZ <![CDATA[>=]]>
+				#{caz1,jdbcType=DOUBLE}
+			</if>
+			<if test="caz2!=null">
+				and CAZ <![CDATA[<=]]>
+				#{caz2,jdbcType=DOUBLE}
+			</if>
+			<if test="cro1!=null">
+				and CRO <![CDATA[>=]]>
+				#{cro1,jdbcType=DOUBLE}
+			</if>
+			<if test="cro2!=null">
+				and CRO <![CDATA[<=]]>
+				#{cro2,jdbcType=DOUBLE}
+			</if>
+			<if test="cqm1!=null">
+				and CQM <![CDATA[>=]]>
+				#{cqm1,jdbcType=DOUBLE}
+			</if>
+			<if test="cqm2!=null">
+				and CQM <![CDATA[<=]]>
+				#{cqm2,jdbcType=DOUBLE}
+			</if>
+			<if test="chl1!=null">
+				and CHL <![CDATA[>=]]>
+				#{chl1,jdbcType=DOUBLE}
+			</if>
+			<if test="chl2!=null">
+				and CHL <![CDATA[<=]]>
+				#{chl2,jdbcType=DOUBLE}
+			</if>
+			<if test="cip1!=null">
+				and CIP <![CDATA[>=]]>
+				#{cip1,jdbcType=DOUBLE}
+			</if>
+			<if test="cip2!=null">
+				and CIP <![CDATA[<=]]>
+				#{cip2,jdbcType=DOUBLE}
+			</if>
+			<if test="tia1!=null">
+				and TIA <![CDATA[>=]]>
+				#{tia1,jdbcType=DOUBLE}
+			</if>
+			<if test="tia2!=null">
+				and TIA <![CDATA[<=]]>
+				#{tia2,jdbcType=DOUBLE}
+			</if>
+			<if test="cli1!=null">
+				and CLI <![CDATA[>=]]>
+				#{cli1,jdbcType=DOUBLE}
+			</if>
+			<if test="cli2!=null">
+				and CLI <![CDATA[<=]]>
+				#{cli2,jdbcType=DOUBLE}
+			</if>
+			<if test="cl1!=null">
+				and CL <![CDATA[>=]]>
+				#{cl1,jdbcType=DOUBLE}
+			</if>
+			<if test="cl2!=null">
+				and CL <![CDATA[<=]]>
+				#{cl2,jdbcType=DOUBLE}
+			</if>
+			<if test="dox1!=null">
+				and DOX <![CDATA[>=]]>
+				#{dox1,jdbcType=DOUBLE}
+			</if>
+			<if test="dox2!=null">
+				and DOX <![CDATA[<=]]>
+				#{dox2,jdbcType=DOUBLE}
+			</if>
+			<if test="val1!=null">
+				and VAL <![CDATA[>=]]>
+				#{val1,jdbcType=DOUBLE}
+			</if>
+			<if test="val2!=null">
+				and VAL <![CDATA[<=]]>
+				#{val2,jdbcType=DOUBLE}
+			</if>
+			<if test="ery1!=null">
+				and ERY <![CDATA[>=]]>
+				#{ery1,jdbcType=DOUBLE}
+			</if>
+			<if test="ery2!=null">
+				and ERY <![CDATA[<=]]>
+				#{ery2,jdbcType=DOUBLE}
+			</if>
+			<if test="ffc1!=null">
+				and FFC <![CDATA[>=]]>
+				#{ffc1,jdbcType=DOUBLE}
+			</if>
+			<if test="ffc2!=null">
+				and FFC <![CDATA[<=]]>
+				#{ffc2,jdbcType=DOUBLE}
+			</if>
+			<if test="fos1!=null">
+				and FOS <![CDATA[>=]]>
+				#{fos1,jdbcType=DOUBLE}
+			</if>
+			<if test="fos2!=null">
+				and FOS <![CDATA[<=]]>
+				#{fos2,jdbcType=DOUBLE}
+			</if>
+			<if test="gen1!=null">
+				and GEN <![CDATA[>=]]>
+				#{gen1,jdbcType=DOUBLE}
+			</if>
+			<if test="gen2!=null">
+				and GEN <![CDATA[<=]]>
+				#{gen2,jdbcType=DOUBLE}
+			</if>
+			<if test="imp1!=null">
+				and IMP <![CDATA[>=]]>
+				#{imp1,jdbcType=DOUBLE}
+			</if>
+			<if test="imp2!=null">
+				and IMP <![CDATA[<=]]>
+				#{imp2,jdbcType=DOUBLE}
+			</if>
+			<if test="lev1!=null">
+				and LEV <![CDATA[>=]]>
+				#{lev1,jdbcType=DOUBLE}
+			</if>
+			<if test="lev2!=null">
+				and LEV <![CDATA[<=]]>
+				#{lev2,jdbcType=DOUBLE}
+			</if>
+			<if test="lzd1!=null">
+				and LZD <![CDATA[>=]]>
+				#{lzd1,jdbcType=DOUBLE}
+			</if>
+			<if test="lzd2!=null">
+				and LZD <![CDATA[<=]]>
+				#{lzd2,jdbcType=DOUBLE}
+			</if>
+			<if test="mem1!=null">
+				and MEM <![CDATA[>=]]>
+				#{mem1,jdbcType=DOUBLE}
+			</if>
+			<if test="mem2!=null">
+				and MEM <![CDATA[<=]]>
+				#{mem2,jdbcType=DOUBLE}
+			</if>
+			<if test="min1!=null">
+				and MIN <![CDATA[>=]]>
+				#{min1,jdbcType=DOUBLE}
+			</if>
+			<if test="min2!=null">
+				and MIN <![CDATA[<=]]>
+				#{min2,jdbcType=DOUBLE}
+			</if>
+			<if test="nal1!=null">
+				and NAL <![CDATA[>=]]>
+				#{nal1,jdbcType=DOUBLE}
+			</if>
+			<if test="nal2!=null">
+				and NAL <![CDATA[<=]]>
+				#{nal2,jdbcType=DOUBLE}
+			</if>
+			<if test="neo1!=null">
+				and NEO <![CDATA[>=]]>
+				#{neo1,jdbcType=DOUBLE}
+			</if>
+			<if test="neo2!=null">
+				and NEO <![CDATA[<=]]>
+				#{neo2,jdbcType=DOUBLE}
+			</if>
+			<if test="net1!=null">
+				and NET <![CDATA[>=]]>
+				#{net1,jdbcType=DOUBLE}
+			</if>
+			<if test="net2!=null">
+				and NET <![CDATA[<=]]>
+				#{net2,jdbcType=DOUBLE}
+			</if>
+			<if test="nit1!=null">
+				and NIT <![CDATA[>=]]>
+				#{nit1,jdbcType=DOUBLE}
+			</if>
+			<if test="nit2!=null">
+				and NIT <![CDATA[<=]]>
+				#{nit2,jdbcType=DOUBLE}
+			</if>
+			<if test="nor1!=null">
+				and NOR <![CDATA[>=]]>
+				#{nor1,jdbcType=DOUBLE}
+			</if>
+			<if test="nor2!=null">
+				and NOR <![CDATA[<=]]>
+				#{nor2,jdbcType=DOUBLE}
+			</if>
+			<if test="ofx1!=null">
+				and OFX <![CDATA[>=]]>
+				#{ofx1,jdbcType=DOUBLE}
+			</if>
+			<if test="ofx2!=null">
+				and OFX <![CDATA[<=]]>
+				#{ofx2,jdbcType=DOUBLE}
+			</if>
+			<if test="oxa1!=null">
+				and OXA <![CDATA[>=]]>
+				#{oxa1,jdbcType=DOUBLE}
+			</if>
+			<if test="oxa2!=null">
+				and OXA <![CDATA[<=]]>
+				#{oxa2,jdbcType=DOUBLE}
+			</if>
+			<if test="pen1!=null">
+				and PEN <![CDATA[>=]]>
+				#{pen1,jdbcType=DOUBLE}
+			</if>
+			<if test="pen2!=null">
+				and PEN <![CDATA[<=]]>
+				#{pen2,jdbcType=DOUBLE}
+			</if>
+			<if test="pip1!=null">
+				and PIP <![CDATA[>=]]>
+				#{pip1,jdbcType=DOUBLE}
+			</if>
+			<if test="pip2!=null">
+				and PIP <![CDATA[<=]]>
+				#{pip2,jdbcType=DOUBLE}
+			</if>
+			<if test="tzp1!=null">
+				and TZP <![CDATA[>=]]>
+				#{tzp1,jdbcType=DOUBLE}
+			</if>
+			<if test="tzp2!=null">
+				and TZP <![CDATA[<=]]>
+				#{tzp2,jdbcType=DOUBLE}
+			</if>
+			<if test="rif1!=null">
+				and RIF <![CDATA[>=]]>
+				#{rif1,jdbcType=DOUBLE}
+			</if>
+			<if test="rif2!=null">
+				and RIF <![CDATA[<=]]>
+				#{rif2,jdbcType=DOUBLE}
+			</if>
+			<if test="str1!=null">
+				and STR <![CDATA[>=]]>
+				#{str1,jdbcType=DOUBLE}
+			</if>
+			<if test="str2!=null">
+				and STR <![CDATA[<=]]>
+				#{str2,jdbcType=DOUBLE}
+			</if>
+			<if test="tec1!=null">
+				and TEC <![CDATA[>=]]>
+				#{tec1,jdbcType=DOUBLE}
+			</if>
+			<if test="tec2!=null">
+				and TEC <![CDATA[<=]]>
+				#{tec2,jdbcType=DOUBLE}
+			</if>
+			<if test="tet1!=null">
+				and TET <![CDATA[>=]]>
+				#{tet1,jdbcType=DOUBLE}
+			</if>
+			<if test="tet2!=null">
+				and TET <![CDATA[<=]]>
+				#{tet2,jdbcType=DOUBLE}
+			</if>
+			<if test="tob1!=null">
+				and TOB <![CDATA[>=]]>
+				#{tob1,jdbcType=DOUBLE}
+			</if>
+			<if test="tob2!=null">
+				and TOB <![CDATA[<=]]>
+				#{tob2,jdbcType=DOUBLE}
+			</if>
+			<if test="tmp1!=null">
+				and TMP <![CDATA[>=]]>
+				#{tmp1,jdbcType=DOUBLE}
+			</if>
+			<if test="tmp2!=null">
+				and TMP <![CDATA[<=]]>
+				#{tmp2,jdbcType=DOUBLE}
+			</if>
+			<if test="sxt1!=null">
+				and SXT <![CDATA[>=]]>
+				#{sxt1,jdbcType=DOUBLE}
+			</if>
+			<if test="sxt2!=null">
+				and SXT <![CDATA[<=]]>
+				#{sxt2,jdbcType=DOUBLE}
+			</if>
+			<if test="van1!=null">
+				and VAN <![CDATA[>=]]>
+				#{van1,jdbcType=DOUBLE}
+			</if>
+			<if test="van2!=null">
+				and VAN <![CDATA[<=]]>
+				#{van2,jdbcType=DOUBLE}
+			</if>
+			<if test="oqx1!=null">
+				and OQX <![CDATA[>=]]>
+				#{oqx1,jdbcType=DOUBLE}
+			</if>
+			<if test="oqx2!=null">
+				and OQX <![CDATA[<=]]>
+				#{oqx2,jdbcType=DOUBLE}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" parameterType="drug.dto.listModel.LStrainCoding"
+		resultMap="StrainMic">
+		select
+		mic.strainNo, AMK, AMP, APR, AZM, CFZ, FEP, CTX, FOX, CAZ, CRO,
+		CQM, CHL, CIP, TIA,
+		CLI,
+		CL, DOX, VAL, ERY, FFC, FOS, GEN, IMP, LEV,
+		LZD, MEM, MIN, NAL, NEO, NET,
+		NIT, NOR,
+		OFX, OXA, PEN, PIP, TZP, RIF,
+		STR, TEC, TET, TOB, TMP, SXT, VAN, OQX,
+		mic.operator, micdetectionType,
+		mic.remark, mic.micAlias, mic.addTime, mic.addUser, mic.gramStain
+		from
+		strainmic mic
+		left
+		join straincoding c using(strainNo)
+		<where>
+			 and mic.gramStain = #{gram,jdbcType=VARCHAR}
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and mic.strainNo like '%' #{strainno,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if test="micalias != null and !&quot;&quot;.equals(micalias.trim())">
+				and micAlias like '%' #{micalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+				and mic.gramStain like #{gram,jdbcType=VARCHAR}
+			</if>
+			<if test="category != null and category.length &gt;0">
+				and c.strainCategory in
+				<foreach collection="category" open="(" close=")" separator=","
+					item="alias">
+					#{alias,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="amk1!=null">
+				and AMK <![CDATA[>=]]>
+				#{amk1,jdbcType=DOUBLE}
+			</if>
+			<if test="amk2!=null">
+				and AMK <![CDATA[<=]]>
+				#{amk2,jdbcType=DOUBLE}
+			</if>
+			<if test="amp1!=null">
+				and AMP <![CDATA[>=]]>
+				#{amp1,jdbcType=DOUBLE}
+			</if>
+			<if test="amp2!=null">
+				and AMP <![CDATA[<=]]>
+				#{amp2,jdbcType=DOUBLE}
+			</if>
+			<if test="apr1!=null">
+				and APR <![CDATA[>=]]>
+				#{apr1,jdbcType=DOUBLE}
+			</if>
+			<if test="apr2!=null">
+				and APR <![CDATA[<=]]>
+				#{apr2,jdbcType=DOUBLE}
+			</if>
+			<if test="azm1!=null">
+				and AZM <![CDATA[>=]]>
+				#{azm1,jdbcType=DOUBLE}
+			</if>
+			<if test="azm2!=null">
+				and AZM <![CDATA[<=]]>
+				#{azm2,jdbcType=DOUBLE}
+			</if>
+			<if test="cfz1!=null">
+				and CFZ <![CDATA[>=]]>
+				#{cfz1,jdbcType=DOUBLE}
+			</if>
+			<if test="cfz2!=null">
+				and CFZ <![CDATA[<=]]>
+				#{cfz2,jdbcType=DOUBLE}
+			</if>
+			<if test="fep1!=null">
+				and FEP <![CDATA[>=]]>
+				#{fep1,jdbcType=DOUBLE}
+			</if>
+			<if test="fep2!=null">
+				and FEP <![CDATA[<=]]>
+				#{fep2,jdbcType=DOUBLE}
+			</if>
+			<if test="ctx1!=null">
+				and CTX <![CDATA[>=]]>
+				#{ctx1,jdbcType=DOUBLE}
+			</if>
+			<if test="ctx2!=null">
+				and CTX <![CDATA[<=]]>
+				#{ctx2,jdbcType=DOUBLE}
+			</if>
+			<if test="fox1!=null">
+				and FOX <![CDATA[>=]]>
+				#{fox1,jdbcType=DOUBLE}
+			</if>
+			<if test="fox2!=null">
+				and FOX <![CDATA[<=]]>
+				#{fox2,jdbcType=DOUBLE}
+			</if>
+			<if test="caz1!=null">
+				and CAZ <![CDATA[>=]]>
+				#{caz1,jdbcType=DOUBLE}
+			</if>
+			<if test="caz2!=null">
+				and CAZ <![CDATA[<=]]>
+				#{caz2,jdbcType=DOUBLE}
+			</if>
+			<if test="cro1!=null">
+				and CRO <![CDATA[>=]]>
+				#{cro1,jdbcType=DOUBLE}
+			</if>
+			<if test="cro2!=null">
+				and CRO <![CDATA[<=]]>
+				#{cro2,jdbcType=DOUBLE}
+			</if>
+			<if test="cqm1!=null">
+				and CQM <![CDATA[>=]]>
+				#{cqm1,jdbcType=DOUBLE}
+			</if>
+			<if test="cqm2!=null">
+				and CQM <![CDATA[<=]]>
+				#{cqm2,jdbcType=DOUBLE}
+			</if>
+			<if test="chl1!=null">
+				and CHL <![CDATA[>=]]>
+				#{chl1,jdbcType=DOUBLE}
+			</if>
+			<if test="chl2!=null">
+				and CHL <![CDATA[<=]]>
+				#{chl2,jdbcType=DOUBLE}
+			</if>
+			<if test="cip1!=null">
+				and CIP <![CDATA[>=]]>
+				#{cip1,jdbcType=DOUBLE}
+			</if>
+			<if test="cip2!=null">
+				and CIP <![CDATA[<=]]>
+				#{cip2,jdbcType=DOUBLE}
+			</if>
+			<if test="tia1!=null">
+				and TIA <![CDATA[>=]]>
+				#{tia1,jdbcType=DOUBLE}
+			</if>
+			<if test="tia2!=null">
+				and TIA <![CDATA[<=]]>
+				#{tia2,jdbcType=DOUBLE}
+			</if>
+			<if test="cli1!=null">
+				and CLI <![CDATA[>=]]>
+				#{cli1,jdbcType=DOUBLE}
+			</if>
+			<if test="cli2!=null">
+				and CLI <![CDATA[<=]]>
+				#{cli2,jdbcType=DOUBLE}
+			</if>
+			<if test="cl1!=null">
+				and CL <![CDATA[>=]]>
+				#{cl1,jdbcType=DOUBLE}
+			</if>
+			<if test="cl2!=null">
+				and CL <![CDATA[<=]]>
+				#{cl2,jdbcType=DOUBLE}
+			</if>
+			<if test="dox1!=null">
+				and DOX <![CDATA[>=]]>
+				#{dox1,jdbcType=DOUBLE}
+			</if>
+			<if test="dox2!=null">
+				and DOX <![CDATA[<=]]>
+				#{dox2,jdbcType=DOUBLE}
+			</if>
+			<if test="val1!=null">
+				and VAL <![CDATA[>=]]>
+				#{val1,jdbcType=DOUBLE}
+			</if>
+			<if test="val2!=null">
+				and VAL <![CDATA[<=]]>
+				#{val2,jdbcType=DOUBLE}
+			</if>
+			<if test="ery1!=null">
+				and ERY <![CDATA[>=]]>
+				#{ery1,jdbcType=DOUBLE}
+			</if>
+			<if test="ery2!=null">
+				and ERY <![CDATA[<=]]>
+				#{ery2,jdbcType=DOUBLE}
+			</if>
+			<if test="ffc1!=null">
+				and FFC <![CDATA[>=]]>
+				#{ffc1,jdbcType=DOUBLE}
+			</if>
+			<if test="ffc2!=null">
+				and FFC <![CDATA[<=]]>
+				#{ffc2,jdbcType=DOUBLE}
+			</if>
+			<if test="fos1!=null">
+				and FOS <![CDATA[>=]]>
+				#{fos1,jdbcType=DOUBLE}
+			</if>
+			<if test="fos2!=null">
+				and FOS <![CDATA[<=]]>
+				#{fos2,jdbcType=DOUBLE}
+			</if>
+			<if test="gen1!=null">
+				and GEN <![CDATA[>=]]>
+				#{gen1,jdbcType=DOUBLE}
+			</if>
+			<if test="gen2!=null">
+				and GEN <![CDATA[<=]]>
+				#{gen2,jdbcType=DOUBLE}
+			</if>
+			<if test="imp1!=null">
+				and IMP <![CDATA[>=]]>
+				#{imp1,jdbcType=DOUBLE}
+			</if>
+			<if test="imp2!=null">
+				and IMP <![CDATA[<=]]>
+				#{imp2,jdbcType=DOUBLE}
+			</if>
+			<if test="lev1!=null">
+				and LEV <![CDATA[>=]]>
+				#{lev1,jdbcType=DOUBLE}
+			</if>
+			<if test="lev2!=null">
+				and LEV <![CDATA[<=]]>
+				#{lev2,jdbcType=DOUBLE}
+			</if>
+			<if test="lzd1!=null">
+				and LZD <![CDATA[>=]]>
+				#{lzd1,jdbcType=DOUBLE}
+			</if>
+			<if test="lzd2!=null">
+				and LZD <![CDATA[<=]]>
+				#{lzd2,jdbcType=DOUBLE}
+			</if>
+			<if test="mem1!=null">
+				and MEM <![CDATA[>=]]>
+				#{mem1,jdbcType=DOUBLE}
+			</if>
+			<if test="mem2!=null">
+				and MEM <![CDATA[<=]]>
+				#{mem2,jdbcType=DOUBLE}
+			</if>
+			<if test="min1!=null">
+				and MIN <![CDATA[>=]]>
+				#{min1,jdbcType=DOUBLE}
+			</if>
+			<if test="min2!=null">
+				and MIN <![CDATA[<=]]>
+				#{min2,jdbcType=DOUBLE}
+			</if>
+			<if test="nal1!=null">
+				and NAL <![CDATA[>=]]>
+				#{nal1,jdbcType=DOUBLE}
+			</if>
+			<if test="nal2!=null">
+				and NAL <![CDATA[<=]]>
+				#{nal2,jdbcType=DOUBLE}
+			</if>
+			<if test="neo1!=null">
+				and NEO <![CDATA[>=]]>
+				#{neo1,jdbcType=DOUBLE}
+			</if>
+			<if test="neo2!=null">
+				and NEO <![CDATA[<=]]>
+				#{neo2,jdbcType=DOUBLE}
+			</if>
+			<if test="net1!=null">
+				and NET <![CDATA[>=]]>
+				#{net1,jdbcType=DOUBLE}
+			</if>
+			<if test="net2!=null">
+				and NET <![CDATA[<=]]>
+				#{net2,jdbcType=DOUBLE}
+			</if>
+			<if test="nit1!=null">
+				and NIT <![CDATA[>=]]>
+				#{nit1,jdbcType=DOUBLE}
+			</if>
+			<if test="nit2!=null">
+				and NIT <![CDATA[<=]]>
+				#{nit2,jdbcType=DOUBLE}
+			</if>
+			<if test="nor1!=null">
+				and NOR <![CDATA[>=]]>
+				#{nor1,jdbcType=DOUBLE}
+			</if>
+			<if test="nor2!=null">
+				and NOR <![CDATA[<=]]>
+				#{nor2,jdbcType=DOUBLE}
+			</if>
+			<if test="ofx1!=null">
+				and OFX <![CDATA[>=]]>
+				#{ofx1,jdbcType=DOUBLE}
+			</if>
+			<if test="ofx2!=null">
+				and OFX <![CDATA[<=]]>
+				#{ofx2,jdbcType=DOUBLE}
+			</if>
+			<if test="oxa1!=null">
+				and OXA <![CDATA[>=]]>
+				#{oxa1,jdbcType=DOUBLE}
+			</if>
+			<if test="oxa2!=null">
+				and OXA <![CDATA[<=]]>
+				#{oxa2,jdbcType=DOUBLE}
+			</if>
+			<if test="pen1!=null">
+				and PEN <![CDATA[>=]]>
+				#{pen1,jdbcType=DOUBLE}
+			</if>
+			<if test="pen2!=null">
+				and PEN <![CDATA[<=]]>
+				#{pen2,jdbcType=DOUBLE}
+			</if>
+			<if test="pip1!=null">
+				and PIP <![CDATA[>=]]>
+				#{pip1,jdbcType=DOUBLE}
+			</if>
+			<if test="pip2!=null">
+				and PIP <![CDATA[<=]]>
+				#{pip2,jdbcType=DOUBLE}
+			</if>
+			<if test="tzp1!=null">
+				and TZP <![CDATA[>=]]>
+				#{tzp1,jdbcType=DOUBLE}
+			</if>
+			<if test="tzp2!=null">
+				and TZP <![CDATA[<=]]>
+				#{tzp2,jdbcType=DOUBLE}
+			</if>
+			<if test="rif1!=null">
+				and RIF <![CDATA[>=]]>
+				#{rif1,jdbcType=DOUBLE}
+			</if>
+			<if test="rif2!=null">
+				and RIF <![CDATA[<=]]>
+				#{rif2,jdbcType=DOUBLE}
+			</if>
+			<if test="str1!=null">
+				and STR <![CDATA[>=]]>
+				#{str1,jdbcType=DOUBLE}
+			</if>
+			<if test="str2!=null">
+				and STR <![CDATA[<=]]>
+				#{str2,jdbcType=DOUBLE}
+			</if>
+			<if test="tec1!=null">
+				and TEC <![CDATA[>=]]>
+				#{tec1,jdbcType=DOUBLE}
+			</if>
+			<if test="tec2!=null">
+				and TEC <![CDATA[<=]]>
+				#{tec2,jdbcType=DOUBLE}
+			</if>
+			<if test="tet1!=null">
+				and TET <![CDATA[>=]]>
+				#{tet1,jdbcType=DOUBLE}
+			</if>
+			<if test="tet2!=null">
+				and TET <![CDATA[<=]]>
+				#{tet2,jdbcType=DOUBLE}
+			</if>
+			<if test="tob1!=null">
+				and TOB <![CDATA[>=]]>
+				#{tob1,jdbcType=DOUBLE}
+			</if>
+			<if test="tob2!=null">
+				and TOB <![CDATA[<=]]>
+				#{tob2,jdbcType=DOUBLE}
+			</if>
+			<if test="tmp1!=null">
+				and TMP <![CDATA[>=]]>
+				#{tmp1,jdbcType=DOUBLE}
+			</if>
+			<if test="tmp2!=null">
+				and TMP <![CDATA[<=]]>
+				#{tmp2,jdbcType=DOUBLE}
+			</if>
+			<if test="sxt1!=null">
+				and SXT <![CDATA[>=]]>
+				#{sxt1,jdbcType=DOUBLE}
+			</if>
+			<if test="sxt2!=null">
+				and SXT <![CDATA[<=]]>
+				#{sxt2,jdbcType=DOUBLE}
+			</if>
+			<if test="van1!=null">
+				and VAN <![CDATA[>=]]>
+				#{van1,jdbcType=DOUBLE}
+			</if>
+			<if test="van2!=null">
+				and VAN <![CDATA[<=]]>
+				#{van2,jdbcType=DOUBLE}
+			</if>
+			<if test="oqx1!=null">
+				and OQX <![CDATA[>=]]>
+				#{oqx1,jdbcType=DOUBLE}
+			</if>
+			<if test="oqx2!=null">
+				and OQX <![CDATA[<=]]>
+				#{oqx2,jdbcType=DOUBLE}
+			</if>
+		</where>
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+			order by ${order}
+			<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+				${sort}
+			</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete from strainmic
+		where strainNo in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="strainno">
+			#{strainno,jdbcType=VARCHAR}
+		</foreach>
+		 and gramStain = #{gramstain,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.StrainMic">
+		insert into strainmic (strainNo, AMK, AMP,
+		APR, AZM, CFZ, FEP,
+		CTX, FOX,
+		CAZ, CRO,
+		CQM, CHL, CIP, TIA,
+		CLI, CL, DOX, VAL,
+		ERY, FFC, FOS, GEN,
+		IMP,
+		LEV, LZD, MEM,
+		MIN, NAL, NEO, NET,
+		NIT, NOR, OFX, OXA,
+		PEN, PIP, TZP,
+		RIF,
+		STR, TEC, TET, TOB,
+		TMP, SXT, VAN, OQX,
+		operator, micdetectionType,
+		remark,
+		addTime, addUser, gramStain
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="strainno != null">
+				#{strainno,jdbcType=VARCHAR},
+			</if>
+			<choose>
+				<when test="amk != null">
+					#{amk,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="amp != null">
+					#{amp,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="apr != null">
+					#{apr,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="azm != null">
+					#{azm,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="cfz != null">
+					#{cfz,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="fep != null">
+					#{fep,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="ctx != null">
+					#{ctx,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="fox != null">
+					#{fox,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="caz != null">
+					#{caz,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="cro != null">
+					#{cro,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="cqm != null">
+					#{cqm,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="chl != null">
+					#{chl,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="cip != null">
+					#{cip,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="tia != null">
+					#{tia,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="cli != null">
+					#{cli,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="cl != null">
+					#{cl,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="dox != null">
+					#{dox,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="val != null">
+					#{val,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="ery != null">
+					#{ery,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="ffc != null">
+					#{ffc,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="fos != null">
+					#{fos,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="gen != null">
+					#{gen,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="imp != null">
+					#{imp,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="lev != null">
+					#{lev,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="lzd != null">
+					#{lzd,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="mem != null">
+					#{mem,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="min != null">
+					#{min,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="nal != null">
+					#{nal,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="neo != null">
+					#{neo,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="net != null">
+					#{net,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="nit != null">
+					#{nit,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="nor != null">
+					#{nor,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="ofx != null">
+					#{ofx,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="oxa != null">
+					#{oxa,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="pen != null">
+					#{pen,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="pip != null">
+					#{pip,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="tzp != null">
+					#{tzp,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="rif != null">
+					#{rif,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="str != null">
+					#{str,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="tec != null">
+					#{tec,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="tet != null">
+					#{tet,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="tob != null">
+					#{tob,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="tmp != null">
+					#{tmp,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="sxt != null">
+					#{sxt,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="van != null">
+					#{van,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="oqx != null">
+					#{oqx,jdbcType=DOUBLE},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="operator != null">
+					#{operator,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="micdetectiontype != null">
+					#{micdetectiontype,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="remark != null">
+					#{micdetectiontype,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="addtime != null">
+					#{addtime,jdbcType=TIMESTAMP},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="adduser != null">
+					#{micdetectiontype,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			'',
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.StrainMic">
+		update strainmic
+		<set>
+			<if test="amk != null">
+				AMK = #{amk,jdbcType=DOUBLE},
+			</if>
+			<if test="amp != null">
+				AMP = #{amp,jdbcType=DOUBLE},
+			</if>
+			<if test="apr != null">
+				APR = #{apr,jdbcType=DOUBLE},
+			</if>
+			<if test="azm != null">
+				AZM = #{azm,jdbcType=DOUBLE},
+			</if>
+			<if test="cfz != null">
+				CFZ = #{cfz,jdbcType=DOUBLE},
+			</if>
+			<if test="fep != null">
+				FEP = #{fep,jdbcType=DOUBLE},
+			</if>
+			<if test="ctx != null">
+				CTX = #{ctx,jdbcType=DOUBLE},
+			</if>
+			<if test="fox != null">
+				FOX = #{fox,jdbcType=DOUBLE},
+			</if>
+			<if test="caz != null">
+				CAZ = #{caz,jdbcType=DOUBLE},
+			</if>
+			<if test="cro != null">
+				CRO = #{cro,jdbcType=DOUBLE},
+			</if>
+			<if test="cqm != null">
+				CQM = #{cqm,jdbcType=DOUBLE},
+			</if>
+			<if test="chl != null">
+				CHL = #{chl,jdbcType=DOUBLE},
+			</if>
+			<if test="cip != null">
+				CIP = #{cip,jdbcType=DOUBLE},
+			</if>
+			<if test="tia != null">
+				TIA = #{tia,jdbcType=DOUBLE},
+			</if>
+			<if test="cli != null">
+				CLI = #{cli,jdbcType=DOUBLE},
+			</if>
+			<if test="cl != null">
+				CL = #{cl,jdbcType=DOUBLE},
+			</if>
+			<if test="dox != null">
+				DOX = #{dox,jdbcType=DOUBLE},
+			</if>
+			<if test="val != null">
+				VAL = #{val,jdbcType=DOUBLE},
+			</if>
+			<if test="ery != null">
+				ERY = #{ery,jdbcType=DOUBLE},
+			</if>
+			<if test="ffc != null">
+				FFC = #{ffc,jdbcType=DOUBLE},
+			</if>
+			<if test="fos != null">
+				FOS = #{fos,jdbcType=DOUBLE},
+			</if>
+			<if test="gen != null">
+				GEN = #{gen,jdbcType=DOUBLE},
+			</if>
+			<if test="imp != null">
+				IMP = #{imp,jdbcType=DOUBLE},
+			</if>
+			<if test="lev != null">
+				LEV = #{lev,jdbcType=DOUBLE},
+			</if>
+			<if test="lzd != null">
+				LZD = #{lzd,jdbcType=DOUBLE},
+			</if>
+			<if test="mem != null">
+				MEM = #{mem,jdbcType=DOUBLE},
+			</if>
+			<if test="min != null">
+				MIN = #{min,jdbcType=DOUBLE},
+			</if>
+			<if test="nal != null">
+				NAL = #{nal,jdbcType=DOUBLE},
+			</if>
+			<if test="neo != null">
+				NEO = #{neo,jdbcType=DOUBLE},
+			</if>
+			<if test="net != null">
+				NET = #{net,jdbcType=DOUBLE},
+			</if>
+			<if test="nit != null">
+				NIT = #{nit,jdbcType=DOUBLE},
+			</if>
+			<if test="nor != null">
+				NOR = #{nor,jdbcType=DOUBLE},
+			</if>
+			<if test="ofx != null">
+				OFX = #{ofx,jdbcType=DOUBLE},
+			</if>
+			<if test="oxa != null">
+				OXA = #{oxa,jdbcType=DOUBLE},
+			</if>
+			<if test="pen != null">
+				PEN = #{pen,jdbcType=DOUBLE},
+			</if>
+			<if test="pip != null">
+				PIP = #{pip,jdbcType=DOUBLE},
+			</if>
+			<if test="tzp != null">
+				TZP = #{tzp,jdbcType=DOUBLE},
+			</if>
+			<if test="rif != null">
+				RIF = #{rif,jdbcType=DOUBLE},
+			</if>
+			<if test="str != null">
+				STR = #{str,jdbcType=DOUBLE},
+			</if>
+			<if test="tec != null">
+				TEC = #{tec,jdbcType=DOUBLE},
+			</if>
+			<if test="tet != null">
+				TET = #{tet,jdbcType=DOUBLE},
+			</if>
+			<if test="tob != null">
+				TOB = #{tob,jdbcType=DOUBLE},
+			</if>
+			<if test="tmp != null">
+				TMP = #{tmp,jdbcType=DOUBLE},
+			</if>
+			<if test="sxt != null">
+				SXT = #{sxt,jdbcType=DOUBLE},
+			</if>
+			<if test="van != null">
+				VAN = #{van,jdbcType=DOUBLE},
+			</if>
+			<if test="oqx != null">
+				OQX = #{oqx,jdbcType=DOUBLE},
+			</if>
+			<if test="operator != null">
+				operator = #{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="micdetectiontype != null">
+				micdetectionType = #{micdetectiontype,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where strainNo = #{strainno,jdbcType=VARCHAR} and gramStain = #{gramstain,jdbcType=VARCHAR}
+	</update>
+</mapper>

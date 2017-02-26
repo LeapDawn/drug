@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.StrainCharacterDAO">
+	<resultMap id="StrainCharacter" type="drug.model.StrainCharacter">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="strainNo" jdbcType="VARCHAR" property="strainno" />
+		<result column="genName" jdbcType="VARCHAR" property="genname" />
+		<result column="ISeq" jdbcType="VARCHAR" property="iseq" />
+		<result column="genTC" jdbcType="VARCHAR" property="gentc" />
+		<result column="Replicon" jdbcType="VARCHAR" property="replicon" />
+		<result column="genAlias" jdbcType="VARCHAR" property="genalias" />
+		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="addUser" jdbcType="VARCHAR" property="adduser" />
+		<result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+		<result column="genRemarks" jdbcType="VARCHAR" property="genremarks" />
+	</resultMap>
+	<sql id="column">
+		id, strainNo, genName, ISeq, genTC, Replicon, genAlias,
+		operator,
+		addUser, addTime,
+		genRemarks
+	</sql>
+	
+	<select id="selectByIds" parameterType="java.lang.Integer"
+		resultMap="StrainCharacter">
+		select
+		<include refid="column" />
+		from straincharacter
+		where id in
+		<foreach collection="array" open="(" close=")" separator="," item="no">
+			#{no}
+		</foreach>
+	</select>
+	
+	<select id="count" parameterType="drug.dto.listModel.LStrainCharacter"
+		resultType="java.lang.Integer">
+		select
+		count(strainNo)
+		from straincharacter
+		<where>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo like '%' #{strainno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genname != null and !&quot;&quot;.equals(genname.trim())">
+				and genName like '%' #{genname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="iseq != null and !&quot;&quot;.equals(iseq.trim())">
+				and ISeq like '%' #{iseq,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="gentc != null and !&quot;&quot;.equals(gentc.trim())">
+				and genTC like '%' #{gentc,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="replicon != null and !&quot;&quot;.equals(replicon.trim())">
+				and Replicon like '%' #{replicon,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genalias != null and !&quot;&quot;.equals(genalias.trim())">
+				and genAlias like '%' #{genalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				and operator like '%' #{operator,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectList" parameterType="drug.dto.listModel.LStrainCharacter"
+		resultMap="StrainCharacter">
+		select
+		<include refid="column" />
+		from straincharacter
+		<where>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo like '%' #{strainno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genname != null and !&quot;&quot;.equals(genname.trim())">
+				and genName like '%' #{genname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="iseq != null and !&quot;&quot;.equals(iseq.trim())">
+				and ISeq like '%' #{iseq,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="gentc != null and !&quot;&quot;.equals(gentc.trim())">
+				and genTC like '%' #{gentc,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="replicon != null and !&quot;&quot;.equals(replicon.trim())">
+				and Replicon like '%' #{replicon,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genalias != null and !&quot;&quot;.equals(genalias.trim())">
+				and genAlias like '%' #{genalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				and operator like '%' #{operator,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+			order by ${order} 
+			<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+				${sort}
+			</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from straincharacter
+		where id in
+		<foreach collection="array" open="(" close=")" separator=","
+			item="id">
+			#{id,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.StrainCharacter">
+		insert into straincharacter
+		(strainNo, genName,
+		ISeq, genTC, Replicon,operator, addUser,
+		addTime, genRemarks)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				#{strainno,jdbcType=VARCHAR},
+			</if>
+			<if test="genname != null and !&quot;&quot;.equals(genname.trim())">
+				#{genname,jdbcType=VARCHAR},
+			</if>
+			<choose>
+				<when test="iseq != null">
+					#{iseq,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="gentc != null">
+					#{gentc,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="replicon != null">
+					#{replicon,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="operator != null">
+					#{operator,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="adduser != null">
+					#{adduser,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="addtime != null">
+					#{addtime,jdbcType=TIMESTAMP},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="genremarks != null">
+					#{genremarks,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.StrainCharacter">
+		update straincharacter
+		<set>
+			<if test="genname != null">
+				genName = #{genname,jdbcType=VARCHAR},
+			</if>
+			<if test="iseq != null">
+				ISeq = #{iseq,jdbcType=VARCHAR},
+			</if>
+			<if test="gentc != null">
+				genTC = #{gentc,jdbcType=VARCHAR},
+			</if>
+			<if test="replicon != null">
+				Replicon = #{replicon,jdbcType=VARCHAR},
+			</if>
+			<if test="operator != null">
+				operator = #{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="genremarks != null">
+				genRemarks = #{genremarks,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="drug.model.StrainCharacter">
+		update
+		straincharacter
+		set strainNo = #{strainno,jdbcType=VARCHAR},
+		genName =
+		#{genname,jdbcType=VARCHAR},
+		ISeq = #{iseq,jdbcType=VARCHAR},
+		genTC =
+		#{gentc,jdbcType=VARCHAR},
+		Replicon = #{replicon,jdbcType=VARCHAR},
+		genAlias = #{genalias,jdbcType=VARCHAR},
+		operator =
+		#{operator,jdbcType=VARCHAR},
+		addUser = #{adduser,jdbcType=VARCHAR},
+		addTime = #{addtime,jdbcType=TIMESTAMP},
+		genRemarks =
+		#{genremarks,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.CollectionPartDAO">
+	<resultMap id="Part" type="drug.model.CollectionPart">
+		<id column="partNo" jdbcType="VARCHAR" property="partno" />
+		<result column="partName" jdbcType="VARCHAR" property="partname" />
+		<result column="others1" jdbcType="VARCHAR" property="others1" />
+		<result column="others2" jdbcType="VARCHAR" property="others2" />
+		<result column="partRemarks" jdbcType="VARCHAR" property="partremarks" />
+	</resultMap>
+	<sql id="column">
+		partNo, partName, others1, others2, partRemarks
+	</sql>
+	<sql id="main_column">
+		partNo, partName
+	</sql>
+	
+	<select id="select" parameterType="drug.dto.pageModel.PPart"
+		resultMap="Part">
+		select
+		<include refid="column" />
+		from collectionpart
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	
+	<select id="selectAll" resultMap="Part">
+		select
+		<include refid="main_column" />
+		from collectionpart
+	</select>
+	
+	<select id="count" resultType="java.lang.Integer">
+		select count(partNo) from collectionpart
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		delete from collectionpart where partNo in 
+		<foreach collection="array" open="(" close=")" item="partno" separator=",">
+			#{partno,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	
+	<insert id="insert" parameterType="drug.model.CollectionPart">
+		insert into collectionpart
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="partno != null">
+				partNo,
+			</if>
+			<if test="partname != null">
+				partName,
+			</if>
+			<if test="others1 != null">
+				others1,
+			</if>
+			<if test="others2 != null">
+				others2,
+			</if>
+			<if test="partremarks != null">
+				partRemarks,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="partno != null and !&quot;&quot;.equals(partno.trim())">
+				#{partno,jdbcType=VARCHAR},
+			</if>
+			<if test="partname != null and !&quot;&quot;.equals(partname.trim())">
+				#{partname,jdbcType=VARCHAR},
+			</if>
+			<if test="others1 != null">
+				#{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				#{others2,jdbcType=VARCHAR},
+			</if>
+			<if test="partremarks != null">
+				#{partremarks,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.CollectionPart">
+		update collectionpart
+		<set>
+			<choose>
+				<when test="partremarks != null">
+					partRemarks = #{partremarks,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					partRemarks = '',
+				</otherwise>
+			</choose>
+			<if test="others1 != null">
+				others1 = #{others1,jdbcType=VARCHAR},
+			</if>
+			<if test="others2 != null">
+				others2 = #{others2,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where partNo = #{partno,jdbcType=VARCHAR}
+	</update>
+</mapper>

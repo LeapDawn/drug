@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.FarmsDAO">
+	<resultMap id="Farms" type="drug.model.Farms">
+		<id column="farmName" jdbcType="VARCHAR" property="farmname" />
+		<result column="farmAddress" jdbcType="VARCHAR" property="farmaddress" />
+		<result column="farmPhone" jdbcType="VARCHAR" property="farmphone" />
+		<result column="farmLinkman" jdbcType="VARCHAR" property="farmlinkman" />
+		<result column="farmRaiseWay" jdbcType="VARCHAR" property="farmraiseway" />
+		<result column="farmRaiseScope" jdbcType="VARCHAR" property="farmraisescope" />
+		<result column="farmRaiseType" jdbcType="VARCHAR" property="farmraisetype" />
+		<result column="farmBuildDate" jdbcType="VARCHAR" property="farmbuilddate" />
+		<result column="farmRemarks" jdbcType="VARCHAR" property="farmremarks" />
+		<result column="farmProvince" jdbcType="VARCHAR" property="farmprovince" />
+		<result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+		<result column="addUser" jdbcType="VARCHAR" property="adduser" />
+	</resultMap>
+	<sql id="column">
+		farmName, farmAddress, farmPhone, farmLinkman,
+		farmRaiseWay, farmRaiseScope,
+		farmRaiseType,
+		farmBuildDate, farmRemarks,
+		farmProvince, addTime, addUser
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete from farms
+		where farmName in
+		<foreach collection="array" open="(" close=")" item="farm"
+			separator=",">
+			#{farm}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.Farms">
+		insert into farms(
+			<include refid="column"></include>
+		)
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<choose>
+				<when test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+					#{farmname,jdbcType=VARCHAR},
+				</when>
+			</choose>
+			<choose>
+				<when test="farmaddress != null">
+					#{farmaddress,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmphone != null">
+					#{farmphone,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmlinkman != null">
+					#{farmlinkman,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmraiseway != null">
+					#{farmraiseway,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmraisescope != null">
+					#{farmraisescope,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmraisetype != null">
+					#{farmraisetype,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmbuilddate != null">
+					#{farmbuilddate,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmremarks != null">
+					#{farmremarks,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="farmprovince != null">
+					#{farmprovince,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					'',
+				</otherwise>
+			</choose>
+			<if test="addtime != null">
+				#{addtime,jdbcType=TIMESTAMP},
+			</if>
+			<choose>
+				<when test="adduser != null">
+					#{adduser,jdbcType=VARCHAR},
+				</when>
+				<otherwise>
+					null,
+				</otherwise>
+			</choose>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.Farms">
+		update farms
+		<set>
+			<if test="farmaddress != null">
+				farmAddress = #{farmaddress,jdbcType=VARCHAR},
+			</if>
+			<if test="farmphone != null">
+				farmPhone = #{farmphone,jdbcType=VARCHAR},
+			</if>
+			<if test="farmlinkman != null">
+				farmLinkman = #{farmlinkman,jdbcType=VARCHAR},
+			</if>
+			<if test="farmraiseway != null">
+				farmRaiseWay = #{farmraiseway,jdbcType=VARCHAR},
+			</if>
+			<if test="farmraisescope != null">
+				farmRaiseScope = #{farmraisescope,jdbcType=VARCHAR},
+			</if>
+			<if test="farmraisetype != null">
+				farmRaiseType = #{farmraisetype,jdbcType=VARCHAR},
+			</if>
+			<if test="farmbuilddate != null">
+				farmBuildDate = #{farmbuilddate,jdbcType=VARCHAR},
+			</if>
+			<if test="farmremarks != null">
+				farmRemarks = #{farmremarks,jdbcType=VARCHAR},
+			</if>
+			<if test="farmprovince != null and !&quot;&quot;.equals(farmprovince.trim())">
+				farmProvince = #{farmprovince,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where farmName like #{farmname,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectList" parameterType="drug.dto.listModel.LFarms" resultMap="Farms">
+		select
+		<include refid="column" />
+		from farms
+		<where>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmname like '%' #{farmname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmaddress != null and !&quot;&quot;.equals(farmaddress.trim())">
+				and farmAddress like '%' #{farmaddress,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmlinkman != null and !&quot;&quot;.equals(farmlinkman.trim())">
+				and farmLinkman like '%' #{farmlinkman,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmraisetype != null and !&quot;&quot;.equals(farmraisetype.trim())">
+				and farmRaiseType like '%' #{farmraisetype,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmphone != null and !&quot;&quot;.equals(farmphone.trim())">
+				and farmPhone like '%' #{farmphone,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmprovince != null and !&quot;&quot;.equals(farmprovince.trim())">
+				and farmProvince like '%' #{farmprovince,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+				order by ${order} 
+				<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+					${sort}
+				</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+
+	<select id="count" parameterType="drug.dto.listModel.LFarms" resultType="java.lang.Integer">
+		select count(farmName) from farms
+		<where>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%' #{farmname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmaddress != null and !&quot;&quot;.equals(farmaddress.trim())">
+				and farmAddress like '%' #{farmaddress,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmlinkman != null and !&quot;&quot;.equals(farmlinkman.trim())">
+				and farmLinkman like '%' #{farmlinkman,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmraisetype != null and !&quot;&quot;.equals(farmraisetype.trim())">
+				and farmRaiseType like '%' #{farmraisetype,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmphone != null and !&quot;&quot;.equals(farmphone.trim())">
+				and farmPhone like '%' #{farmphone,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmprovince != null and !&quot;&quot;.equals(farmprovince.trim())">
+				and farmProvince like '%' #{farmprovince,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+	</select>
+
+	<select id="selectAll" parameterType="java.lang.String" resultType="java.lang.String">
+		select farmName from farms
+		<where>
+			<if test="_parameter != null and !&quot;&quot;.equals(_parameter.trim())">
+				and farmProvince like '%' #{province,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectByNames" parameterType="java.lang.String" resultMap="Farms">
+		select 
+		<include refid="column"/>
+		from farms
+		where farmName in
+		<foreach collection="array" open="(" close=")" item="farm"
+			separator=",">
+			#{farm}
+		</foreach>
+	</select>
+</mapper>

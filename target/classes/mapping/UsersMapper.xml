@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.UsersDAO">
+  <resultMap id="Users" type="drug.model.Users">
+    <id column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="roleName" jdbcType="VARCHAR" property="roleName"/>
+  </resultMap>
+  <sql id="column">
+	username,password,remark,role,roleName
+  </sql>
+  
+  <sql id="main_column">
+  	username,password,role
+  </sql>
+  
+  <select id="selectList" parameterType="drug.dto.pageModel.PUsers" resultMap="Users">
+    select 
+    username,u.remark,role,roleName
+    from users u left join role on role = roleNo
+    <if test="page != null and rows != null">
+			limit #{page},#{rows};
+	</if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Integer">
+  	select count(*) from users
+  </select>
+  
+  <select id="selectOne" parameterType="java.lang.String" resultMap="Users">
+    select 
+    <include refid="main_column"/>
+    from users
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String">
+    delete from users
+    where username = #{username,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="drug.model.Users">
+    insert into users
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null and !&quot;&quot;.equals(username.trim())">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null and !&quot;&quot;.equals(password.trim())">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <choose>
+      	<when test="remark != null and !&quot;&quot;.equals(remark.trim())">
+      		#{remark,jdbcType=VARCHAR},
+      	</when>
+      	<otherwise>
+      		'',
+      	</otherwise>
+      </choose>
+      <choose>
+      	<when test="role != null and !&quot;&quot;.equals(role.trim())">
+      		#{role,jdbcType=VARCHAR},
+      	</when>
+      	<otherwise>
+      		null,
+      	</otherwise>
+      </choose>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="drug.model.Users">
+    update users
+    <set>
+      <if test="password != null and !&quot;&quot;.equals(password.trim())">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null and !&quot;&quot;.equals(role.trim())">
+        role = #{role,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+</mapper>

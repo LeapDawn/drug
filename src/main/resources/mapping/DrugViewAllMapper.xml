@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.DrugViewAllDAO">
+	<resultMap id="DrugViewAll" type="drug.model.DrugViewAll">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="sampleNo" jdbcType="VARCHAR" property="sampleno" />
+		<result column="strainNo" jdbcType="VARCHAR" property="strainno" />
+		<result column="strainAlias" jdbcType="VARCHAR" property="strainalias" />
+		<result column="sampleDate" jdbcType="DATE" property="sampledate" />
+		<result column="sampleProvince" jdbcType="VARCHAR" property="sampleprovince" />
+		<result column="farmName" jdbcType="VARCHAR" property="farmname" />
+		<result column="sampleFarmAddr" jdbcType="VARCHAR" property="samplefarmaddr" />
+		<result column="animalNo" jdbcType="INTEGER" property="animalno" />
+		<result column="animalName" jdbcType="VARCHAR" property="animalname" />
+		<result column="sampleCollectionPartNo" jdbcType="VARCHAR"
+			property="samplecollectionpartno" />
+		<result column="sampleCollectionPart" jdbcType="VARCHAR"
+			property="samplecollectionpart" />
+		<result column="sampleAnimalAge" jdbcType="VARCHAR" property="sampleanimalage" />
+		<result column="sampleSource" jdbcType="VARCHAR" property="samplesource" />
+		<result column="sampleCollector" jdbcType="VARCHAR" property="samplecollector" />
+		<result column="sampleMedicalHistory" jdbcType="VARCHAR"
+			property="samplemedicalhistory" />
+		<result column="sampleRemarks" jdbcType="VARCHAR" property="sampleremarks" />
+		<result column="strainCategory" jdbcType="VARCHAR" property="straincategory" />
+		<result column="strainType" jdbcType="VARCHAR" property="straintype" />
+		<result column="strainStorageDate" jdbcType="DATE" property="strainstoragedate" />
+		<result column="serotype" jdbcType="VARCHAR" property="serotype" />
+		<result column="strainMLST" jdbcType="VARCHAR" property="strainmlst" />
+		<result column="strainPLG" jdbcType="VARCHAR" property="strainplg" />
+		<result column="strainOperator" jdbcType="VARCHAR" property="strainoperator" />
+		<result column="strainParter" jdbcType="VARCHAR" property="strainparter" />
+		<result column="strainRemarks" jdbcType="VARCHAR" property="strainremarks" />
+	</resultMap>
+	<sql id="where">
+		<where>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and sampleNo like '%' #{sampleno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and strainStorageDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and strainStorageDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+			<if test="province != null and province.length &gt;0">
+				and sampleProvince in
+				<foreach collection="province" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%' #{farmname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="farmaddr != null and !&quot;&quot;.equals(farmaddr.trim())">
+				and sampleFarmAddr like '%' #{farmaddr,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if test="category != null and category.length &gt;0">
+				and strainCategory in
+				<foreach collection="category" open="(" close=")" separator=","
+					item="item">
+					#{item,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="animalName != null and animalName.length &gt;0">
+				and animalName in
+				<foreach collection="animalName" open="(" close=")" separator=","
+					item="name">
+					#{name,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="partName != null and partName.length &gt;0">
+				and sampleCollectionPart in
+				<foreach collection="partName" open="(" close=")" separator=","
+					item="name">
+					#{name,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="source != null and source.length &gt;0">
+				and sampleSource in
+				<foreach collection="source" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="animalAge != null and !&quot;&quot;.equals(animalAge.trim())">
+				and sampleAnimalAge like '%'
+				#{animalAge,jdbcType=VARCHAR} '%'
+			</if>
+		</where>
+	</sql>
+	
+	
+	
+	<select id="strainCheckPro" parameterType="drug.dto.analysisModel.ADrugViewAll"
+		 statementType="CALLABLE" resultType="java.util.Map">
+		call strainCheckPro2(
+			#{strain, jdbcType=VARCHAR},
+			"<where>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and sampleNo like '%${sampleno}%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and strainStorageDate <![CDATA[>=]]>
+				'${beginDate}'
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and strainStorageDate <![CDATA[<=]]>
+				'${endDate}'
+			</if>
+			<if test="province != null and province.length &gt;0">
+				and sampleProvince in
+				<foreach collection="province" open="(" close=")" separator=","
+					item="no">
+					'${no}'
+				</foreach>
+			</if>
+			<if test="farmname != null and !&quot;&quot;.equals(farmname.trim())">
+				and farmName like '%${farmname}%'
+			</if>
+			<if test="farmaddr != null and !&quot;&quot;.equals(farmaddr.trim())">
+				and sampleFarmAddr like '%${farmaddr}%'
+			</if>
+			<if test="category != null and category.length &gt;0">
+				and strainCategory in
+				<foreach collection="category" open="(" close=")" separator=","
+					item="item">
+					'${item}'
+				</foreach>
+			</if>
+			<if test="animalName != null and animalName.length &gt;0">
+				and animalName in
+				<foreach collection="animalName" open="(" close=")" separator=","
+					item="name">
+					'${name}'
+				</foreach>
+			</if>
+			<if test="partName != null and partName.length &gt;0">
+				and sampleCollectionPart in
+				<foreach collection="partName" open="(" close=")" separator=","
+					item="name">
+					'${name}'
+				</foreach>
+			</if>
+			<if test="source != null and source.length &gt;0">
+				and sampleSource in
+				<foreach collection="source" open="(" close=")" separator=","
+					item="no">
+					'${no}'
+				</foreach>
+			</if>
+			<if test="animalAge != null and !&quot;&quot;.equals(animalAge.trim())">
+				and sampleAnimalAge like '%${animalAge}%'
+			</if>
+		</where>",
+			#{timeWay, jdbcType=VARCHAR},
+			#{statisticsType, jdbcType=VARCHAR}
+		)
+	</select>
+	
+	<select id="selectList" parameterType="drug.dto.listModel.LDrugViewAll"
+		resultMap="DrugViewAll">
+		select id, sampleNo, strainNo, strainAlias, sampleDate,
+			sampleProvince, farmName, sampleFarmAddr, animalNo,
+			animalName, sampleCollectionPartNo, sampleCollectionPart,
+			sampleAnimalAge, sampleSource, sampleCollector, sampleMedicalHistory,
+			sampleRemarks, strainCategory, strainType, strainStorageDate,
+			serotype, strainMLST, strainPLG, strainOperator, strainParter,
+			strainRemarks from drugviewall
+		<include refid="where"/>
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+				order by ${order} 
+				<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+					${sort}
+				</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	<select id="count" parameterType="drug.dto.listModel.LDrugViewAll"
+		resultType="java.lang.Integer">
+		select count(id) from drugviewall
+		<include refid="where"/>
+	</select>
+	
+	<select id="selectById" parameterType="java.lang.String"
+		resultMap="DrugViewAll">
+		select id, sampleNo, strainNo, strainAlias, sampleDate,
+			sampleProvince, farmName, sampleFarmAddr, animalNo,
+			animalName, sampleCollectionPartNo, sampleCollectionPart,
+			sampleAnimalAge, sampleSource, sampleCollector, sampleMedicalHistory,
+			sampleRemarks, strainCategory, strainType, strainStorageDate,
+			serotype, strainMLST, strainPLG, strainOperator, strainParter,
+			strainRemarks from drugviewall
+			where id in
+			<foreach collection="array" open="(" close=")" separator="," item="id">
+				#{id}
+			</foreach>
+	</select>
+</mapper>

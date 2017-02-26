@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.StrainCodingDAO">
+	<resultMap id="StrainCoding" type="drug.model.StrainCoding">
+		<id column="strainNo" jdbcType="VARCHAR" property="strainno" />
+		<result column="sampleNo" jdbcType="VARCHAR" property="sampleno" />
+		<result column="strainCategory" jdbcType="VARCHAR" property="straincategory" />
+		<result column="strainType" jdbcType="VARCHAR" property="straintype" />
+		<result column="strainAlias" jdbcType="VARCHAR" property="strainalias" />
+		<result column="strainStorageDate" jdbcType="DATE" property="strainstoragedate" />
+		<result column="operator" jdbcType="VARCHAR" property="operator" />
+		<result column="serotype" jdbcType="VARCHAR" property="serotype" />
+		<result column="strainMLST" jdbcType="VARCHAR" property="strainmlst" />
+		<result column="strainPLG" jdbcType="VARCHAR" property="strainplg" />
+		<result column="strainParter" jdbcType="VARCHAR" property="strainparter" />
+		<result column="strainRemarks" jdbcType="VARCHAR" property="strainremarks" />
+		<result column="gramStain" jdbcType="VARCHAR" property="gramstain" />
+		<result column="addTime" jdbcType="TIMESTAMP" property="addtime" />
+		<result column="addUser" jdbcType="VARCHAR" property="adduser" />
+		<result column="farmName" jdbcType="VARCHAR" property="farmName" />
+		<result column="sampleFarmAddr" jdbcType="VARCHAR" property="samplefarmaddr" />
+		<result column="sampleAnimalAge" jdbcType="VARCHAR" property="sampleanimalage" />
+		<result column="sampleSource" jdbcType="VARCHAR" property="samplesource" />
+		<result column="partName" jdbcType="VARCHAR" property="partName" />
+		<result column="sampleCollector" jdbcType="VARCHAR" property="samplecollector" />
+		<result column="sampleMedicalHistory" jdbcType="VARCHAR"
+			property="samplemedicalhistory" />
+
+
+	</resultMap>
+	<sql id="column">
+		strainNo, sampleNo, strainCategory, strainType,
+		strainAlias, strainStorageDate,
+		operator,
+		serotype, strainMLST,
+		strainPLG, strainParter, strainRemarks, gramStain,
+		addTime,
+		addUser
+	</sql>
+
+	<select id="selectByNos" parameterType="java.lang.String"
+		resultMap="StrainCoding">
+		select st.strainNo, st.sampleNo, st.strainCategory, st.strainType,
+		st.strainAlias, st.strainStorageDate,
+		st.operator,
+		st.serotype, st.strainMLST,
+		st.strainPLG, st.strainParter, st.strainRemarks, st.gramStain,
+		sam.farmName,sam.sampleFarmAddr,sam.sampleAnimalAge,sam.sampleSource,
+		sam.sampleCollector,sam.sampleMedicalHistory,c.partName
+		from straincoding st
+		left join sample sam on sam.sampleNo = st.sampleNo
+		left join collectionpart c on sam.sampleCollectionPart = c.partNo
+		where st.strainNo in
+		<foreach collection="array" open="(" close=")" separator="," item="no">
+			#{no}
+		</foreach>
+	</select>
+
+	<select id="count" parameterType="drug.dto.listModel.LStrainCoding"
+		resultType="java.lang.Integer">
+		select count(strainNo) from straincoding
+		<where>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo like '%' #{strainno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and sampleNo like '%' #{sampleno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="straincategory != null and straincategory.length &gt;0">
+				and strainCategory in
+				<foreach collection="straincategory" open="(" close=")"
+					separator="," item="item">
+					#{item,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="straintype != null and straintype.length &gt;0">
+				and strainType in
+				<foreach collection="straintype" open="(" close=")"
+					separator="," item="item">
+					#{item,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				and strainAlias like '%' #{strainalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				and operator like '%' #{operator,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="serotype != null and !&quot;&quot;.equals(serotype.trim())">
+				and serotype like '%' #{serotype,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainmlst != null and !&quot;&quot;.equals(strainmlst.trim())">
+				and strainMLST like '%' #{strainmlst,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainplg != null and !&quot;&quot;.equals(strainplg.trim())">
+				and strainPLG like '%' #{strainplg,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainparter != null and !&quot;&quot;.equals(strainparter.trim())">
+				and strainParter like '%' #{strainparter,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and strainStorageDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and strainStorageDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectList" parameterType="drug.dto.listModel.LStrainCoding"
+		resultMap="StrainCoding">
+		select st.strainNo, st.sampleNo, st.strainCategory, st.strainType,
+		st.strainAlias, st.strainStorageDate,
+		st.operator,
+		st.serotype, st.strainMLST,
+		st.strainPLG, st.strainParter, st.strainRemarks, st.gramStain,
+		sam.farmName,sam.sampleFarmAddr,sam.sampleAnimalAge,sam.sampleSource,
+		sam.sampleCollector,sam.sampleMedicalHistory,c.partName
+		from straincoding st
+		left join sample sam on sam.sampleNo = st.sampleNo
+		left join collectionpart c on sam.sampleCollectionPart = c.partNo
+		<where>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and st.strainNo like '%' #{strainno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and st.sampleNo like '%' #{sampleno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="straincategory != null and straincategory.length &gt;0">
+				and st.strainCategory in
+				<foreach collection="straincategory" open="(" close=")"
+					separator="," item="item">
+					#{item,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="straintype != null and straintype.length &gt;0">
+				and st.strainType in
+				<foreach collection="straintype" open="(" close=")"
+					separator="," item="item">
+					#{item,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				and st.strainAlias like '%' #{strainalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				and st.operator like '%' #{operator,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="serotype != null and !&quot;&quot;.equals(serotype.trim())">
+				and st.serotype like '%' #{serotype,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainmlst != null and !&quot;&quot;.equals(strainmlst.trim())">
+				and st.strainMLST like '%' #{strainmlst,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainplg != null and !&quot;&quot;.equals(strainplg.trim())">
+				and st.strainPLG like '%' #{strainplg,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="strainparter != null and !&quot;&quot;.equals(strainparter.trim())">
+				and st.strainParter like '%' #{strainparter,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and st.strainStorageDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and st.strainStorageDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+		</where>
+		<if test="order != null and !&quot;&quot;.equals(order.trim())">
+			order by ${order}
+			<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+				${sort}
+			</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	
+	<select id="select" parameterType="java.lang.String" resultMap="StrainCoding">
+		select <include refid="column"/> from straincoding s 
+		where strainNo like #{no}
+	</select>
+
+	<select id="selectStrainNoByAliasOrNo" parameterType="java.lang.String" resultType="java.lang.String">
+		select s.strainNo from straincoding s 
+		where strainNo like #{no}
+		<if test="alias != null and !&quot;&quot;.equals(alias.trim())">
+			or strainAlias like #{alias,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<select id="selectStrainNoByAliasAndNo" parameterType="java.lang.String" resultType="java.lang.String">
+		select s.strainNo from straincoding s 
+		where strainNo not like #{no}
+			and strainAlias like #{alias,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectNoInMic" parameterType="java.lang.String" resultType="java.lang.String">
+		select s.strainNo from straincoding s 
+		where strainNo not in 
+		(select distinct sm.strainNo from strainmic sm)
+		<if test="gram != null and !&quot;&quot;.equals(gram.trim())">
+			and gramStain like #{gram,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="selectNoInCharacter" resultType="java.lang.String">
+		select s.strainNo from straincoding s 
+		where strainNo not in 
+		(select distinct sc.strainNo from straincharacter sc)
+	</select>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete from
+		straincoding
+		where strainNo in
+		<foreach collection="array" open="(" close=")" item="strainno"
+			separator=",">
+			#{strainno,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="drug.model.StrainCoding">
+		insert into straincoding
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="strainno != null">
+				strainNo,
+			</if>
+			<if test="sampleno != null">
+				sampleNo,
+			</if>
+			<if test="straincategory != null">
+				strainCategory,
+			</if>
+			<if test="straintype != null">
+				strainType,
+			</if>
+			<if
+				test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				strainAlias,
+			</if>
+			<if test="strainstoragedate != null">
+				strainStorageDate,
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				operator,
+			</if>
+			<if test="serotype != null and !&quot;&quot;.equals(serotype.trim())">
+				serotype,
+			</if>
+			<if test="strainmlst != null and !&quot;&quot;.equals(strainmlst.trim())">
+				strainMLST,
+			</if>
+			<if test="strainplg != null and !&quot;&quot;.equals(strainplg.trim())">
+				strainPLG,
+			</if>
+			<if
+				test="strainparter != null and !&quot;&quot;.equals(strainparter.trim())">
+				strainParter,
+			</if>
+			<if
+				test="strainremarks != null and !&quot;&quot;.equals(strainremarks.trim())">
+				strainRemarks,
+			</if>
+			<if test="gramstain != null and !&quot;&quot;.equals(gramstain.trim())">
+				gramStain,
+			</if>
+			<if test="addtime != null">
+				addTime,
+			</if>
+			<if test="adduser != null">
+				addUser,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="strainno != null">
+				#{strainno,jdbcType=VARCHAR},
+			</if>
+			<if test="sampleno != null">
+				#{sampleno,jdbcType=VARCHAR},
+			</if>
+			<if test="straincategory != null">
+				#{straincategory,jdbcType=VARCHAR},
+			</if>
+			<if test="straintype != null">
+				#{straintype,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				#{strainalias,jdbcType=VARCHAR},
+			</if>
+			<if test="strainstoragedate != null">
+				#{strainstoragedate,jdbcType=DATE},
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				#{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="serotype != null and !&quot;&quot;.equals(serotype.trim())">
+				#{serotype,jdbcType=VARCHAR},
+			</if>
+			<if test="strainmlst != null and !&quot;&quot;.equals(strainmlst.trim())">
+				#{strainmlst,jdbcType=VARCHAR},
+			</if>
+			<if test="strainplg != null and !&quot;&quot;.equals(strainplg.trim())">
+				#{strainplg,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="strainparter != null and !&quot;&quot;.equals(strainparter.trim())">
+				#{strainparter,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="strainremarks != null and !&quot;&quot;.equals(strainremarks.trim())">
+				#{strainremarks,jdbcType=VARCHAR},
+			</if>
+			<if test="gramstain != null and !&quot;&quot;.equals(gramstain.trim())">
+				#{gramstain,jdbcType=VARCHAR},
+			</if>
+			<if test="addtime != null">
+				#{addtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="adduser != null">
+				#{adduser,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="drug.model.StrainCoding">
+		update straincoding
+		<set>
+			<!-- 
+				<if test="straincategory != null">
+					strainCategory = #{straincategory,jdbcType=VARCHAR},
+				</if>
+				<if test="straintype != null">
+					strainType = #{straintype,jdbcType=VARCHAR},
+				</if>
+			 -->
+			<if test="strainalias != null and !&quot;&quot;.equals(strainalias.trim())">
+				strainAlias = #{strainalias,jdbcType=VARCHAR},
+			</if>
+			<if test="strainstoragedate != null">
+				strainStorageDate = #{strainstoragedate,jdbcType=DATE},
+			</if>
+			<if test="operator != null and !&quot;&quot;.equals(operator.trim())">
+				operator = #{operator,jdbcType=VARCHAR},
+			</if>
+			<if test="serotype != null and !&quot;&quot;.equals(serotype.trim())">
+				serotype = #{serotype,jdbcType=VARCHAR},
+			</if>
+			<if test="strainmlst != null and !&quot;&quot;.equals(strainmlst.trim())">
+				strainMLST = #{strainmlst,jdbcType=VARCHAR},
+			</if>
+			<if test="strainplg != null and !&quot;&quot;.equals(strainplg.trim())">
+				strainPLG = #{strainplg,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="strainparter != null and !&quot;&quot;.equals(strainparter.trim())">
+				strainParter = #{strainparter,jdbcType=VARCHAR},
+			</if>
+			<if
+				test="strainremarks != null and !&quot;&quot;.equals(strainremarks.trim())">
+				strainRemarks = #{strainremarks,jdbcType=VARCHAR},
+			</if>
+			<if test="gramstain != null and !&quot;&quot;.equals(gramstain.trim())">
+				gramStain = #{gramstain,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where strainNo = #{strainno,jdbcType=VARCHAR}
+	</update>
+</mapper>

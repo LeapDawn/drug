@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.RoleMapper">
+  <resultMap id="BaseResultMap" type="drug.model.Role">
+    <id column="roleNo" jdbcType="VARCHAR" property="roleno" />
+    <result column="rolename" jdbcType="VARCHAR" property="rolename" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    roleNo, rolename, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from role
+    where roleNo = #{roleno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from role
+    where roleNo = #{roleno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="drug.model.Role">
+    insert into role (roleNo, rolename, remark
+      )
+    values (#{roleno,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="drug.model.Role">
+    insert into role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleno != null">
+        roleNo,
+      </if>
+      <if test="rolename != null">
+        rolename,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleno != null">
+        #{roleno,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null">
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="drug.model.Role">
+    update role
+    <set>
+      <if test="rolename != null">
+        rolename = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where roleNo = #{roleno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="drug.model.Role">
+    update role
+    set rolename = #{rolename,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where roleNo = #{roleno,jdbcType=VARCHAR}
+  </update>
+</mapper>

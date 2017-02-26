@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.MediceMapper">
+  <resultMap id="BaseResultMap" type="drug.model.Medice">
+    <id column="medice" jdbcType="VARCHAR" property="medice" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    medice, name, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from medice
+    where medice = #{medice,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from medice
+    where medice = #{medice,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="drug.model.Medice">
+    insert into medice (medice, name, remark
+      )
+    values (#{medice,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="drug.model.Medice">
+    insert into medice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="medice != null">
+        medice,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="medice != null">
+        #{medice,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="drug.model.Medice">
+    update medice
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where medice = #{medice,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="drug.model.Medice">
+    update medice
+    set name = #{name,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where medice = #{medice,jdbcType=VARCHAR}
+  </update>
+</mapper>
