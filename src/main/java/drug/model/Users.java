@@ -50,4 +50,11 @@ public class Users {
 	public void setRole(String role) {
 		this.role = role == null ? null : role.trim();
 	}
+
+	@Override
+	public String toString() {
+		return "Users [username=" + username + ", password=" + password
+				+ ", remark=" + remark + ", role=" + role + ", roleName="
+				+ roleName + "]";
+	}
 }
