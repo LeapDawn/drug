@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.FunctionMapper">
+  <resultMap id="Function" type="drug.model.Function">
+    <id column="functionNo" jdbcType="VARCHAR" property="functionno" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="column">
+    functionNo, name, url, remark
+  </sql>
+  
+  <select id="selectAll" parameterType="java.lang.String" resultMap="Function">
+    select 
+    <include refid="column" />
+    from function
+  </select>
+  
+  <select id="selectByRole" parameterType="java.lang.String" resultMap="Function">
+    select url from function
+    	where functionNo in 
+    	(select rf.functionNo from role_function rf
+    	where roleNo =  #{roleno,jdbcType=VARCHAR})
+  </select>
+</mapper>

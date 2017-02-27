@@ -1,8 +1,8 @@
 package drug.service;
 
+import drug.dto.UsersFunction;
 import drug.dto.pageModel.PUsers;
 import drug.dto.pageModel.PageResultModel;
-import drug.model.Users;
 
 public interface UsersService {
 	
@@ -37,5 +37,5 @@ public interface UsersService {
 	 * @param password
 	 * @return
 	 */
-	public Users login(String userName, String password);
+	public UsersFunction login(String userName, String password);
 }

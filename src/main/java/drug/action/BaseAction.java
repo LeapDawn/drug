@@ -3,7 +3,7 @@ package drug.action;
 import org.apache.log4j.Logger;
 
 import drug.dto.AjaxResult;
-import drug.model.Users;
+import drug.dto.UsersFunction;
 
 public class BaseAction {
 	
@@ -11,9 +11,8 @@ public class BaseAction {
 	
 	protected AjaxResult result;
 	
-	// TODO 在登录验证时,获取user并赋值给当前action(实现登录验证时在修正)
-	protected Users user = new Users();
-	public void setUser(Users user) {
+	protected UsersFunction user = new UsersFunction();
+	public void setUser(UsersFunction user) {
 		this.user = user;
 	}
 }

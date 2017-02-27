@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import drug.commons.exception.DataViolationException;
+import drug.commons.util.Transfer;
+import drug.dao.RoleFunctionDAO;
 import drug.dao.UsersDAO;
+import drug.dto.UsersFunction;
 import drug.dto.pageModel.PUsers;
 import drug.dto.pageModel.PageResultModel;
 import drug.model.Users;
@@ -19,9 +22,15 @@ public class UsersServiceImpl implements UsersService{
 
 	@Autowired
 	private UsersDAO usersDAO;
+	@Autowired
+	private RoleFunctionDAO rfDAO;
 	public void setUsersDAO(UsersDAO usersDAO) {
 		this.usersDAO = usersDAO;
 	}
+	public void setRfDAO(RoleFunctionDAO rfDAO) {
+		this.rfDAO = rfDAO;
+	}
+
 
 	@Override
 	public void save(PUsers puser) {
@@ -58,31 +67,37 @@ public class UsersServiceImpl implements UsersService{
 		List<Users> list = usersDAO.selectList(puser);
 		List<PUsers> plist = new ArrayList<PUsers>();
 		for (Users users : list) {
-			plist.add(this.changetoPageModel(users));
+			plist.add(Transfer.changetoPageModel(users));
 		}
 		resultModel.setData(plist);
 		return resultModel;
 	}
 
 	@Override
-	public Users login(String userName, String password) {
+	public UsersFunction login(String userName, String password) {
 		if (userName == null || userName.trim().equals("") 
 				|| password == null || password.trim().equals("")) {
 			throw new DataViolationException("用户名和密码不能为空");
 		}
+		
 		Users users = usersDAO.selectOne(userName.trim());
+		
 		if (users == null) {
 			throw new DataViolationException("用户名不存在");
 		} else if(!users.getPassword().equals(password.trim())){
 			throw new DataViolationException("密码错误");
 		} else {
-			return users;
+			UsersFunction userFunction = new UsersFunction();
+			userFunction.setUsername(users.getUsername());
+			// 获取用户权限url
+			String roleNo = users.getRole();
+			if (roleNo == null || roleNo.equals("")) {
+				userFunction.setFunctions(new ArrayList<String>());
+			} else {
+				userFunction.setFunctions(rfDAO.selectByRole(users.getRole()));
+			}
+			
+			return userFunction;
 		}
-	}
-	
-	private PUsers changetoPageModel(Users users) {
-		PUsers pusers = new PUsers();
-		BeanUtils.copyProperties(users, pusers);
-		return pusers;
 	}
 }

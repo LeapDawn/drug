@@ -1,6 +1,6 @@
 package drug.action;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -15,42 +15,41 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import drug.commons.exception.DataViolationException;
 import drug.dto.AjaxResult;
-import drug.dto.UsersFunction;
-import drug.dto.pageModel.PUsers;
+import drug.dto.pageModel.PRole;
 import drug.dto.pageModel.PageResultModel;
-import drug.service.UsersService;
+import drug.model.Role;
+import drug.service.RoleService;
 
-@Controller("usersAction")
-@RequestMapping("/user")
-public class UsersAction extends BaseAction{
-	
+@Controller("roleAction")
+@RequestMapping("/role")
+public class RoleAction extends BaseAction {
 	@Autowired
-	private UsersService usersService;
-	public void setUsersService(UsersService usersService) {
-		this.usersService = usersService;
+	private RoleService roleService;
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
 	}
 	
 	@RequestMapping(value = "/addition", method=RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult add(@RequestBody PUsers puser) {
+	public AjaxResult add(@RequestBody PRole role) {
 		try {
-			usersService.save(puser);
-			log.info("【新的用户添加成功】："+user+"【"+user.getUsername()+"】");
-			result = new AjaxResult(true, "新用户【"+puser.getUsername()+"】添加成功");
+			roleService.save(role);
+			log.info("【新的角色添加成功】："+user+"【"+user.getUsername()+"】");
+			result = new AjaxResult(true, "新角色【"+role.getRolename()+"】添加成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			String errorMsg = "";
 			if (e instanceof DuplicateKeyException) {
-				errorMsg = "该用户名已经存在";
+				errorMsg = "该角色名已经存在";
 			} else if (e instanceof DataIntegrityViolationException) {
 				errorMsg = "该角色不存在";
 			} else if (e instanceof CannotCreateTransactionException 
 					|| e instanceof DataAccessResourceFailureException) {
 				errorMsg = "数据库服务异常,请重新添加";
 			} else {
-				errorMsg = "新增用户时发生未知异常,请联系维护人员";
+				errorMsg = "新增角色时发生未知异常,请联系维护人员";
 			}
-			log.error("【添加新的用户信息异常】："+ puser + e +"【"+user.getUsername()+"】");
+			log.error("【添加新的角色信息异常】："+ role + e +"【"+user.getUsername()+"】");
 			result = new AjaxResult(false, errorMsg);
 		}
 		return result;
@@ -58,14 +57,11 @@ public class UsersAction extends BaseAction{
 	
 	@RequestMapping(value = "/update", method=RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult update(@RequestBody PUsers puser) {
-		if (!user.getUsername().equals(puser.getUsername())){	// 只能修改自己的密码
-			puser.setPassword(null);
-		}
+	public AjaxResult update(@RequestBody PRole role) {
 		try {
-			usersService.update(puser);
-			log.info("【用户信息修改成功】："+puser+"【"+user.getUsername()+"】");
-			result = new AjaxResult(true, "用户信息【"+puser.getUsername()+"】修改成功");
+			roleService.update(role);
+			log.info("【角色信息修改成功】："+role+"【"+user.getUsername()+"】");
+			result = new AjaxResult(true, "角色信息【"+role.getRolename()+"】修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			String errorMsg = "";
@@ -75,9 +71,9 @@ public class UsersAction extends BaseAction{
 					|| e instanceof DataAccessResourceFailureException) {
 				errorMsg = "数据库服务异常,请重新修改";
 			} else {
-				errorMsg = "修改用户信息时发生未知异常,请联系维护人员";
+				errorMsg = "修改角色信息时发生未知异常,请联系维护人员";
 			}
-			log.error("【修改用户信息信息异常】："+puser+ e +"【"+user.getUsername()+"】");
+			log.error("【修改角色信息信息异常】："+role+ e +"【"+user.getUsername()+"】");
 			result = new AjaxResult(false, errorMsg);
 		}
 		return result;
@@ -85,26 +81,47 @@ public class UsersAction extends BaseAction{
 	
 	@RequestMapping(value = "/deletion", method=RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult delete(@RequestBody PUsers puser) {
-		String username = puser.getUsername();
+	public AjaxResult delete(@RequestBody PRole role) {
+		String roleno = role.getRoleno();
 		String errorMsg = "";
 		try {
-			usersService.delete(username);
-			log.info("【用户信息删除成功】："+username+"【"+user.getUsername()+"】");
-			result = new AjaxResult(true, "成功删除用户【" + username + "】");
+			int num = roleService.delete(roleno);
+			log.info("【角色信息删除成功】："+roleno+"【"+user.getUsername()+"】");
+			result = new AjaxResult(true, "成功删除 "+ num +"条角色信息");
 		} catch (Exception e) {
 			e.printStackTrace();
 		    if (e instanceof DataViolationException) {
 	    		errorMsg = e.getMessage();
 			} else if (e instanceof DataIntegrityViolationException) {
-				errorMsg = "该用户名无法被删除";
+				errorMsg = "该角色无法被删除";
 			}  else if (e instanceof CannotCreateTransactionException 
 					|| e instanceof DataAccessResourceFailureException) {
 				errorMsg = "数据库服务异常,请重新删除";
 			} else {
-				errorMsg = "删除用户名时发生未知异常,请联系维护人员";
+				errorMsg = "删除角色名时发生未知异常,请联系维护人员";
 			}
-			log.error("【删除用户信息异常】："+username + " " + errorMsg + e +"【"+user.getUsername()+"】");
+			log.error("【删除角色信息异常】："+ roleno + " " + errorMsg + e +"【"+user.getUsername()+"】");
+			result = new AjaxResult(false, errorMsg);
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/selection", method=RequestMethod.GET)
+	@ResponseBody
+	public AjaxResult getRoles() {
+		String errorMsg = "";
+		try {
+			List<Role> roles = roleService.getRoles();
+			result = new AjaxResult(true, roles);
+		} catch (Exception e) {
+			e.printStackTrace();
+		    if (e instanceof CannotCreateTransactionException 
+					|| e instanceof DataAccessResourceFailureException) {
+				errorMsg = "数据库服务异常,请重新获取";
+			} else {
+				errorMsg = "获取角色信息时发生未知异常,请联系维护人员";
+			}
+			log.info("【获取角色信息异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
 			result = new AjaxResult(false, errorMsg);
 		}
 		return result;
@@ -112,10 +129,10 @@ public class UsersAction extends BaseAction{
 	
 	@RequestMapping(value = "/list", method=RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult list(@RequestBody(required=false)  PUsers puser) {
+	public AjaxResult list(@RequestBody(required=false) PRole role) {
 		String errorMsg = "";
 		try {
-			PageResultModel<PUsers> resultModel = usersService.list(puser);
+			PageResultModel<PRole> resultModel = roleService.list(role);
 			result = new AjaxResult(true, resultModel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,34 +140,9 @@ public class UsersAction extends BaseAction{
 					|| e instanceof DataAccessResourceFailureException) {
 				errorMsg = "数据库服务异常,请重新获取";
 			} else {
-				errorMsg = "查询用户列表时发生未知异常,请联系维护人员";
+				errorMsg = "查询角色列表时发生未知异常,请联系维护人员";
 			}
-			log.error("【查询用户列表信息异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
-			result = new AjaxResult(false, errorMsg);
-		}
-		return result;
-	}
-	
-	@RequestMapping(value = "/login", method=RequestMethod.POST)
-	@ResponseBody
-	public AjaxResult login(@RequestBody PUsers puser, HttpSession httpSession){
-		String errorMsg = "";
-		try {
-			UsersFunction usersFunction = usersService.login(puser.getUsername(), puser.getPassword());
-			httpSession.setAttribute("user", usersFunction);
-			result = new AjaxResult(true, "");
-			log.info("【用户登录成功】：【"+user.getUsername()+"】");
-		} catch (Exception e) {
-			e.printStackTrace();
-			if (e instanceof DataViolationException) {
-				errorMsg = e.getMessage();
-			} else if (e instanceof CannotCreateTransactionException 
-					|| e instanceof DataAccessResourceFailureException) {
-				errorMsg = "数据库服务异常,请重新获取";
-			} else {
-				errorMsg = "查询用户列表时发生未知异常,请联系维护人员";
-			}
-			log.error("【用户登录异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
+			log.error("【查询角色列表信息异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
 			result = new AjaxResult(false, errorMsg);
 		}
 		return result;

@@ -1,7 +1,9 @@
 package drug.commons.util;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 
@@ -9,17 +11,21 @@ import drug.commons.exception.DataViolationException;
 import drug.dto.pageModel.PDrugView;
 import drug.dto.pageModel.PDrugViewAll;
 import drug.dto.pageModel.PFarms;
+import drug.dto.pageModel.PRole;
 import drug.dto.pageModel.PSample;
 import drug.dto.pageModel.PStrainCharacter;
 import drug.dto.pageModel.PStrainCoding;
 import drug.dto.pageModel.PStrainMic;
+import drug.dto.pageModel.PUsers;
 import drug.model.DrugView;
 import drug.model.DrugViewAll;
 import drug.model.Farms;
+import drug.model.Role;
 import drug.model.Sample;
 import drug.model.StrainCharacter;
 import drug.model.StrainCoding;
 import drug.model.StrainMic;
+import drug.model.Users;
 
 /**
  * 实现各实体与页面模型的相互转换
@@ -140,5 +146,24 @@ public class Transfer {
 		date = drugView.getStrainstoragedate();
 		pdv.setStrainstoragedate(date!=null?format.format(date):"");
 		return pdv;
+	}
+	
+	public static Role changeToEntity(PRole prole) {
+		Role role = new Role();
+		BeanUtils.copyProperties(prole, role);
+		return role;
+	}
+	
+	public static PRole changeToPageModel(Role role, List<String> functions) {
+		PRole prole = new PRole();
+		BeanUtils.copyProperties(role, prole);
+		prole.setFunctions(functions == null ? new ArrayList<String>() : functions);
+		return prole;
+	}
+	
+	public static PUsers changetoPageModel(Users users) {
+		PUsers pusers = new PUsers();
+		BeanUtils.copyProperties(users, pusers);
+		return pusers;
 	}
 }

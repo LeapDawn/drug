@@ -1,31 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="drug.dao.RoleMapper">
-  <resultMap id="BaseResultMap" type="drug.model.Role">
+<mapper namespace="drug.dao.RoleDAO">
+  <resultMap id="Role" type="drug.model.Role">
     <id column="roleNo" jdbcType="VARCHAR" property="roleno" />
     <result column="rolename" jdbcType="VARCHAR" property="rolename" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="column">
     roleNo, rolename, remark
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  
+  <select id="selectList" parameterType="drug.dto.pageModel.PRole" resultMap="Role">
     select 
-    <include refid="Base_Column_List" />
+    	<include refid="column" />
+    from role
+    <if test="page != null and rows != null">
+			limit #{page},#{rows};
+	</if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Integer">
+    select count(roleNo)
+    from role
+  </select>
+  
+   <select id="selectAll" resultMap="Role">
+    select 
+    	roleNo, rolename
+    from role
+  </select>
+  
+  <select id="select" parameterType="java.lang.String" resultMap="Role">
+    select 
+    <include refid="column" />
     from role
     where roleNo = #{roleno,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  
+  <delete id="delete" parameterType="java.lang.String">
     delete from role
-    where roleNo = #{roleno,jdbcType=VARCHAR}
+    where roleNo in
+     <foreach collection="array" open="(" close=")" item="roleno" separator=",">
+     	#{roleno,jdbcType=VARCHAR}
+     </foreach>
   </delete>
+  
   <insert id="insert" parameterType="drug.model.Role">
-    insert into role (roleNo, rolename, remark
-      )
-    values (#{roleno,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="drug.model.Role">
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="roleno != null">
@@ -50,7 +70,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="drug.model.Role">
+  
+  <update id="update" parameterType="drug.model.Role">
     update role
     <set>
       <if test="rolename != null">
@@ -60,12 +81,6 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
-    where roleNo = #{roleno,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="drug.model.Role">
-    update role
-    set rolename = #{rolename,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
     where roleNo = #{roleno,jdbcType=VARCHAR}
   </update>
 </mapper>

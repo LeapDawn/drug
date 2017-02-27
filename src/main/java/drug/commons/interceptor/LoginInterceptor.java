@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import drug.action.BaseAction;
-import drug.model.Users;
+import drug.dto.UsersFunction;
 
 /**
  * 登录拦截器
@@ -24,18 +24,18 @@ public class LoginInterceptor implements HandlerInterceptor {
 		System.out.println("url: " + url);
 		Object object = request.getSession().getAttribute("user");
 		if (object == null) { //未登录
-			System.out.println("未登录");
+//			System.out.println("未登录");
 			request.getRequestDispatcher("/login.html").forward(request, response);
 			return false;
 		} else {
-			System.out.println("已登录用户: " + (Users)object);
+//			System.out.println("已登录用户: " + ((UsersFunction)object).getUsername());
 			if (HandlerMethod.class.equals(handler.getClass())) {
 				HandlerMethod method = (HandlerMethod) handler;
 				Object controller = method.getBean();
 				// 判断是否为登录接口实现类
 				if (controller instanceof BaseAction) {
 					BaseAction action = (BaseAction) controller;
-					action.setUser((Users)object);
+					action.setUser((UsersFunction)object);
 				}
 			}
 		}
@@ -53,7 +53,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-
 	}
 
 }
