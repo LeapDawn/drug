@@ -19,7 +19,7 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
-import drug.commons.exception.ExeclException;
+import drug.commons.exception.ExcelException;
 
 public class ExeclUtil {
 	
@@ -38,14 +38,14 @@ public class ExeclUtil {
 	 * @param file execl文件
 	 * @throws BiffException
 	 * @throws IOException
-	 * @throws ExeclException 
+	 * @throws ExcelException 
 	 */
-	public void readExecl(InputStream input) throws ExeclException {
+	public void readExecl(InputStream input) throws ExcelException {
 		Workbook book = null;
 		try {
 			book = Workbook.getWorkbook(input);
 		} catch (Exception e) {
-			throw new ExeclException("读取execl文件失败");
+			throw new ExcelException("读取execl文件失败");
 		}
 		Sheet sheet = book.getSheet(0);
 		// 获取表头
@@ -56,7 +56,7 @@ public class ExeclUtil {
 	    // 验证表头,验证不通过则抛出ExeclException给调用者处理
 	    try {
 			checkExeclHead();
-		} catch (ExeclException e) {
+		} catch (ExcelException e) {
 			throw e;
 		}
 	    
@@ -119,9 +119,9 @@ public class ExeclUtil {
 	
 	/**
 	 * 验证execl是否符合模版
-	 * @throws ExeclException 
+	 * @throws ExcelException 
 	 */
-	private void checkExeclHead() throws ExeclException{
+	private void checkExeclHead() throws ExcelException{
 		String errorMsg = "上传文件格式错误， 缺少列:\n";
 		boolean flag=true;
 		for(int i=0; i<modelArray.length; i++){
@@ -140,7 +140,7 @@ public class ExeclUtil {
 		}
 		if (!flag) {
 			errorMsg = errorMsg.substring(0, errorMsg.length() - 2);
-			throw new ExeclException(errorMsg);
+			throw new ExcelException(errorMsg);
 		}
 	}
 	

@@ -15,9 +15,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
+import drug.commons.excelModel.StrainExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.StrainExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCodingDAO;
@@ -41,13 +41,13 @@ public class CodingUpDownServiceImpl implements UpDownService{
 	
 	@Override
 	public ImportResultModel importDatas(InputStream input, String user)
-			throws ExeclException {
-		String[] importColumns = StrainExecl.getCodingColumns();
+			throws ExcelException {
+		String[] importColumns = StrainExcel.getCodingColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
 		try {
 			execlUtil.readExecl(input);
-		}  catch (ExeclException e) {
+		}  catch (ExcelException e) {
 			throw e;
 		}
 		List<Map<String, Object>> bodyList = execlUtil.getBodyList();
@@ -83,7 +83,7 @@ public class CodingUpDownServiceImpl implements UpDownService{
 	}
 
 	@Override
-	public File exportDatas(String nos, File file) throws ExeclException {
+	public File exportDatas(String nos, File file) throws ExcelException {
 		if (nos == null || nos.trim().equals("") || nos.trim().equals(",")){
 			throw new DataViolationException("没有选择导出的菌株信息");
 		}
@@ -93,13 +93,13 @@ public class CodingUpDownServiceImpl implements UpDownService{
 		List<Map<String, Object>> bodyList = this.retransfer(strains);
 		
 		ExeclUtil execlUtil = new ExeclUtil();
-		execlUtil.setHeadArray(StrainExecl.getExportColumns());
+		execlUtil.setHeadArray(StrainExcel.getExportColumns());
 		execlUtil.setBodyList(bodyList);
 		try {
 			execlUtil.writeExecl(file, "菌株信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -109,25 +109,25 @@ public class CodingUpDownServiceImpl implements UpDownService{
 		for (StrainCoding strain : strains) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			PStrainCoding pstrain = Transfer.changetoPageModel(strain);
-			map.put(StrainExecl.STRAINNO, pstrain.getStrainno());
-			map.put(StrainExecl.SAMPLENO, pstrain.getSampleno());
-			map.put(StrainExecl.STRAINALIAS, pstrain.getStrainalias());
-			map.put(StrainExecl.STRAINCATEGORY, pstrain.getStraincategory());
-			map.put(StrainExecl.STRAINTYPE, pstrain.getStraintype());
-			map.put(StrainExecl.STRAINSTORAGEDATE, pstrain.getStrainstoragedateStr());
-			map.put(StrainExecl.SEROTYPE, pstrain.getSerotype());
-			map.put(StrainExecl.STRAINMLST, pstrain.getStrainmlst());
-			map.put(StrainExecl.STRAINPLG, pstrain.getStrainplg());
-			map.put(StrainExecl.OPERATOR, pstrain.getOperator());
-			map.put(StrainExecl.STRAINPARTER, pstrain.getStrainparter());
-			map.put(StrainExecl.FARMNAME, pstrain.getFarmName());
-			map.put(StrainExecl.SAMPLEFARMADDR, pstrain.getSamplefarmaddr());
-			map.put(StrainExecl.SAMPLEANIMALAGE, pstrain.getSampleanimalage());
-			map.put(StrainExecl.SAMPLESOURCE, pstrain.getSamplesource());
-			map.put(StrainExecl.PARTNAME, pstrain.getPartName());
-			map.put(StrainExecl.SAMPLECOLLECTOR, pstrain.getSamplecollector());
-			map.put(StrainExecl.SAMPLEMEDICALHISTORY, pstrain.getSamplemedicalhistory());
-			map.put(StrainExecl.STRAINREMARKS, pstrain.getStrainremarks());
+			map.put(StrainExcel.STRAINNO, pstrain.getStrainno());
+			map.put(StrainExcel.SAMPLENO, pstrain.getSampleno());
+			map.put(StrainExcel.STRAINALIAS, pstrain.getStrainalias());
+			map.put(StrainExcel.STRAINCATEGORY, pstrain.getStraincategory());
+			map.put(StrainExcel.STRAINTYPE, pstrain.getStraintype());
+			map.put(StrainExcel.STRAINSTORAGEDATE, pstrain.getStrainstoragedateStr());
+			map.put(StrainExcel.SEROTYPE, pstrain.getSerotype());
+			map.put(StrainExcel.STRAINMLST, pstrain.getStrainmlst());
+			map.put(StrainExcel.STRAINPLG, pstrain.getStrainplg());
+			map.put(StrainExcel.OPERATOR, pstrain.getOperator());
+			map.put(StrainExcel.STRAINPARTER, pstrain.getStrainparter());
+			map.put(StrainExcel.FARMNAME, pstrain.getFarmName());
+			map.put(StrainExcel.SAMPLEFARMADDR, pstrain.getSamplefarmaddr());
+			map.put(StrainExcel.SAMPLEANIMALAGE, pstrain.getSampleanimalage());
+			map.put(StrainExcel.SAMPLESOURCE, pstrain.getSamplesource());
+			map.put(StrainExcel.PARTNAME, pstrain.getPartName());
+			map.put(StrainExcel.SAMPLECOLLECTOR, pstrain.getSamplecollector());
+			map.put(StrainExcel.SAMPLEMEDICALHISTORY, pstrain.getSamplemedicalhistory());
+			map.put(StrainExcel.STRAINREMARKS, pstrain.getStrainremarks());
 			list.add(map);
 		}
 		return list;
@@ -140,12 +140,12 @@ public class CodingUpDownServiceImpl implements UpDownService{
 		PStrainCoding strain = null;
 		for (Map<String,Object> map : bodyList) {
 			strain = new PStrainCoding();
-			strain.setSampleno(String.valueOf(map.get(StrainExecl.SAMPLENO)));
-			strain.setStrainalias(String.valueOf(map.get(StrainExecl.STRAINALIAS)));
-			strain.setStraincategory(String.valueOf(map.get(StrainExecl.STRAINCATEGORY)));
-			strain.setStraintype(String.valueOf(map.get(StrainExecl.STRAINTYPE)));
-			strain.setStrainstoragedateStr(String.valueOf(map.get(StrainExecl.STRAINSTORAGEDATE)));
-			strain.setOperator(String.valueOf(map.get(StrainExecl.OPERATOR)));
+			strain.setSampleno(String.valueOf(map.get(StrainExcel.SAMPLENO)));
+			strain.setStrainalias(String.valueOf(map.get(StrainExcel.STRAINALIAS)));
+			strain.setStraincategory(String.valueOf(map.get(StrainExcel.STRAINCATEGORY)));
+			strain.setStraintype(String.valueOf(map.get(StrainExcel.STRAINTYPE)));
+			strain.setStrainstoragedateStr(String.valueOf(map.get(StrainExcel.STRAINSTORAGEDATE)));
+			strain.setOperator(String.valueOf(map.get(StrainExcel.OPERATOR)));
 			strain.setOtherMsg(user);
 			stranlist.add(strain);
 		}

@@ -14,9 +14,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import drug.commons.excelModel.FarmExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.FarmExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Province;
 import drug.commons.util.Transfer;
@@ -38,13 +38,13 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 	}
 	
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user) throws ExeclException {
-		String[] importColumns = FarmExecl.getImportColumns();
+	public ImportResultModel importDatas(InputStream input, String user) throws ExcelException {
+		String[] importColumns = FarmExcel.getImportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
 		try {
 			execlUtil.readExecl(input);
-		}  catch (ExeclException e) {
+		}  catch (ExcelException e) {
 			throw e;
 		}
 		List<Map<String, Object>> bodyList = execlUtil.getBodyList();
@@ -76,7 +76,7 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 	}
 
 	@Override
-	public File exportDatas(String farmNames, File file) throws ExeclException {
+	public File exportDatas(String farmNames, File file) throws ExcelException {
 		if (farmNames == null || farmNames.trim().equals("") || farmNames.trim().equals(",")){
 			throw new DataViolationException("没有选择导出的采样地信息");
 		}
@@ -86,13 +86,13 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 		List<Map<String, Object>> bodyList = this.retransfer(list);
 		
 		ExeclUtil execlUtil = new ExeclUtil();
-		execlUtil.setHeadArray(FarmExecl.getExportColumns());
+		execlUtil.setHeadArray(FarmExcel.getExportColumns());
 		execlUtil.setBodyList(bodyList);
 		try {
 			execlUtil.writeExecl(file, "采样地信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -104,16 +104,16 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 		int i = 0;
 		for (Map<String, Object> map : bodyList) {
 			farms = new Farms();
-			farms.setFarmname((String)map.get(FarmExecl.FARMNAME));
-			farms.setFarmprovince((String)map.get(FarmExecl.FRAMPROVINCE));
-			farms.setFarmaddress((String)map.get(FarmExecl.FARMADDRESS));
-			farms.setFarmlinkman((String)map.get(FarmExecl.FARMLINKMAN));
-			farms.setFarmphone((String)map.get(FarmExecl.FARMPHONE));
-			farms.setFarmraiseway((String)map.get(FarmExecl.FARMRAISEWAY));
-			farms.setFarmraisescope((String)map.get(FarmExecl.FARMRAISESCOPE));
-			farms.setFarmraisetype((String)map.get(FarmExecl.FARMRAISETYPE));
-			farms.setFarmbuilddate((String)map.get(FarmExecl.FARMBUILEDATE));
-			farms.setFarmremarks((String)map.get(FarmExecl.FARMREMARK));
+			farms.setFarmname((String)map.get(FarmExcel.FARMNAME));
+			farms.setFarmprovince((String)map.get(FarmExcel.FRAMPROVINCE));
+			farms.setFarmaddress((String)map.get(FarmExcel.FARMADDRESS));
+			farms.setFarmlinkman((String)map.get(FarmExcel.FARMLINKMAN));
+			farms.setFarmphone((String)map.get(FarmExcel.FARMPHONE));
+			farms.setFarmraiseway((String)map.get(FarmExcel.FARMRAISEWAY));
+			farms.setFarmraisescope((String)map.get(FarmExcel.FARMRAISESCOPE));
+			farms.setFarmraisetype((String)map.get(FarmExcel.FARMRAISETYPE));
+			farms.setFarmbuilddate((String)map.get(FarmExcel.FARMBUILEDATE));
+			farms.setFarmremarks((String)map.get(FarmExcel.FARMREMARK));
 			farms.setAdduser(user);
 			farms.setAddtime(new Timestamp(System.currentTimeMillis() + i));
 			i++;
@@ -127,16 +127,16 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		for (Farms farms : farmsList) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put(FarmExecl.FARMNAME, farms.getFarmname());
-			map.put(FarmExecl.FRAMPROVINCE, farms.getFarmprovince());
-			map.put(FarmExecl.FARMADDRESS, farms.getFarmaddress());
-			map.put(FarmExecl.FARMLINKMAN, farms.getFarmlinkman());
-			map.put(FarmExecl.FARMPHONE, farms.getFarmphone());
-			map.put(FarmExecl.FARMRAISEWAY, farms.getFarmraiseway());
-			map.put(FarmExecl.FARMRAISESCOPE, farms.getFarmraisescope());
-			map.put(FarmExecl.FARMRAISETYPE, farms.getFarmraisetype());
-			map.put(FarmExecl.FARMBUILEDATE, farms.getFarmbuilddate());
-			map.put(FarmExecl.FARMREMARK, farms.getFarmremarks());
+			map.put(FarmExcel.FARMNAME, farms.getFarmname());
+			map.put(FarmExcel.FRAMPROVINCE, farms.getFarmprovince());
+			map.put(FarmExcel.FARMADDRESS, farms.getFarmaddress());
+			map.put(FarmExcel.FARMLINKMAN, farms.getFarmlinkman());
+			map.put(FarmExcel.FARMPHONE, farms.getFarmphone());
+			map.put(FarmExcel.FARMRAISEWAY, farms.getFarmraiseway());
+			map.put(FarmExcel.FARMRAISESCOPE, farms.getFarmraisescope());
+			map.put(FarmExcel.FARMRAISETYPE, farms.getFarmraisetype());
+			map.put(FarmExcel.FARMBUILEDATE, farms.getFarmbuilddate());
+			map.put(FarmExcel.FARMREMARK, farms.getFarmremarks());
 			list.add(map);
 		}
 		return list;

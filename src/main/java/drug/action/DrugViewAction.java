@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
+import drug.commons.exception.ExcelException;
 import drug.dto.AjaxResult;
 import drug.dto.analysisModel.ADrugView;
 import drug.dto.listModel.LDrugView;
@@ -135,7 +135,7 @@ public class DrugViewAction extends BaseAction{
 	        retObj = responseEntity;
 		} catch (Exception e) {
 			String errorMsg = "";
-			if (e instanceof ExeclException) {
+			if (e instanceof ExcelException) {
 				e.printStackTrace();
 				errorMsg = "生成耐药率execl文件失败";
 			} else if (e instanceof DataViolationException) {

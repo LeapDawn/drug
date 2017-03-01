@@ -15,9 +15,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
+import drug.commons.excelModel.CharacterExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.CharacterExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCharacterDAO;
@@ -45,13 +45,13 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 
 	@Override
 	public ImportResultModel importDatas(InputStream input, String user)
-			throws ExeclException {
-		String[] importColumns = CharacterExecl.getImportColumns();
+			throws ExcelException {
+		String[] importColumns = CharacterExcel.getImportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
 		try {
 			execlUtil.readExecl(input);
-		}  catch (ExeclException e) {
+		}  catch (ExcelException e) {
 			throw e;
 		}
 		List<Map<String, Object>> bodyList = execlUtil.getBodyList();
@@ -90,7 +90,7 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 	 * 导出基因信息
 	 */
 	@Override
-	public File exportDatas(String ids, File file) throws ExeclException {
+	public File exportDatas(String ids, File file) throws ExcelException {
 		if (ids == null || ids.trim().equals("") || ids.trim().equals(",")){
 			throw new DataViolationException("没有选择导出的基因信息");
 		}
@@ -100,13 +100,13 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 		List<Map<String, Object>> bodyList = this.retransfer(characters);
 		
 		ExeclUtil execlUtil = new ExeclUtil();
-		execlUtil.setHeadArray(CharacterExecl.getExportColumns());
+		execlUtil.setHeadArray(CharacterExcel.getExportColumns());
 		execlUtil.setBodyList(bodyList);
 		try {
 			execlUtil.writeExecl(file, "基因信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -155,14 +155,14 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 		for (StrainCharacter character : characters) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			PStrainCharacter pcharacter = Transfer.changetoPageModel(character);
-			map.put(CharacterExecl.STRAINNO, pcharacter.getStrainno());
-			map.put(CharacterExecl.GENALIAS, pcharacter.getGenalias());
-			map.put(CharacterExecl.GENNAME, pcharacter.getGenname());
-			map.put(CharacterExecl.ISEQ, pcharacter.getIseq());
-			map.put(CharacterExecl.REPLICON, pcharacter.getReplicon());
-			map.put(CharacterExecl.GENTC, pcharacter.getGentc());
-			map.put(CharacterExecl.OPERATOR, pcharacter.getOperator());
-			map.put(CharacterExecl.REMARK, pcharacter.getGenremarks());
+			map.put(CharacterExcel.STRAINNO, pcharacter.getStrainno());
+			map.put(CharacterExcel.GENALIAS, pcharacter.getGenalias());
+			map.put(CharacterExcel.GENNAME, pcharacter.getGenname());
+			map.put(CharacterExcel.ISEQ, pcharacter.getIseq());
+			map.put(CharacterExcel.REPLICON, pcharacter.getReplicon());
+			map.put(CharacterExcel.GENTC, pcharacter.getGentc());
+			map.put(CharacterExcel.OPERATOR, pcharacter.getOperator());
+			map.put(CharacterExcel.REMARK, pcharacter.getGenremarks());
 			list.add(map);
 		}
 		return list;
@@ -175,13 +175,13 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 		PStrainCharacter character = null;
 		for (Map<String,Object> map : bodyList) {
 			character = new PStrainCharacter();
-			character.setStrainno(String.valueOf(map.get(CharacterExecl.STRAINNO)));
-			character.setGenalias(String.valueOf(map.get(CharacterExecl.GENALIAS)));
-			character.setGenname(String.valueOf(map.get(CharacterExecl.GENNAME)));
-			character.setIseq(String.valueOf(map.get(CharacterExecl.ISEQ)));
-			character.setReplicon(String.valueOf(map.get(CharacterExecl.REPLICON)));
-			character.setGentc(String.valueOf(map.get(CharacterExecl.GENTC)));
-			character.setOperator(String.valueOf(map.get(CharacterExecl.OPERATOR)));
+			character.setStrainno(String.valueOf(map.get(CharacterExcel.STRAINNO)));
+			character.setGenalias(String.valueOf(map.get(CharacterExcel.GENALIAS)));
+			character.setGenname(String.valueOf(map.get(CharacterExcel.GENNAME)));
+			character.setIseq(String.valueOf(map.get(CharacterExcel.ISEQ)));
+			character.setReplicon(String.valueOf(map.get(CharacterExcel.REPLICON)));
+			character.setGentc(String.valueOf(map.get(CharacterExcel.GENTC)));
+			character.setOperator(String.valueOf(map.get(CharacterExcel.OPERATOR)));
 			character.setOtherMsg(user);
 			characterList.add(character);
 		}

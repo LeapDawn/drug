@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import drug.dto.analysisModel.ADrugView;
 import drug.dto.listModel.LFarms;
-import drug.dto.pageModel.PFarms;
 import drug.model.Farms;
 
 @RunWith(SpringJUnit4ClassRunner.class)

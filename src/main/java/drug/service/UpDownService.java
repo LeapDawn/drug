@@ -3,7 +3,7 @@ package drug.service;
 import java.io.File;
 import java.io.InputStream;
 
-import drug.commons.exception.ExeclException;
+import drug.commons.exception.ExcelException;
 import drug.dto.pageModel.ImportResultModel;
 
 public interface UpDownService {
@@ -13,17 +13,17 @@ public interface UpDownService {
 	 * @param input
 	 * @param user
 	 * @return
-	 * @throws ExeclException 
+	 * @throws ExcelException 
 	 */
-	public ImportResultModel importDatas(InputStream input, String user) throws ExeclException;
+	public ImportResultModel importDatas(InputStream input, String user) throws ExcelException;
 	
 	/**
 	 * 导出信息
 	 * @param farmNames
 	 * @param file
 	 * @return
-	 * @throws ExeclException 
+	 * @throws ExcelException 
 	 */
-	public File exportDatas(String ids, File file) throws ExeclException;
+	public File exportDatas(String ids, File file) throws ExcelException;
 	
 }

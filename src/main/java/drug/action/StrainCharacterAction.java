@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
+import drug.commons.exception.ExcelException;
 import drug.dto.AjaxResult;
 import drug.dto.listModel.LStrainCharacter;
 import drug.dto.pageModel.ImportResultModel;
@@ -161,7 +161,7 @@ public class StrainCharacterAction extends BaseAction {
 			resultModel = characterUpDownService.importDatas(file.getInputStream(), user.getUsername());
 		} catch (IOException e) {
 			return new AjaxResult(false, "获取上传的文件失败");
-		} catch (ExeclException e) {
+		} catch (ExcelException e) {
 			return new AjaxResult(false, e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -192,7 +192,7 @@ public class StrainCharacterAction extends BaseAction {
 	        retObj = responseEntity;
 		} catch (Exception e) {
 			String errorMsg = "";
-			if (e instanceof ExeclException) {
+			if (e instanceof ExcelException) {
 				e.printStackTrace();
 				errorMsg = "生成基因execl文件失败";
 			} else if (e instanceof DataViolationException) {

@@ -15,9 +15,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
+import drug.commons.excelModel.SampleExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.SampleExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Province;
 import drug.commons.util.Transfer;
@@ -52,13 +52,13 @@ public class SampleUpDownServiceimpl implements UpDownService{
 	
 	@Override
 	public ImportResultModel importDatas(InputStream input, String user)
-			throws ExeclException {
-		String[] importColumns = SampleExecl.getImportColumns();
+			throws ExcelException {
+		String[] importColumns = SampleExcel.getImportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
 		try {
 			execlUtil.readExecl(input);
-		}  catch (ExeclException e) {
+		}  catch (ExcelException e) {
 			throw e;
 		}
 		List<Map<String, Object>> bodyList = execlUtil.getBodyList();
@@ -97,7 +97,7 @@ public class SampleUpDownServiceimpl implements UpDownService{
 
 	@Override
 	public File exportDatas(String nos, File file)
-			throws ExeclException {
+			throws ExcelException {
 		if (nos == null || nos.trim().equals("") || nos.trim().equals(",")){
 			throw new DataViolationException("没有选择导出的样品信息");
 		}
@@ -107,13 +107,13 @@ public class SampleUpDownServiceimpl implements UpDownService{
 		List<Map<String, Object>> bodyList = this.retransfer(sampleList);
 		
 		ExeclUtil execlUtil = new ExeclUtil();
-		execlUtil.setHeadArray(SampleExecl.getExportColumns());
+		execlUtil.setHeadArray(SampleExcel.getExportColumns());
 		execlUtil.setBodyList(bodyList);
 		try {
 			execlUtil.writeExecl(file, "样品信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -124,17 +124,17 @@ public class SampleUpDownServiceimpl implements UpDownService{
 		PSample psample = null;
 		for (Map<String, Object> map : bodyList) {
 			psample = new PSample();
-			psample.setSampledateStr((String)map.get(SampleExecl.SAMPLEDATE));
-			psample.setSampleprovince((String)map.get(SampleExecl.SAMPLEPROVINCE));
-			psample.setFarmname((String)map.get(SampleExecl.FARMNAME));
-			psample.setSamplefarmaddr((String)map.get(SampleExecl.SAMPLEFARMADDR));
-			psample.setAnimalName((String)map.get(SampleExecl.ANIMALNAME));
-			psample.setSampleanimalage((String)map.get(SampleExecl.SAMPLEANIMALAGE));
-			psample.setSamplesource((String)map.get(SampleExecl.SAMPLESOURCE));
-			psample.setPartName((String)map.get(SampleExecl.PARTNAME));
-			psample.setSamplecollector((String)map.get(SampleExecl.SAMPLECOLLECTOR));
-			psample.setSamplemedicalhistory((String)map.get(SampleExecl.SAMPLEMEDICALHISTORY));
-			psample.setSampleremarks((String)map.get(SampleExecl.SAMPLEREMARKS));
+			psample.setSampledateStr((String)map.get(SampleExcel.SAMPLEDATE));
+			psample.setSampleprovince((String)map.get(SampleExcel.SAMPLEPROVINCE));
+			psample.setFarmname((String)map.get(SampleExcel.FARMNAME));
+			psample.setSamplefarmaddr((String)map.get(SampleExcel.SAMPLEFARMADDR));
+			psample.setAnimalName((String)map.get(SampleExcel.ANIMALNAME));
+			psample.setSampleanimalage((String)map.get(SampleExcel.SAMPLEANIMALAGE));
+			psample.setSamplesource((String)map.get(SampleExcel.SAMPLESOURCE));
+			psample.setPartName((String)map.get(SampleExcel.PARTNAME));
+			psample.setSamplecollector((String)map.get(SampleExcel.SAMPLECOLLECTOR));
+			psample.setSamplemedicalhistory((String)map.get(SampleExcel.SAMPLEMEDICALHISTORY));
+			psample.setSampleremarks((String)map.get(SampleExcel.SAMPLEREMARKS));
 			psample.setOtherMsg(user);
 			sampleList.add(psample);
 		}
@@ -147,18 +147,18 @@ public class SampleUpDownServiceimpl implements UpDownService{
 		for (Sample sample : sampleList) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			PSample psample = Transfer.changetoPageModel(sample);
-			map.put(SampleExecl.SAMPLENO, psample.getSampleno());
-			map.put(SampleExecl.SAMPLEDATE, psample.getSampledateStr());
-			map.put(SampleExecl.SAMPLEPROVINCE, psample.getSampleprovince());
-			map.put(SampleExecl.FARMNAME, psample.getFarmname());
-			map.put(SampleExecl.SAMPLEFARMADDR, psample.getSamplefarmaddr());
-			map.put(SampleExecl.ANIMALNAME, psample.getAnimalName());
-			map.put(SampleExecl.SAMPLEANIMALAGE, psample.getSampleanimalage());
-			map.put(SampleExecl.SAMPLESOURCE, psample.getSamplesource());
-			map.put(SampleExecl.PARTNAME, psample.getPartName());
-			map.put(SampleExecl.SAMPLECOLLECTOR, psample.getSamplecollector());
-			map.put(SampleExecl.SAMPLEMEDICALHISTORY, psample.getSamplemedicalhistory());
-			map.put(SampleExecl.SAMPLEREMARKS, psample.getSampleremarks());
+			map.put(SampleExcel.SAMPLENO, psample.getSampleno());
+			map.put(SampleExcel.SAMPLEDATE, psample.getSampledateStr());
+			map.put(SampleExcel.SAMPLEPROVINCE, psample.getSampleprovince());
+			map.put(SampleExcel.FARMNAME, psample.getFarmname());
+			map.put(SampleExcel.SAMPLEFARMADDR, psample.getSamplefarmaddr());
+			map.put(SampleExcel.ANIMALNAME, psample.getAnimalName());
+			map.put(SampleExcel.SAMPLEANIMALAGE, psample.getSampleanimalage());
+			map.put(SampleExcel.SAMPLESOURCE, psample.getSamplesource());
+			map.put(SampleExcel.PARTNAME, psample.getPartName());
+			map.put(SampleExcel.SAMPLECOLLECTOR, psample.getSamplecollector());
+			map.put(SampleExcel.SAMPLEMEDICALHISTORY, psample.getSamplemedicalhistory());
+			map.put(SampleExcel.SAMPLEREMARKS, psample.getSampleremarks());
 			list.add(map);
 		}
 		return list;

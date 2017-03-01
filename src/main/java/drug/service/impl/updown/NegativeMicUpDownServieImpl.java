@@ -15,9 +15,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
+import drug.commons.excelModel.MicExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.MicExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.MicDataCheck;
 import drug.commons.util.Transfer;
@@ -40,13 +40,13 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 
 	@Override
 	public ImportResultModel importDatas(InputStream input, String user)
-			throws ExeclException {
-		String[] importColumns = MicExecl.getNegativeExportColumns();
+			throws ExcelException {
+		String[] importColumns = MicExcel.getNegativeExportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
 		try {
 			execlUtil.readExecl(input);
-		} catch (ExeclException e) {
+		} catch (ExcelException e) {
 			throw e;
 		}
 		List<PStrainMic> errorList = new ArrayList<PStrainMic>();
@@ -85,7 +85,7 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 	}
 
 	@Override
-	public File exportDatas(String nos, File file) throws ExeclException {
+	public File exportDatas(String nos, File file) throws ExcelException {
 		if (nos == null || nos.trim().equals("") || nos.trim().equals(",")) {
 			throw new DataViolationException("没有选择导出的菌株信息");
 		}
@@ -95,13 +95,13 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 		List<Map<String, Object>> bodyList = this.retransfer(strainMics);
 
 		ExeclUtil execlUtil = new ExeclUtil();
-		execlUtil.setHeadArray(MicExecl.getNegativeExportColumns());
+		execlUtil.setHeadArray(MicExcel.getNegativeExportColumns());
 		execlUtil.setBodyList(bodyList);
 		try {
 			execlUtil.writeExecl(file, "MIC信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -111,31 +111,31 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 		for (StrainMic mic : strainMics) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			PStrainMic pmic = Transfer.changetoPageModel(mic);
-			map.put(MicExecl.STRAINNO, pmic.getStrainno());
-			map.put(MicExecl.MICALIAS, pmic.getMicalias());
-			map.put(MicExecl.AMK,String.valueOf(pmic.getAmk()));
-			map.put(MicExecl.AMP,String.valueOf(pmic.getAmp()));
-			map.put(MicExecl.APR,String.valueOf(pmic.getApr()));
-			map.put(MicExecl.CAZ,String.valueOf(pmic.getCaz()));
-			map.put(MicExecl.CL,String.valueOf(pmic.getCl()));
-			map.put(MicExecl.CHL,String.valueOf(pmic.getChl()));
-			map.put(MicExecl.CIP,String.valueOf(pmic.getCip()));
-			map.put(MicExecl.CTX,String.valueOf(pmic.getCtx()));
-			map.put(MicExecl.CQM,String.valueOf(pmic.getCqm()));
-			map.put(MicExecl.DOX,String.valueOf(pmic.getDox()));
-			map.put(MicExecl.FOX,String.valueOf(pmic.getFox()));
-			map.put(MicExecl.FFC,String.valueOf(pmic.getFfc()));
-			map.put(MicExecl.FOS,String.valueOf(pmic.getFos()));
-			map.put(MicExecl.GEN,String.valueOf(pmic.getGen()));
-			map.put(MicExecl.IMP,String.valueOf(pmic.getImp()));
-			map.put(MicExecl.OQX,String.valueOf(pmic.getOqx()));
-			map.put(MicExecl.NEO,String.valueOf(pmic.getNeo()));
-			map.put(MicExecl.SXT,String.valueOf(pmic.getSxt()));
-			map.put(MicExecl.STR,String.valueOf(pmic.getStr()));
-			map.put(MicExecl.TET,String.valueOf(pmic.getTet()));
-			map.put(MicExecl.MEM,String.valueOf(pmic.getMem()));
+			map.put(MicExcel.STRAINNO, pmic.getStrainno());
+			map.put(MicExcel.MICALIAS, pmic.getMicalias());
+			map.put(MicExcel.AMK,String.valueOf(pmic.getAmk()));
+			map.put(MicExcel.AMP,String.valueOf(pmic.getAmp()));
+			map.put(MicExcel.APR,String.valueOf(pmic.getApr()));
+			map.put(MicExcel.CAZ,String.valueOf(pmic.getCaz()));
+			map.put(MicExcel.CL,String.valueOf(pmic.getCl()));
+			map.put(MicExcel.CHL,String.valueOf(pmic.getChl()));
+			map.put(MicExcel.CIP,String.valueOf(pmic.getCip()));
+			map.put(MicExcel.CTX,String.valueOf(pmic.getCtx()));
+			map.put(MicExcel.CQM,String.valueOf(pmic.getCqm()));
+			map.put(MicExcel.DOX,String.valueOf(pmic.getDox()));
+			map.put(MicExcel.FOX,String.valueOf(pmic.getFox()));
+			map.put(MicExcel.FFC,String.valueOf(pmic.getFfc()));
+			map.put(MicExcel.FOS,String.valueOf(pmic.getFos()));
+			map.put(MicExcel.GEN,String.valueOf(pmic.getGen()));
+			map.put(MicExcel.IMP,String.valueOf(pmic.getImp()));
+			map.put(MicExcel.OQX,String.valueOf(pmic.getOqx()));
+			map.put(MicExcel.NEO,String.valueOf(pmic.getNeo()));
+			map.put(MicExcel.SXT,String.valueOf(pmic.getSxt()));
+			map.put(MicExcel.STR,String.valueOf(pmic.getStr()));
+			map.put(MicExcel.TET,String.valueOf(pmic.getTet()));
+			map.put(MicExcel.MEM,String.valueOf(pmic.getMem()));
 
-			map.put(MicExecl.REMARK, pmic.getRemark());
+			map.put(MicExcel.REMARK, pmic.getRemark());
 			list.add(map);
 		}
 		return list;
@@ -186,34 +186,34 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 		for (Map<String, Object> map : bodyList) {
 			mic = new PStrainMic();
 			try {
-				mic.setStrainno(String.valueOf(map.get(MicExecl.STRAINNO)));
-				mic.setMicalias(String.valueOf(map.get(MicExecl.MICALIAS)));
-				mic.setAmk(Double.valueOf(String.valueOf(map.get(MicExecl.AMK))));
-				mic.setAmp(Double.valueOf(String.valueOf(map.get(MicExecl.AMP))));
-				mic.setApr(Double.valueOf(String.valueOf(map.get(MicExecl.APR))));
-				mic.setCaz(Double.valueOf(String.valueOf(map.get(MicExecl.CAZ))));
-				mic.setCl(Double.valueOf(String.valueOf(map.get(MicExecl.CL))));
-				mic.setChl(Double.valueOf(String.valueOf(map.get(MicExecl.CHL))));
-				mic.setCip(Double.valueOf(String.valueOf(map.get(MicExecl.CIP))));
-				mic.setCtx(Double.valueOf(String.valueOf(map.get(MicExecl.CTX))));
-				mic.setCqm(Double.valueOf(String.valueOf(map.get(MicExecl.CQM))));
-				mic.setDox(Double.valueOf(String.valueOf(map.get(MicExecl.DOX))));
-				mic.setFox(Double.valueOf(String.valueOf(map.get(MicExecl.FOX))));
-				mic.setFfc(Double.valueOf(String.valueOf(map.get(MicExecl.FFC))));
-				mic.setFos(Double.valueOf(String.valueOf(map.get(MicExecl.FOS))));
-				mic.setGen(Double.valueOf(String.valueOf(map.get(MicExecl.GEN))));
-				mic.setImp(Double.valueOf(String.valueOf(map.get(MicExecl.IMP))));
-				mic.setOqx(Double.valueOf(String.valueOf(map.get(MicExecl.OQX))));
-				mic.setNeo(Double.valueOf(String.valueOf(map.get(MicExecl.NEO))));
-				mic.setSxt(Double.valueOf(String.valueOf(map.get(MicExecl.SXT))));
-				mic.setStr(Double.valueOf(String.valueOf(map.get(MicExecl.STR))));
-				mic.setTet(Double.valueOf(String.valueOf(map.get(MicExecl.TET))));
-				mic.setMem(Double.valueOf(String.valueOf(map.get(MicExecl.MEM))));
+				mic.setStrainno(String.valueOf(map.get(MicExcel.STRAINNO)));
+				mic.setMicalias(String.valueOf(map.get(MicExcel.MICALIAS)));
+				mic.setAmk(Double.valueOf(String.valueOf(map.get(MicExcel.AMK))));
+				mic.setAmp(Double.valueOf(String.valueOf(map.get(MicExcel.AMP))));
+				mic.setApr(Double.valueOf(String.valueOf(map.get(MicExcel.APR))));
+				mic.setCaz(Double.valueOf(String.valueOf(map.get(MicExcel.CAZ))));
+				mic.setCl(Double.valueOf(String.valueOf(map.get(MicExcel.CL))));
+				mic.setChl(Double.valueOf(String.valueOf(map.get(MicExcel.CHL))));
+				mic.setCip(Double.valueOf(String.valueOf(map.get(MicExcel.CIP))));
+				mic.setCtx(Double.valueOf(String.valueOf(map.get(MicExcel.CTX))));
+				mic.setCqm(Double.valueOf(String.valueOf(map.get(MicExcel.CQM))));
+				mic.setDox(Double.valueOf(String.valueOf(map.get(MicExcel.DOX))));
+				mic.setFox(Double.valueOf(String.valueOf(map.get(MicExcel.FOX))));
+				mic.setFfc(Double.valueOf(String.valueOf(map.get(MicExcel.FFC))));
+				mic.setFos(Double.valueOf(String.valueOf(map.get(MicExcel.FOS))));
+				mic.setGen(Double.valueOf(String.valueOf(map.get(MicExcel.GEN))));
+				mic.setImp(Double.valueOf(String.valueOf(map.get(MicExcel.IMP))));
+				mic.setOqx(Double.valueOf(String.valueOf(map.get(MicExcel.OQX))));
+				mic.setNeo(Double.valueOf(String.valueOf(map.get(MicExcel.NEO))));
+				mic.setSxt(Double.valueOf(String.valueOf(map.get(MicExcel.SXT))));
+				mic.setStr(Double.valueOf(String.valueOf(map.get(MicExcel.STR))));
+				mic.setTet(Double.valueOf(String.valueOf(map.get(MicExcel.TET))));
+				mic.setMem(Double.valueOf(String.valueOf(map.get(MicExcel.MEM))));
 
-				mic.setOperator(String.valueOf(map.get(MicExecl.OPERATOR)));
+				mic.setOperator(String.valueOf(map.get(MicExcel.OPERATOR)));
 				mic.setMicdetectiontype(String.valueOf(map
-						.get(MicExecl.MICDETECTIONTYPE)));
-				mic.setRemark(String.valueOf(map.get(MicExecl.REMARK)));
+						.get(MicExcel.MICDETECTIONTYPE)));
+				mic.setRemark(String.valueOf(map.get(MicExcel.REMARK)));
 			} catch (NumberFormatException e) {
 				mic.setOtherMsg("药物浓度必须为数字");
 				errorList.add(mic);

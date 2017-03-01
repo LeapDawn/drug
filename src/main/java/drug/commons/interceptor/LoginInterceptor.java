@@ -20,12 +20,12 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		String url = request.getRequestURI();
-		System.out.println("url: " + url);
 		Object object = request.getSession().getAttribute("user");
+		
+		String uri = request.getRequestURI();
+		System.out.println("uri   " + uri);
 		if (object == null) { //未登录
-//			System.out.println("未登录");
-			request.getRequestDispatcher("/login.html").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/index.html");
 			return false;
 		} else {
 //			System.out.println("已登录用户: " + ((UsersFunction)object).getUsername());

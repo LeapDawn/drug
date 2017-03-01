@@ -155,4 +155,18 @@ public class UsersAction extends BaseAction{
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/logout", method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult logout(HttpSession httpSession){
+		String errorMsg = "";
+		try {
+			httpSession.removeAttribute("user");
+			result = new AjaxResult(true, "");
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new AjaxResult(false, errorMsg);
+		}
+		return result;
+	}
 }

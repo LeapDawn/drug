@@ -10,11 +10,11 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.DrugViewExecl;
-import drug.commons.execlModel.FarmExecl;
-import drug.commons.execlModel.MicExecl;
-import drug.commons.execlModel.StrainExecl;
+import drug.commons.excelModel.DrugViewExcel;
+import drug.commons.excelModel.FarmExcel;
+import drug.commons.excelModel.MicExcel;
+import drug.commons.excelModel.StrainExcel;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.model.Farms;
 

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
+import drug.commons.exception.ExcelException;
 import drug.dto.AjaxResult;
 import drug.dto.listModel.LFarms;
 import drug.dto.pageModel.ImportResultModel;
@@ -203,7 +203,7 @@ public class FarmsAction extends BaseAction{
 			resultModel = updownService.importDatas(file.getInputStream(), user.getUsername());
 		} catch (IOException e) {
 			return new AjaxResult(false, "获取上传的文件失败");
-		} catch (ExeclException e) {
+		} catch (ExcelException e) {
 			return new AjaxResult(false, e.getMessage());
 		} catch (Exception e) {
 			return new AjaxResult(false, "未知异常");
@@ -233,7 +233,7 @@ public class FarmsAction extends BaseAction{
 	        retObj = responseEntity;
 		} catch (Exception e) {
 			String errorMsg = "";
-			if (e instanceof ExeclException) {
+			if (e instanceof ExcelException) {
 				e.printStackTrace();
 				errorMsg = "生成采样地execl文件失败";
 			} else if (e instanceof DataViolationException) {

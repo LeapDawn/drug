@@ -13,8 +13,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.CannotCreateTransactionException;
 
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.StrainExecl;
+import drug.commons.excelModel.StrainExcel;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCodingDAO;
@@ -40,16 +40,16 @@ public static Logger log = Logger.getLogger("R");
 	/**
 	 * 导入分型信息(更新操作)
 	 * @return
-	 * @throws ExeclException
+	 * @throws ExcelException
 	 */
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user) throws ExeclException{
-		String[] importColumns = StrainExecl.getStrainColumns();
+	public ImportResultModel importDatas(InputStream input, String user) throws ExcelException{
+		String[] importColumns = StrainExcel.getStrainColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
 		try {
 			execlUtil.readExecl(input);
-		}  catch (ExeclException e) {
+		}  catch (ExcelException e) {
 			throw e;
 		}
 		List<Map<String, Object>> bodyList = execlUtil.getBodyList();
@@ -89,12 +89,12 @@ public static Logger log = Logger.getLogger("R");
 		PStrainCoding strain = null;
 		for (Map<String,Object> map : bodyList) {
 			strain = new PStrainCoding();
-			strain.setStrainno(String.valueOf(map.get(StrainExecl.STRAINNO)));
-			strain.setSerotype(String.valueOf(map.get(StrainExecl.SEROTYPE)));
-			strain.setStrainmlst(String.valueOf(map.get(StrainExecl.STRAINMLST)));
-			strain.setStrainplg(String.valueOf(map.get(StrainExecl.STRAINPLG)));
-			strain.setStrainparter(String.valueOf(map.get(StrainExecl.STRAINPARTER)));
-			strain.setStrainremarks(String.valueOf(map.get(StrainExecl.STRAINREMARKS)));
+			strain.setStrainno(String.valueOf(map.get(StrainExcel.STRAINNO)));
+			strain.setSerotype(String.valueOf(map.get(StrainExcel.SEROTYPE)));
+			strain.setStrainmlst(String.valueOf(map.get(StrainExcel.STRAINMLST)));
+			strain.setStrainplg(String.valueOf(map.get(StrainExcel.STRAINPLG)));
+			strain.setStrainparter(String.valueOf(map.get(StrainExcel.STRAINPARTER)));
+			strain.setStrainremarks(String.valueOf(map.get(StrainExcel.STRAINREMARKS)));
 			strain.setOtherMsg(user);
 			stranlist.add(strain);
 		}
@@ -118,7 +118,7 @@ public static Logger log = Logger.getLogger("R");
 		}
 
 	@Override
-	public File exportDatas(String ids, File file) throws ExeclException {
+	public File exportDatas(String ids, File file) throws ExcelException {
 		return null;
 	}
 	

@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import drug.commons.excelModel.DrugViewAllExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.DrugViewAllExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.DrugViewAllDAO;
@@ -35,12 +35,12 @@ public class DrugViewAllDownServiceImpl implements UpDownService {
 
 	@Override
 	public ImportResultModel importDatas(InputStream input, String user)
-			throws ExeclException {
+			throws ExcelException {
 		return null;
 	}
 
 	@Override
-	public File exportDatas(String ids, File file) throws ExeclException {
+	public File exportDatas(String ids, File file) throws ExcelException {
 		if (ids == null || ids.trim().equals("") || ids.trim().equals(",")){
 			throw new DataViolationException("没有选择导出的检出率信息");
 		}
@@ -50,13 +50,13 @@ public class DrugViewAllDownServiceImpl implements UpDownService {
 		List<Map<String, Object>> bodyList = this.retransfer(list);
 		
 		ExeclUtil execlUtil = new ExeclUtil();
-		execlUtil.setHeadArray(DrugViewAllExecl.getExportColumns());
+		execlUtil.setHeadArray(DrugViewAllExcel.getExportColumns());
 		execlUtil.setBodyList(bodyList);
 		try {
 			execlUtil.writeExecl(file, "检出率信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -66,29 +66,29 @@ public class DrugViewAllDownServiceImpl implements UpDownService {
 		for (DrugViewAll dva : dvalist) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			PDrugViewAll pdva = Transfer.changeToPageModel(dva);
-			map.put(DrugViewAllExecl.SAMPLENO, pdva.getSampleno());
-			map.put(DrugViewAllExecl.STRAINNO, pdva.getStrainno());
-			map.put(DrugViewAllExecl.ALIAS, pdva.getStrainalias());
-			map.put(DrugViewAllExecl.SAMPLEDATE, pdva.getSampledate());
-			map.put(DrugViewAllExecl.SAMPLEPROVINCE, pdva.getSampleprovince());
-			map.put(DrugViewAllExecl.FARMNAME, pdva.getFarmname());
-			map.put(DrugViewAllExecl.SAMPLEFARMADDR, pdva.getSamplefarmaddr());
-			map.put(DrugViewAllExecl.ANIMALNAME, pdva.getAnimalname());
-			map.put(DrugViewAllExecl.SAMPLEANIMALAGE, pdva.getSampleanimalage());
-			map.put(DrugViewAllExecl.SAMPLESOURCE, pdva.getSamplesource());
-			map.put(DrugViewAllExecl.PARTNAME, pdva.getSamplecollectionpart());
-			map.put(DrugViewAllExecl.SAMPLECOLLECTOR, pdva.getSamplecollector());
-			map.put(DrugViewAllExecl.SAMPLEMEDICALHISTORY, pdva.getSamplemedicalhistory());
-			map.put(DrugViewAllExecl.SAMPLEREMARKS, pdva.getSampleremarks());
-			map.put(DrugViewAllExecl.STRAINCATEGORY, pdva.getStraincategory());
-			map.put(DrugViewAllExecl.STRAINTYPE, pdva.getStraintype());
-			map.put(DrugViewAllExecl.STRAINSTORAGEDATE, pdva.getStrainstoragedate());
-			map.put(DrugViewAllExecl.SEROTYPE, pdva.getSerotype());
-			map.put(DrugViewAllExecl.STRAINMLST, pdva.getStrainmlst());
-			map.put(DrugViewAllExecl.STRAINPLG, pdva.getStrainplg());
-			map.put(DrugViewAllExecl.OPERATOR, pdva.getStrainoperator());
-			map.put(DrugViewAllExecl.STRAINPARTER, pdva.getStrainparter());
-			map.put(DrugViewAllExecl.STRAINREMARKS, pdva.getStrainremarks());
+			map.put(DrugViewAllExcel.SAMPLENO, pdva.getSampleno());
+			map.put(DrugViewAllExcel.STRAINNO, pdva.getStrainno());
+			map.put(DrugViewAllExcel.ALIAS, pdva.getStrainalias());
+			map.put(DrugViewAllExcel.SAMPLEDATE, pdva.getSampledate());
+			map.put(DrugViewAllExcel.SAMPLEPROVINCE, pdva.getSampleprovince());
+			map.put(DrugViewAllExcel.FARMNAME, pdva.getFarmname());
+			map.put(DrugViewAllExcel.SAMPLEFARMADDR, pdva.getSamplefarmaddr());
+			map.put(DrugViewAllExcel.ANIMALNAME, pdva.getAnimalname());
+			map.put(DrugViewAllExcel.SAMPLEANIMALAGE, pdva.getSampleanimalage());
+			map.put(DrugViewAllExcel.SAMPLESOURCE, pdva.getSamplesource());
+			map.put(DrugViewAllExcel.PARTNAME, pdva.getSamplecollectionpart());
+			map.put(DrugViewAllExcel.SAMPLECOLLECTOR, pdva.getSamplecollector());
+			map.put(DrugViewAllExcel.SAMPLEMEDICALHISTORY, pdva.getSamplemedicalhistory());
+			map.put(DrugViewAllExcel.SAMPLEREMARKS, pdva.getSampleremarks());
+			map.put(DrugViewAllExcel.STRAINCATEGORY, pdva.getStraincategory());
+			map.put(DrugViewAllExcel.STRAINTYPE, pdva.getStraintype());
+			map.put(DrugViewAllExcel.STRAINSTORAGEDATE, pdva.getStrainstoragedate());
+			map.put(DrugViewAllExcel.SEROTYPE, pdva.getSerotype());
+			map.put(DrugViewAllExcel.STRAINMLST, pdva.getStrainmlst());
+			map.put(DrugViewAllExcel.STRAINPLG, pdva.getStrainplg());
+			map.put(DrugViewAllExcel.OPERATOR, pdva.getStrainoperator());
+			map.put(DrugViewAllExcel.STRAINPARTER, pdva.getStrainparter());
+			map.put(DrugViewAllExcel.STRAINREMARKS, pdva.getStrainremarks());
 			list.add(map);
 		}
 		return list;

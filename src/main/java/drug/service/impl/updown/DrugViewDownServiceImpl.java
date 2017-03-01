@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import drug.commons.excelModel.DrugViewExcel;
 import drug.commons.exception.DataViolationException;
-import drug.commons.exception.ExeclException;
-import drug.commons.execlModel.DrugViewExecl;
+import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.DrugViewDAO;
@@ -35,12 +35,12 @@ public class DrugViewDownServiceImpl implements UpDownService {
 
 	@Override
 	public ImportResultModel importDatas(InputStream input, String user)
-			throws ExeclException {
+			throws ExcelException {
 		return null;
 	}
 
 	@Override
-	public File exportDatas(String ids, File file) throws ExeclException {
+	public File exportDatas(String ids, File file) throws ExcelException {
 		String micFlag = null;  // 阴/阳性标识
 		if (ids != null && ids.length() >= 1) {
 			micFlag = ids.substring(0, 1);
@@ -64,11 +64,11 @@ public class DrugViewDownServiceImpl implements UpDownService {
 		
 		ExeclUtil execlUtil = new ExeclUtil();
 		if ("1".equals(micFlag)) {
-			execlUtil.setHeadArray(DrugViewExecl.getPositiveExportColumns());
+			execlUtil.setHeadArray(DrugViewExcel.getPositiveExportColumns());
 		} else if ("2".equals(micFlag)) {
-			execlUtil.setHeadArray(DrugViewExecl.getNegativeExportColumns());
+			execlUtil.setHeadArray(DrugViewExcel.getNegativeExportColumns());
 		} else {
-			execlUtil.setHeadArray(DrugViewExecl.getExportColumns());
+			execlUtil.setHeadArray(DrugViewExcel.getExportColumns());
 		}
 		
 		execlUtil.setBodyList(bodyList);
@@ -76,7 +76,7 @@ public class DrugViewDownServiceImpl implements UpDownService {
 			execlUtil.writeExecl(file, "耐药率信息");
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new ExeclException("写入execl文件失败");
+			throw new ExcelException("写入execl文件失败");
 		}
 		return file;
 	}
@@ -86,83 +86,83 @@ public class DrugViewDownServiceImpl implements UpDownService {
 		for (DrugView dv : dvList) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			PDrugView pdv = Transfer.changeToPageModel(dv);
-			map.put(DrugViewExecl.SAMPLENO, pdv.getSampleno());
-			map.put(DrugViewExecl.STRAINNO, pdv.getStrainno());
-			map.put(DrugViewExecl.ALIAS, pdv.getStrainalias());
-			map.put(DrugViewExecl.SAMPLEDATE, pdv.getSampledate());
-			map.put(DrugViewExecl.SAMPLEPROVINCE, pdv.getSampleprovince());
-			map.put(DrugViewExecl.FARMNAME, pdv.getFarmname());
-			map.put(DrugViewExecl.SAMPLEFARMADDR, pdv.getSamplefarmaddr());
-			map.put(DrugViewExecl.ANIMALNAME, pdv.getAnimalname());
-			map.put(DrugViewExecl.SAMPLEANIMALAGE, pdv.getSampleanimalage());
-			map.put(DrugViewExecl.SAMPLESOURCE, pdv.getSamplesource());
-			map.put(DrugViewExecl.PARTNAME, pdv.getSamplecollectionpart());
-			map.put(DrugViewExecl.SAMPLECOLLECTOR, pdv.getSamplecollector());
-			map.put(DrugViewExecl.SAMPLEMEDICALHISTORY, pdv.getSamplemedicalhistory());
-			map.put(DrugViewExecl.SAMPLEREMARKS, pdv.getSampleremarks());
-			map.put(DrugViewExecl.STRAINCATEGORY, pdv.getStraincategory());
-			map.put(DrugViewExecl.STRAINTYPE, pdv.getStraintype());
-			map.put(DrugViewExecl.STRAINSTORAGEDATE, pdv.getStrainstoragedate());
-			map.put(DrugViewExecl.SEROTYPE, pdv.getSerotype());
-			map.put(DrugViewExecl.STRAINMLST, pdv.getStrainmlst());
-			map.put(DrugViewExecl.STRAINPLG, pdv.getStrainplg());
-			map.put(DrugViewExecl.STRAINOPERATOR, pdv.getStrainoperator());
-			map.put(DrugViewExecl.STRAINPARTER, pdv.getStrainparter());
-			map.put(DrugViewExecl.STRAINREMARKS, pdv.getStrainremarks());
-			map.put(DrugViewExecl.AMP,String.valueOf(pdv.getAmp()));
-			map.put(DrugViewExecl.OXA,String.valueOf(pdv.getOxa()));
-			map.put(DrugViewExecl.PEN,String.valueOf(pdv.getPen()));
-			map.put(DrugViewExecl.PIP,String.valueOf(pdv.getPip()));
-			map.put(DrugViewExecl.TZP,String.valueOf(pdv.getTzp()));
-			map.put(DrugViewExecl.CAZ,String.valueOf(pdv.getCaz()));
-			map.put(DrugViewExecl.CFZ,String.valueOf(pdv.getCfz()));
-			map.put(DrugViewExecl.CQM,String.valueOf(pdv.getCqm()));
-			map.put(DrugViewExecl.CRO,String.valueOf(pdv.getCro()));
-			map.put(DrugViewExecl.CTX,String.valueOf(pdv.getCtx()));
-			map.put(DrugViewExecl.FEP,String.valueOf(pdv.getFep()));
-			map.put(DrugViewExecl.FOX,String.valueOf(pdv.getFox()));
-			map.put(DrugViewExecl.AMK,String.valueOf(pdv.getAmk()));
-			map.put(DrugViewExecl.APR,String.valueOf(pdv.getApr()));
-			map.put(DrugViewExecl.GEN,String.valueOf(pdv.getGen()));
-			map.put(DrugViewExecl.NEO,String.valueOf(pdv.getNeo()));
-			map.put(DrugViewExecl.NET,String.valueOf(pdv.getNet()));
-			map.put(DrugViewExecl.STR,String.valueOf(pdv.getStr()));
-			map.put(DrugViewExecl.TOB,String.valueOf(pdv.getTob()));
-			map.put(DrugViewExecl.DOX,String.valueOf(pdv.getDox()));
-			map.put(DrugViewExecl.MIN,String.valueOf(pdv.getMin()));
-			map.put(DrugViewExecl.TET,String.valueOf(pdv.getTet()));
-			map.put(DrugViewExecl.CHL,String.valueOf(pdv.getChl()));
-			map.put(DrugViewExecl.FFC,String.valueOf(pdv.getFfc()));
-			map.put(DrugViewExecl.AZM,String.valueOf(pdv.getAzm()));
-			map.put(DrugViewExecl.ERY,String.valueOf(pdv.getEry()));
-			map.put(DrugViewExecl.RIF,String.valueOf(pdv.getRif()));
-			map.put(DrugViewExecl.TEC,String.valueOf(pdv.getTec()));
-			map.put(DrugViewExecl.VAN,String.valueOf(pdv.getVan()));
-			map.put(DrugViewExecl.CLI,String.valueOf(pdv.getCli()));
-			map.put(DrugViewExecl.CL,String.valueOf(pdv.getCl()));
-			map.put(DrugViewExecl.IMP,String.valueOf(pdv.getImp()));
-			map.put(DrugViewExecl.TIA,String.valueOf(pdv.getTia()));
-			map.put(DrugViewExecl.VAL,String.valueOf(pdv.getVal()));
-			map.put(DrugViewExecl.FOS,String.valueOf(pdv.getFos()));
-			map.put(DrugViewExecl.NIT,String.valueOf(pdv.getNit()));
-			map.put(DrugViewExecl.SXT,String.valueOf(pdv.getSxt()));
-			map.put(DrugViewExecl.TMP,String.valueOf(pdv.getTmp()));
-			map.put(DrugViewExecl.CIP,String.valueOf(pdv.getCip()));
-			map.put(DrugViewExecl.LEV,String.valueOf(pdv.getLev()));
-			map.put(DrugViewExecl.NAL,String.valueOf(pdv.getNal()));
-			map.put(DrugViewExecl.NOR,String.valueOf(pdv.getNor()));
-			map.put(DrugViewExecl.OFX,String.valueOf(pdv.getOfx()));
-			map.put(DrugViewExecl.LZD,String.valueOf(pdv.getLzd()));
-			map.put(DrugViewExecl.OQX,String.valueOf(pdv.getOqx()));
-			map.put(DrugViewExecl.MEM,String.valueOf(pdv.getMem()));
-			map.put(DrugViewExecl.MICOPERATOR, pdv.getMicoperator());
-			map.put(DrugViewExecl.MICDETECTIONTYPE, pdv.getMicdetectiontype());
-			map.put(DrugViewExecl.MICREMARK, pdv.getMicremarks());
-			map.put(DrugViewExecl.GENNAME, pdv.getGenname());
-			map.put(DrugViewExecl.ISEQ, pdv.getIseq());
-			map.put(DrugViewExecl.REPLICON, pdv.getReplicon());
-			map.put(DrugViewExecl.GENTC, pdv.getGentc());
-			map.put(DrugViewExecl.GENOPERATOR, pdv.getGenoperator());
+			map.put(DrugViewExcel.SAMPLENO, pdv.getSampleno());
+			map.put(DrugViewExcel.STRAINNO, pdv.getStrainno());
+			map.put(DrugViewExcel.ALIAS, pdv.getStrainalias());
+			map.put(DrugViewExcel.SAMPLEDATE, pdv.getSampledate());
+			map.put(DrugViewExcel.SAMPLEPROVINCE, pdv.getSampleprovince());
+			map.put(DrugViewExcel.FARMNAME, pdv.getFarmname());
+			map.put(DrugViewExcel.SAMPLEFARMADDR, pdv.getSamplefarmaddr());
+			map.put(DrugViewExcel.ANIMALNAME, pdv.getAnimalname());
+			map.put(DrugViewExcel.SAMPLEANIMALAGE, pdv.getSampleanimalage());
+			map.put(DrugViewExcel.SAMPLESOURCE, pdv.getSamplesource());
+			map.put(DrugViewExcel.PARTNAME, pdv.getSamplecollectionpart());
+			map.put(DrugViewExcel.SAMPLECOLLECTOR, pdv.getSamplecollector());
+			map.put(DrugViewExcel.SAMPLEMEDICALHISTORY, pdv.getSamplemedicalhistory());
+			map.put(DrugViewExcel.SAMPLEREMARKS, pdv.getSampleremarks());
+			map.put(DrugViewExcel.STRAINCATEGORY, pdv.getStraincategory());
+			map.put(DrugViewExcel.STRAINTYPE, pdv.getStraintype());
+			map.put(DrugViewExcel.STRAINSTORAGEDATE, pdv.getStrainstoragedate());
+			map.put(DrugViewExcel.SEROTYPE, pdv.getSerotype());
+			map.put(DrugViewExcel.STRAINMLST, pdv.getStrainmlst());
+			map.put(DrugViewExcel.STRAINPLG, pdv.getStrainplg());
+			map.put(DrugViewExcel.STRAINOPERATOR, pdv.getStrainoperator());
+			map.put(DrugViewExcel.STRAINPARTER, pdv.getStrainparter());
+			map.put(DrugViewExcel.STRAINREMARKS, pdv.getStrainremarks());
+			map.put(DrugViewExcel.AMP,String.valueOf(pdv.getAmp()));
+			map.put(DrugViewExcel.OXA,String.valueOf(pdv.getOxa()));
+			map.put(DrugViewExcel.PEN,String.valueOf(pdv.getPen()));
+			map.put(DrugViewExcel.PIP,String.valueOf(pdv.getPip()));
+			map.put(DrugViewExcel.TZP,String.valueOf(pdv.getTzp()));
+			map.put(DrugViewExcel.CAZ,String.valueOf(pdv.getCaz()));
+			map.put(DrugViewExcel.CFZ,String.valueOf(pdv.getCfz()));
+			map.put(DrugViewExcel.CQM,String.valueOf(pdv.getCqm()));
+			map.put(DrugViewExcel.CRO,String.valueOf(pdv.getCro()));
+			map.put(DrugViewExcel.CTX,String.valueOf(pdv.getCtx()));
+			map.put(DrugViewExcel.FEP,String.valueOf(pdv.getFep()));
+			map.put(DrugViewExcel.FOX,String.valueOf(pdv.getFox()));
+			map.put(DrugViewExcel.AMK,String.valueOf(pdv.getAmk()));
+			map.put(DrugViewExcel.APR,String.valueOf(pdv.getApr()));
+			map.put(DrugViewExcel.GEN,String.valueOf(pdv.getGen()));
+			map.put(DrugViewExcel.NEO,String.valueOf(pdv.getNeo()));
+			map.put(DrugViewExcel.NET,String.valueOf(pdv.getNet()));
+			map.put(DrugViewExcel.STR,String.valueOf(pdv.getStr()));
+			map.put(DrugViewExcel.TOB,String.valueOf(pdv.getTob()));
+			map.put(DrugViewExcel.DOX,String.valueOf(pdv.getDox()));
+			map.put(DrugViewExcel.MIN,String.valueOf(pdv.getMin()));
+			map.put(DrugViewExcel.TET,String.valueOf(pdv.getTet()));
+			map.put(DrugViewExcel.CHL,String.valueOf(pdv.getChl()));
+			map.put(DrugViewExcel.FFC,String.valueOf(pdv.getFfc()));
+			map.put(DrugViewExcel.AZM,String.valueOf(pdv.getAzm()));
+			map.put(DrugViewExcel.ERY,String.valueOf(pdv.getEry()));
+			map.put(DrugViewExcel.RIF,String.valueOf(pdv.getRif()));
+			map.put(DrugViewExcel.TEC,String.valueOf(pdv.getTec()));
+			map.put(DrugViewExcel.VAN,String.valueOf(pdv.getVan()));
+			map.put(DrugViewExcel.CLI,String.valueOf(pdv.getCli()));
+			map.put(DrugViewExcel.CL,String.valueOf(pdv.getCl()));
+			map.put(DrugViewExcel.IMP,String.valueOf(pdv.getImp()));
+			map.put(DrugViewExcel.TIA,String.valueOf(pdv.getTia()));
+			map.put(DrugViewExcel.VAL,String.valueOf(pdv.getVal()));
+			map.put(DrugViewExcel.FOS,String.valueOf(pdv.getFos()));
+			map.put(DrugViewExcel.NIT,String.valueOf(pdv.getNit()));
+			map.put(DrugViewExcel.SXT,String.valueOf(pdv.getSxt()));
+			map.put(DrugViewExcel.TMP,String.valueOf(pdv.getTmp()));
+			map.put(DrugViewExcel.CIP,String.valueOf(pdv.getCip()));
+			map.put(DrugViewExcel.LEV,String.valueOf(pdv.getLev()));
+			map.put(DrugViewExcel.NAL,String.valueOf(pdv.getNal()));
+			map.put(DrugViewExcel.NOR,String.valueOf(pdv.getNor()));
+			map.put(DrugViewExcel.OFX,String.valueOf(pdv.getOfx()));
+			map.put(DrugViewExcel.LZD,String.valueOf(pdv.getLzd()));
+			map.put(DrugViewExcel.OQX,String.valueOf(pdv.getOqx()));
+			map.put(DrugViewExcel.MEM,String.valueOf(pdv.getMem()));
+			map.put(DrugViewExcel.MICOPERATOR, pdv.getMicoperator());
+			map.put(DrugViewExcel.MICDETECTIONTYPE, pdv.getMicdetectiontype());
+			map.put(DrugViewExcel.MICREMARK, pdv.getMicremarks());
+			map.put(DrugViewExcel.GENNAME, pdv.getGenname());
+			map.put(DrugViewExcel.ISEQ, pdv.getIseq());
+			map.put(DrugViewExcel.REPLICON, pdv.getReplicon());
+			map.put(DrugViewExcel.GENTC, pdv.getGentc());
+			map.put(DrugViewExcel.GENOPERATOR, pdv.getGenoperator());
 			list.add(map);
 		}
 		return list;
