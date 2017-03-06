@@ -9,7 +9,7 @@ public class UsersFunction {
 	private List<String> functions;
 
 	public String getUsername() {
-		return username;
+		return username!=null?username:"";
 	}
 
 	public void setUsername(String username) {
@@ -24,4 +24,12 @@ public class UsersFunction {
 		this.functions = functions;
 	}
 
+	@Override
+	public String toString() {
+		return "UsersFunction [username=" + username + ", functions="
+				+ functions + "]";
+	}
+
+	
+	
 }

@@ -12,8 +12,6 @@ import drug.dto.UsersFunction;
 
 /**
  * 登录拦截器
- * @author Evan
- *
  */
 public class LoginInterceptor implements HandlerInterceptor {
 
@@ -21,11 +19,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		Object object = request.getSession().getAttribute("user");
-		
-		String uri = request.getRequestURI();
-		System.out.println("uri   " + uri);
 		if (object == null) { //未登录
-			response.sendRedirect(request.getContextPath() + "/index.html");
+//			response.sendRedirect(request.getContextPath() + "/index.html");
+//			request.getRequestDispatcher("/index.html").forward(request, response);
 			return false;
 		} else {
 //			System.out.println("已登录用户: " + ((UsersFunction)object).getUsername());

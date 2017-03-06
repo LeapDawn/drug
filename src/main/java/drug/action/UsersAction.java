@@ -137,6 +137,7 @@ public class UsersAction extends BaseAction{
 		String errorMsg = "";
 		try {
 			UsersFunction usersFunction = usersService.login(puser.getUsername(), puser.getPassword());
+			System.out.println(usersFunction);
 			httpSession.setAttribute("user", usersFunction);
 			result = new AjaxResult(true, "");
 			log.info("【用户登录成功】：【"+user.getUsername()+"】");
@@ -156,7 +157,7 @@ public class UsersAction extends BaseAction{
 		return result;
 	}
 	
-	@RequestMapping(value = "/logout", method=RequestMethod.POST)
+	@RequestMapping(value = "/logout")
 	@ResponseBody
 	public AjaxResult logout(HttpSession httpSession){
 		String errorMsg = "";

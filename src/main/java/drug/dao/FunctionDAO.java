@@ -6,7 +6,8 @@ import drug.model.Function;
 
 public interface FunctionDAO {
 	
-    Function selectByRole(String roleno);
+    List<String> selectURLByRole(String roleno);
 
     List<Function> selectAll();
+    
 }

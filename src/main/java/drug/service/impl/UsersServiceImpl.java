@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import drug.commons.exception.DataViolationException;
 import drug.commons.util.Transfer;
-import drug.dao.RoleFunctionDAO;
+import drug.dao.FunctionDAO;
 import drug.dao.UsersDAO;
 import drug.dto.UsersFunction;
 import drug.dto.pageModel.PUsers;
@@ -23,12 +23,12 @@ public class UsersServiceImpl implements UsersService{
 	@Autowired
 	private UsersDAO usersDAO;
 	@Autowired
-	private RoleFunctionDAO rfDAO;
+	private FunctionDAO functionDAO;
+	public void setFunctionDAO(FunctionDAO functionDAO) {
+		this.functionDAO = functionDAO;
+	}
 	public void setUsersDAO(UsersDAO usersDAO) {
 		this.usersDAO = usersDAO;
-	}
-	public void setRfDAO(RoleFunctionDAO rfDAO) {
-		this.rfDAO = rfDAO;
 	}
 
 
@@ -94,7 +94,7 @@ public class UsersServiceImpl implements UsersService{
 			if (roleNo == null || roleNo.equals("")) {
 				userFunction.setFunctions(new ArrayList<String>());
 			} else {
-				userFunction.setFunctions(rfDAO.selectByRole(users.getRole()));
+				userFunction.setFunctions(functionDAO.selectURLByRole(roleNo));
 			}
 			
 			return userFunction;
