@@ -50,7 +50,7 @@ public class Transfer {
 		String str = psample.getSampledateStr();
 		if (str != null && !"".equals(str)) {
 			try {
-				sample.setSampledate(new SimpleDateFormat("yyyy-MM-dd").parse(str));
+				sample.setSampledate(StringUtil.parseDate(str));
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new DataViolationException("添加失败,日期格式错误,示例:2016-01-01");
@@ -76,7 +76,7 @@ public class Transfer {
 		String str = pstrain.getStrainstoragedateStr();
 		if (str != null && !"".equals(str)) {
 			try {
-				strain.setStrainstoragedate(new SimpleDateFormat("yyyy-MM-dd").parse(str));
+				strain.setStrainstoragedate(StringUtil.parseDate(str));
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new DataViolationException("操作失败,日期格式错误,示例:2016-01-01");

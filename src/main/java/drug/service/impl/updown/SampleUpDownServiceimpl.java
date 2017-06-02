@@ -35,6 +35,9 @@ import drug.model.Source;
 import drug.service.UpDownService;
 
 @Service("sampleUpDown")
+/**
+ * 样品信息导入/导出
+ */
 public class SampleUpDownServiceimpl implements UpDownService{
 
 	public static Logger log = Logger.getLogger("R");

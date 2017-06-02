@@ -14,6 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import drug.dto.AjaxResult;
 import drug.dto.UsersFunction;
 
+/**
+ * 功能(权限)拦截器
+ */
 public class FunctionInterceptor implements HandlerInterceptor {
 
 	@Override
@@ -22,12 +25,9 @@ public class FunctionInterceptor implements HandlerInterceptor {
 		String url = request.getRequestURI();
 		String projectUrl = request.getContextPath();
 		url = url.substring(projectUrl.length());
-		System.out.println("URL:       " + url);
-		
 		if (url.indexOf("selection") != -1 || url.indexOf("login") != -1) {
 			return true;
 		}
-		
 		UsersFunction user = (UsersFunction) request.getSession().getAttribute("user");
 		List<String> functions = user.getFunctions();
 		if (functions.contains(url)) {

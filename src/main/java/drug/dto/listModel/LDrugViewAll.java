@@ -4,6 +4,8 @@ public class LDrugViewAll {
 
 	private String sampleno;
 
+	private String strainalias;
+
 	private String beginDate;
 
 	private String endDate;
@@ -31,6 +33,14 @@ public class LDrugViewAll {
 	private String order;
 
 	private String sort;
+
+	public String getStrainalias() {
+		return strainalias;
+	}
+
+	public void setStrainalias(String strainalias) {
+		this.strainalias = strainalias;
+	}
 
 	public String getSampleno() {
 		return sampleno;

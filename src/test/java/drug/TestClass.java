@@ -2,21 +2,20 @@ package drug;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 
-import drug.commons.excelModel.DrugViewExcel;
-import drug.commons.excelModel.FarmExcel;
-import drug.commons.excelModel.MicExcel;
 import drug.commons.excelModel.StrainExcel;
 import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
-import drug.model.Farms;
+import drug.commons.util.StringUtil;
 
 public class TestClass {
 
@@ -72,5 +71,12 @@ public class TestClass {
 			System.out.println("map.put(DrugViewExecl." + s
 					+ ",String.valueOf(pdv.get" + s2 + "()));");
 		}
+	}
+	
+	@Test
+	public void test3() {
+		Integer i = null;
+		int a = i;
+		System.out.println(a);
 	}
 }

@@ -23,6 +23,9 @@ import drug.model.DrugView;
 import drug.service.UpDownService;
 
 @Service("drugViewDown")
+/**
+ * 耐药率信息导出/导入
+ */
 public class DrugViewDownServiceImpl implements UpDownService {
 
 	public static Logger log = Logger.getLogger("R");

@@ -7,10 +7,7 @@ import drug.dto.pageModel.PStrainMic;
 import drug.model.StrainMic;
 
 /**
- * 检测mic浓度
- * 
- * @author Evan
- *
+ * 检测mic浓度合法性
  */
 public class MicDataCheck {
 	public static void checkAllDate(StrainMic sMic) {

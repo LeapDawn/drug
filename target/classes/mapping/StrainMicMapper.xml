@@ -896,11 +896,11 @@
 	<delete id="delete" parameterType="java.lang.String">
 		delete from strainmic
 		where strainNo in
-		<foreach collection="array" open="(" close=")" separator=","
-			item="strainno">
-			#{strainno,jdbcType=VARCHAR}
+		<foreach collection="strainno" open="(" close=")" separator=","
+			item="no">
+			#{no,jdbcType=VARCHAR}
 		</foreach>
-		 and gramStain = #{gramstain,jdbcType=VARCHAR}
+		 and gramStain = #{gram,jdbcType=VARCHAR}
 	</delete>
 
 	<insert id="insert" parameterType="drug.model.StrainMic">

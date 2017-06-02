@@ -121,7 +121,7 @@ public class RoleAction extends BaseAction {
 			} else {
 				errorMsg = "获取角色信息时发生未知异常,请联系维护人员";
 			}
-			log.info("【获取角色信息异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
+			log.error("【获取角色信息异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
 			result = new AjaxResult(false, errorMsg);
 		}
 		return result;

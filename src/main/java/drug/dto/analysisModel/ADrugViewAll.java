@@ -7,9 +7,18 @@ public class ADrugViewAll extends LDrugViewAll{
 	private String strain;
 
 	private String statisticsType;
+	
+	private String strainalias;
 
 	private String timeWay;
 
+	public String getStrainalias() {
+		return strainalias;
+	}
+
+	public void setStrainalias(String strainalias) {
+		this.strainalias = strainalias;
+	}
 
 	public String getStrain() {
 		return strain != null ? strain:"";

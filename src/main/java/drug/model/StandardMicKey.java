@@ -30,4 +30,12 @@ public class StandardMicKey {
     public void setStrainname(String strainname) {
         this.strainname = strainname == null ? null : strainname.trim();
     }
+
+	@Override
+	public String toString() {
+		return "StandardMicKey [medicalname=" + medicalname + ", standardname="
+				+ standardname + ", strainname=" + strainname + "]";
+	}
+    
+    
 }

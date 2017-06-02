@@ -19,7 +19,6 @@ import drug.dto.pageModel.PageResultModel;
 import drug.model.DetailAnimal;
 import drug.service.AnimalService;
 
-
 @Controller
 @RequestMapping("/animal")
 public class AnimalAction extends BaseAction {

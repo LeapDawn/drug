@@ -20,11 +20,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 			HttpServletResponse response, Object handler) throws Exception {
 		Object object = request.getSession().getAttribute("user");
 		if (object == null) { //未登录
-//			response.sendRedirect(request.getContextPath() + "/index.html");
-//			request.getRequestDispatcher("/index.html").forward(request, response);
 			return false;
 		} else {
-//			System.out.println("已登录用户: " + ((UsersFunction)object).getUsername());
 			if (HandlerMethod.class.equals(handler.getClass())) {
 				HandlerMethod method = (HandlerMethod) handler;
 				Object controller = method.getBean();

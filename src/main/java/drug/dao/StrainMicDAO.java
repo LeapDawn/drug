@@ -8,7 +8,7 @@ import drug.dto.listModel.LStrainMic;
 import drug.model.StrainMic;
 
 public interface StrainMicDAO {
-	int delete(String[] strainno);
+	int delete(@Param("strainno")String[] strainno, @Param("gram")String gramStrain);
 
 	int insert(StrainMic record);
 

@@ -21,6 +21,9 @@ import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 import drug.commons.exception.ExcelException;
 
+/**
+ * Execl文件操作工具类
+ */
 public class ExeclUtil {
 	
 	private String[] headArray;

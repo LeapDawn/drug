@@ -1,11 +1,40 @@
 package drug.commons.util;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 字符串工具
+ */
 public class StringUtil {
-
+	
+	public static Date parseDate(String str) throws ParseException {
+		Date date = null;
+		try {
+			if (!str.startsWith("20")) {
+				date = new SimpleDateFormat("yyyy-MM-dd").parse("20" + str);
+			} else {
+				date = new SimpleDateFormat("yyyy-MM-dd").parse(str);
+			}
+		} catch (ParseException e) {
+			throw e;
+		}
+		return date;
+	}
+	
+	// 讲字符串转为Double,空字符串转为0
+	public static Double parseDouble(String str) {
+		if (str == null || str.equals("")) {
+			return 0D;
+		} else {
+			return Double.valueOf(str);
+		}
+	}
+	
 	public static String changeEncoding(String str) {
 		if (!checkNotNull(str)){
 			return str;

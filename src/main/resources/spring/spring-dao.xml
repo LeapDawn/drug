@@ -10,23 +10,31 @@
         <!-- 1.配置数据库相关参数properties属性:${url}-->
         <context:property-placeholder location="classpath:jdbc.properties"/>
         <!-- 2.数据库连接池-->
+        <!-- 
         <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-            <!-- 配置连接池属性 -->
             <property name="driverClass" value="${jdbc.driver}"/>
             <property name="jdbcUrl" value="${jdbc.url}"/>
             <property name="user" value="${jdbc.username}"/>
-            <property name="password" value="${jdbc.password}" />
-            <!-- c3p0连接池的私有属性 -->
+            <property name="password" value="${jdbc.password}" /> 
             <property name="maxPoolSize" value="30"/>
             <property name="minPoolSize" value="10"/>
-            <!-- 关闭连接后不自动commit -->
             <property name="autoCommitOnClose" value="false"/>
-            <!-- 获取连接超时时间 -->
-            <property name="checkoutTimeout" value="1000"/>
-            <!-- 获取连接失败重试次数 -->
+            <property name="checkoutTimeout" value="0"/>
             <property name="acquireRetryAttempts" value="2"/>
         </bean>
-
+ 		-->
+ 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+			<property name="driverClassName" value="${jdbc.driver}">
+			</property>
+			<property name="url" value="${jdbc.url}">
+			</property>
+			<property name="username" value="${jdbc.username}"></property>
+			<property name="password" value="${jdbc.password}"></property>
+			<property name="maxActive" value="30"></property>
+			<property name="maxIdle" value="20"></property>
+			<property name="minIdle" value="10"></property>
+		</bean>
         <!-- 3.配置SqlSessionFactory对象 -->
         <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
             <!-- 注入数据库连接池-->

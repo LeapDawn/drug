@@ -20,6 +20,7 @@ import drug.commons.exception.DataViolationException;
 import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.MicDataCheck;
+import drug.commons.util.StringUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCodingDAO;
 import drug.dao.StrainMicDAO;
@@ -30,6 +31,9 @@ import drug.model.StrainMic;
 import drug.service.UpDownService;
 
 @Service("negativeMicUpDown")
+/**
+ * 阴性MIC导入/导出
+ */
 public class NegativeMicUpDownServieImpl implements UpDownService {
 	public static Logger log = Logger.getLogger("R");
 
@@ -171,7 +175,6 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 					addList.add(Transfer.changeToEntity(pmic));
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 				pmic.setOtherMsg("未知错误");
 				errorList.add(pmic);
 				continue;
@@ -188,33 +191,34 @@ public class NegativeMicUpDownServieImpl implements UpDownService {
 			try {
 				mic.setStrainno(String.valueOf(map.get(MicExcel.STRAINNO)));
 				mic.setMicalias(String.valueOf(map.get(MicExcel.MICALIAS)));
-				mic.setAmk(Double.valueOf(String.valueOf(map.get(MicExcel.AMK))));
-				mic.setAmp(Double.valueOf(String.valueOf(map.get(MicExcel.AMP))));
-				mic.setApr(Double.valueOf(String.valueOf(map.get(MicExcel.APR))));
-				mic.setCaz(Double.valueOf(String.valueOf(map.get(MicExcel.CAZ))));
-				mic.setCl(Double.valueOf(String.valueOf(map.get(MicExcel.CL))));
-				mic.setChl(Double.valueOf(String.valueOf(map.get(MicExcel.CHL))));
-				mic.setCip(Double.valueOf(String.valueOf(map.get(MicExcel.CIP))));
-				mic.setCtx(Double.valueOf(String.valueOf(map.get(MicExcel.CTX))));
-				mic.setCqm(Double.valueOf(String.valueOf(map.get(MicExcel.CQM))));
-				mic.setDox(Double.valueOf(String.valueOf(map.get(MicExcel.DOX))));
-				mic.setFox(Double.valueOf(String.valueOf(map.get(MicExcel.FOX))));
-				mic.setFfc(Double.valueOf(String.valueOf(map.get(MicExcel.FFC))));
-				mic.setFos(Double.valueOf(String.valueOf(map.get(MicExcel.FOS))));
-				mic.setGen(Double.valueOf(String.valueOf(map.get(MicExcel.GEN))));
-				mic.setImp(Double.valueOf(String.valueOf(map.get(MicExcel.IMP))));
-				mic.setOqx(Double.valueOf(String.valueOf(map.get(MicExcel.OQX))));
-				mic.setNeo(Double.valueOf(String.valueOf(map.get(MicExcel.NEO))));
-				mic.setSxt(Double.valueOf(String.valueOf(map.get(MicExcel.SXT))));
-				mic.setStr(Double.valueOf(String.valueOf(map.get(MicExcel.STR))));
-				mic.setTet(Double.valueOf(String.valueOf(map.get(MicExcel.TET))));
-				mic.setMem(Double.valueOf(String.valueOf(map.get(MicExcel.MEM))));
+				mic.setAmk(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.AMK))));
+				mic.setAmp(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.AMP))));
+				mic.setApr(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.APR))));
+				mic.setCaz(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.CAZ))));
+				mic.setCl(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.CL))));
+				mic.setChl(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.CHL))));
+				mic.setCip(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.CIP))));
+				mic.setCtx(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.CTX))));
+				mic.setCqm(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.CQM))));
+				mic.setDox(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.DOX))));
+				mic.setFox(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.FOX))));
+				mic.setFfc(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.FFC))));
+				mic.setFos(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.FOS))));
+				mic.setGen(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.GEN))));
+				mic.setImp(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.IMP))));
+				mic.setOqx(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.OQX))));
+				mic.setNeo(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.NEO))));
+				mic.setSxt(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.SXT))));
+				mic.setStr(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.STR))));
+				mic.setTet(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.TET))));
+				mic.setMem(StringUtil.parseDouble(String.valueOf(map.get(MicExcel.MEM))));
 
 				mic.setOperator(String.valueOf(map.get(MicExcel.OPERATOR)));
 				mic.setMicdetectiontype(String.valueOf(map
 						.get(MicExcel.MICDETECTIONTYPE)));
 				mic.setRemark(String.valueOf(map.get(MicExcel.REMARK)));
 			} catch (NumberFormatException e) {
+				e.printStackTrace();
 				mic.setOtherMsg("药物浓度必须为数字");
 				errorList.add(mic);
 				continue;

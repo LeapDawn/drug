@@ -28,8 +28,10 @@ import drug.model.StrainCoding;
 import drug.model.StrainToNotes;
 import drug.service.UpDownService;
 
-// 菌株信息
 @Service("codingUpDown")
+/**
+ * 菌株信息导入/导出
+ */
 public class CodingUpDownServiceImpl implements UpDownService{
 
 	public static Logger log = Logger.getLogger("R");

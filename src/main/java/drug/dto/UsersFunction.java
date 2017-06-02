@@ -23,13 +23,4 @@ public class UsersFunction {
 	public void setFunctions(List<String> functions) {
 		this.functions = functions;
 	}
-
-	@Override
-	public String toString() {
-		return "UsersFunction [username=" + username + ", functions="
-				+ functions + "]";
-	}
-
-	
-	
 }

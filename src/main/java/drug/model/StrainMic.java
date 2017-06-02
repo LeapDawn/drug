@@ -542,4 +542,28 @@ public class StrainMic {
     public void setGramstain(String gramstain) {
         this.gramstain = gramstain == null ? null : gramstain.trim();
     }
+
+	@Override
+	public String toString() {
+		return "StrainMic [strainno=" + strainno + ", amk=" + amk + ", amp="
+				+ amp + ", apr=" + apr + ", azm=" + azm + ", cfz=" + cfz
+				+ ", fep=" + fep + ", ctx=" + ctx + ", fox=" + fox + ", caz="
+				+ caz + ", cro=" + cro + ", cqm=" + cqm + ", chl=" + chl
+				+ ", cip=" + cip + ", tia=" + tia + ", cli=" + cli + ", cl="
+				+ cl + ", dox=" + dox + ", val=" + val + ", ery=" + ery
+				+ ", ffc=" + ffc + ", fos=" + fos + ", gen=" + gen + ", imp="
+				+ imp + ", lev=" + lev + ", lzd=" + lzd + ", mem=" + mem
+				+ ", min=" + min + ", nal=" + nal + ", neo=" + neo + ", net="
+				+ net + ", nit=" + nit + ", nor=" + nor + ", ofx=" + ofx
+				+ ", oxa=" + oxa + ", pen=" + pen + ", pip=" + pip + ", tzp="
+				+ tzp + ", rif=" + rif + ", str=" + str + ", tec=" + tec
+				+ ", tet=" + tet + ", tob=" + tob + ", tmp=" + tmp + ", sxt="
+				+ sxt + ", van=" + van + ", oqx=" + oqx + ", operator="
+				+ operator + ", micdetectiontype=" + micdetectiontype
+				+ ", remark=" + remark + ", micalias=" + micalias
+				+ ", addtime=" + addtime + ", adduser=" + adduser
+				+ ", gramstain=" + gramstain + "]";
+	}
+    
+    
 }

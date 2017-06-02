@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import drug.commons.exception.DataViolationException;
 import drug.commons.util.Transfer;
 import drug.dao.RoleDAO;
 import drug.dao.RoleFunctionDAO;
@@ -52,6 +53,11 @@ public class RoleServiceImpl implements RoleService {
 			return 0;
 		}
 		String[] rolenoArray = roleno.split(",");
+		for (int i = 0; i < rolenoArray.length; i++) {
+			if (rolenoArray[i].equals("100") || rolenoArray[i].equals("101") || rolenoArray[i].equals("102")) {
+				throw new DataViolationException("角色【" + rolenoArray[i] + "】不允许被删除");
+			}
+		}
 		return roleDAO.delete(rolenoArray);
 	}
 

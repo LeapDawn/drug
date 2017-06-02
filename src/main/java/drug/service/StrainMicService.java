@@ -23,7 +23,7 @@ public interface StrainMicService {
 	 * @param strainNos
 	 * @return
 	 */
-	public int delete(String strainNos);
+	public int delete(String strainNos, String gramStrain);
 	
 	/**
 	 * 查询阴阳性菌株信息列表

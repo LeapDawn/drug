@@ -40,4 +40,12 @@ public class StandardMic extends StandardMicKey {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	@Override
+	public String toString() {
+		return "StandardMic [medlimit=" + medlimit + ", others1=" + others1
+				+ ", others2=" + others2 + ", remark=" + remark + "]";
+	}
+    
+    
 }

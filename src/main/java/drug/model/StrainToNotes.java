@@ -80,4 +80,15 @@ public class StrainToNotes {
     public void setGramstain(String gramstain) {
         this.gramstain = gramstain == null ? null : gramstain.trim();
     }
+
+	@Override
+	public String toString() {
+		return "StrainToNotes [id=" + id + ", strainname=" + strainname
+				+ ", straincategory=" + straincategory + ", strainnotes="
+				+ strainnotes + ", strainremark=" + strainremark + ", others2="
+				+ others2 + ", others1=" + others1 + ", gramstain=" + gramstain
+				+ "]";
+	}
+    
+    
 }

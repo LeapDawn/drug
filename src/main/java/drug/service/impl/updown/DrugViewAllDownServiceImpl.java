@@ -23,6 +23,9 @@ import drug.model.DrugViewAll;
 import drug.service.UpDownService;
 
 @Service("drugViewAllDown")
+/**
+ * 检出率信息导出
+ */
 public class DrugViewAllDownServiceImpl implements UpDownService {
 
 	public static Logger log = Logger.getLogger("R");

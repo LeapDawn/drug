@@ -27,6 +27,9 @@ import drug.model.Farms;
 import drug.service.UpDownService;
 
 @Service("farmsUpDown")
+/**
+ * 采样地信息导入/导出
+ */
 public class FarmsUpDownServiceImpl implements UpDownService {
 
 	public static Logger log = Logger.getLogger("R");
@@ -50,7 +53,7 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 		List<Map<String, Object>> bodyList = execlUtil.getBodyList();
 		List<Farms> add_list = this.transfer(bodyList, user);
 		List<PFarms> errorList = new ArrayList<PFarms>();
-		this.CheckAttrs(add_list, errorList);
+		add_list = this.CheckAttrs(add_list, errorList);
 		for (Farms farms : add_list) {
 			String errorMsg = "";
 			try {
@@ -71,7 +74,7 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 				errorList.add(pfarms);
 			}
 		}
-		ImportResultModel result = new ImportResultModel(errorList, add_list.size());
+		ImportResultModel result = new ImportResultModel(errorList, bodyList.size());
 		return result;
 	}
 
@@ -142,7 +145,8 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 		return list;
 	}
 	
-	private void CheckAttrs(List<Farms> addList, List<PFarms> errorList){
+	private List<Farms> CheckAttrs(List<Farms> addList, List<PFarms> errorList){
+		List<Farms> list = new ArrayList<Farms>();
 		for (Farms farms : addList) {
 			String errorMsg = null;
 			if (farms.getFarmname().trim().equals("")) {
@@ -153,12 +157,13 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 				errorMsg = "省份错误";
 			}
 			if (errorMsg != null) {
-				PFarms pfarms = new PFarms();
-				Transfer.changeToPageModel(farms);
+				PFarms pfarms = Transfer.changeToPageModel(farms);
 				pfarms.setErrorMsg(errorMsg);
 				errorList.add(pfarms);
-				addList.remove(farms);
+			} else {
+				list.add(farms);
 			}
 		}
+		return list;
 	}
 }

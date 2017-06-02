@@ -23,8 +23,10 @@ import drug.dto.pageModel.PStrainCoding;
 import drug.model.StrainCoding;
 import drug.service.UpDownService;
 
-//分型信息
 @Service("strainUpDown")
+/**
+ * 分型信息导入/导出
+ */
 public class StrainUpDownServiceImpl implements UpDownService {
 public static Logger log = Logger.getLogger("R");
 	

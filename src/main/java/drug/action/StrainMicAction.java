@@ -136,7 +136,7 @@ public class StrainMicAction extends BaseAction {
 		String errorMsg = "";
 		String strainnos = strainMic.getStrainno();
 		try {
-			int deleteNum = micService.delete(strainnos);
+			int deleteNum = micService.delete(strainnos, strainMic.getGramstain());
 			log.info("【菌株mic信息删除成功】："+strainnos+"【"+user.getUsername()+"】");
 			result = new AjaxResult(true, "成功删除" + deleteNum + "条菌株mic信息");
 		} catch (Exception e) {

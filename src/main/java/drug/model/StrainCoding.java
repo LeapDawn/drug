@@ -222,4 +222,24 @@ public class StrainCoding {
     public void setAdduser(String adduser) {
         this.adduser = adduser == null ? null : adduser.trim();
     }
+
+	@Override
+	public String toString() {
+		return "StrainCoding [strainno=" + strainno + ", sampleno=" + sampleno
+				+ ", straincategory=" + straincategory + ", straintype="
+				+ straintype + ", strainalias=" + strainalias
+				+ ", strainstoragedate=" + strainstoragedate + ", operator="
+				+ operator + ", serotype=" + serotype + ", strainmlst="
+				+ strainmlst + ", strainplg=" + strainplg + ", strainparter="
+				+ strainparter + ", strainremarks=" + strainremarks
+				+ ", gramstain=" + gramstain + ", addtime=" + addtime
+				+ ", adduser=" + adduser + ", farmName=" + farmName
+				+ ", samplefarmaddr=" + samplefarmaddr + ", sampleanimalage="
+				+ sampleanimalage + ", samplesource=" + samplesource
+				+ ", partName=" + partName + ", samplecollector="
+				+ samplecollector + ", samplemedicalhistory="
+				+ samplemedicalhistory + "]";
+	}
+    
+    
 }

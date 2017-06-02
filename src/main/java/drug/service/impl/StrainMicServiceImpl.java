@@ -59,12 +59,12 @@ public class StrainMicServiceImpl implements StrainMicService {
 	}
 
 	@Override
-	public int delete(String strainNos) {
+	public int delete(String strainNos, String gramStrain) {
 		if (strainNos == null || "".equals(strainNos) || ",".equals(strainNos.trim())) {
 			return 0;
 		}
 		String[] nos = strainNos.split(",");
-		return micDAO.delete(nos);
+		return micDAO.delete(nos, gramStrain);
 	}
 
 	@Override

@@ -8,9 +8,9 @@ public class ImportResultModel {
 	private int error; // 失败记录数
 	private int success; // 成功记录数
 	private List<?> data; // 导入失败数据
-	
+
 	public ImportResultModel() {
-		
+
 	}
 
 	public ImportResultModel(List<?> data, int total) {
@@ -50,6 +50,12 @@ public class ImportResultModel {
 
 	public void setData(List<?> data) {
 		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return "ImportResultModel [total=" + total + ", error=" + error
+				+ ", success=" + success + ", data=" + data + "]";
 	}
 
 }

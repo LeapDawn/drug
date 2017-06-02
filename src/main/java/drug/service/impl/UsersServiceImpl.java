@@ -48,7 +48,9 @@ public class UsersServiceImpl implements UsersService{
 
 	@Override
 	public void delete(String userName) {
-		// TODO 删除用户业务待完善
+		if (userName == null || userName.equals("yinxing") || userName.equals("root") || userName.equals("yangxing")) {
+			throw new DataViolationException("用户【" + userName + "】不允许被删除");
+		}
 		usersDAO.delete(userName);
 	}
 

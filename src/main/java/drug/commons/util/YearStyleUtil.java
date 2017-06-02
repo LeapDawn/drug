@@ -1,5 +1,8 @@
 package drug.commons.util;
 
+/**
+ * 时间字符串生成工具
+ */
 public class YearStyleUtil {
 	// 生成时间String
 	public static String getDate(String unknownDate, String number) {

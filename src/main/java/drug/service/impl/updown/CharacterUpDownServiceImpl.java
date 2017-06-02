@@ -28,6 +28,9 @@ import drug.model.StrainCharacter;
 import drug.service.UpDownService;
 
 @Service("characterUpDown")
+/**
+ * 基因导入/导出
+ */
 public class CharacterUpDownServiceImpl implements UpDownService {
 
 	public static Logger log = Logger.getLogger("R");

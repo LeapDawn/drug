@@ -132,7 +132,7 @@ public class StrainMicServiceTest {
 	@Test
 	public void delete() {
 		String nos = "155126019440,155126019540";
-		micService.delete(nos);		
+//		micService.delete(nos);		
 	}
 	
 	@Test
