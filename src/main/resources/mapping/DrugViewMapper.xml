@@ -542,7 +542,7 @@
 			</if>
 		</where>
 	</sql>
-	<select id="selectList" parameterType="drug.dto.listModel.LDrugViewAll"
+	<select id="selectList" parameterType="drug.dto.listModel.LDrugView"
 		resultMap="DrugView">
 		select
 		<include refid="column" />
@@ -573,7 +573,7 @@
 		</if>
 	</select>
 	
-	<select id="count" parameterType="drug.dto.listModel.LDrugViewAll" resultType="java.lang.Integer">
+	<select id="count" parameterType="drug.dto.listModel.LDrugView" resultType="java.lang.Integer">
 		select count(id) from drugview
 		<include refid="list_where" />
 	</select>

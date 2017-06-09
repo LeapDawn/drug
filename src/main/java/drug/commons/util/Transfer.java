@@ -11,6 +11,7 @@ import drug.commons.exception.DataViolationException;
 import drug.dto.pageModel.PDrugView;
 import drug.dto.pageModel.PDrugViewAll;
 import drug.dto.pageModel.PFarms;
+import drug.dto.pageModel.PGenView;
 import drug.dto.pageModel.PRole;
 import drug.dto.pageModel.PSample;
 import drug.dto.pageModel.PStrainCharacter;
@@ -20,6 +21,7 @@ import drug.dto.pageModel.PUsers;
 import drug.model.DrugView;
 import drug.model.DrugViewAll;
 import drug.model.Farms;
+import drug.model.GenView;
 import drug.model.Role;
 import drug.model.Sample;
 import drug.model.StrainCharacter;
@@ -146,6 +148,15 @@ public class Transfer {
 		date = drugView.getStrainstoragedate();
 		pdv.setStrainstoragedate(date!=null?format.format(date):"");
 		return pdv;
+	}
+	
+	public static PGenView changeToPageModel(GenView genView) {
+		PGenView pgv = new PGenView();
+		BeanUtils.copyProperties(genView, pgv);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = genView.getSampledate();
+		pgv.setSampledate(date!=null?format.format(date):"");
+		return pgv;
 	}
 	
 	public static Role changeToEntity(PRole prole) {

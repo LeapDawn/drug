@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.GenViewDAO">
+	<resultMap id="GenView" type="drug.model.GenView">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="strainNo" jdbcType="VARCHAR" property="strainno" />
+		<result column="genName" jdbcType="VARCHAR" property="genname" />
+		<result column="genAlias" jdbcType="VARCHAR" property="genalias" />
+		<result column="genRemarks" jdbcType="VARCHAR" property="genremarks" />
+		<result column="sampleNo" jdbcType="VARCHAR" property="sampleno" />
+		<result column="sampleDate" jdbcType="DATE" property="sampledate" />
+		<result column="animalNo" jdbcType="INTEGER" property="animalno" />
+		<result column="animalName" jdbcType="VARCHAR" property="animalname" />
+		<result column="sampleProvince" jdbcType="VARCHAR" property="sampleProvince" />
+		<result column="genotyping1" jdbcType="VARCHAR" property="genotyping1" />
+		<result column="genotyping2" jdbcType="VARCHAR" property="genotyping2" />
+		<result column="genotyping3" jdbcType="VARCHAR" property="genotyping3" />
+		<result column="sampleSource" jdbcType="VARCHAR" property="sampleSource" />
+	</resultMap>
+	<sql id="column">
+		id,strainNo,genName,genAlias,genRemarks,sampleNo,sampleDate,
+		animalNo,animalName,sampleProvince,genotyping1,genotyping2,genotyping3,sampleSource
+	</sql>
+
+	<sql id="list_where">
+		<where>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo like '%' #{strainno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genname != null and !&quot;&quot;.equals(genname.trim())">
+				and genName like '%' #{genname,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genalias != null and !&quot;&quot;.equals(genalias.trim())">
+				and genAlias like '%' #{genalias,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="genremarks != null and !&quot;&quot;.equals(genremarks.trim())">
+				and genRemarks like '%' #{genremarks,jdbcType=VARCHAR}
+				'%'
+			</if>
+			<if test="sampleno != null and !&quot;&quot;.equals(sampleno.trim())">
+				and sampleNo like '%' #{sampleno,jdbcType=VARCHAR} '%'
+			</if>
+			<if test="beginDate != null and !&quot;&quot;.equals(beginDate.trim())">
+				and sampleDate <![CDATA[>=]]>
+				#{beginDate,jdbcType=DATE}
+			</if>
+			<if test="endDate != null and !&quot;&quot;.equals(endDate.trim())">
+				and sampleDate <![CDATA[<=]]>
+				#{endDate,jdbcType=DATE}
+			</if>
+			<if test="province != null and province.length &gt;0">
+				and sampleProvince in
+				<foreach collection="province" open="(" close=")" separator=","
+					item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="animalNos != null and animalNos.size() &gt;0">
+				and animalNo in
+				<foreach collection="animalNos" open="(" close=")"
+					separator="," item="no">
+					#{no}
+				</foreach>
+			</if>
+			<if test="genotyping1 != null and genotyping1.length &gt;0">
+				and genotyping1 in
+				<foreach collection="genotyping1" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="genotyping2 != null and genotyping2.length &gt;0">
+				and genotyping2 in
+				<foreach collection="genotyping2" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="genotyping3 != null and genotyping3.length &gt;0">
+				and genotyping3 in
+				<foreach collection="genotyping3" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+			<if test="sampleSource != null and sampleSource.length &gt;0">
+				and sampleSource in
+				<foreach collection="sampleSource" open="(" close=")"
+					separator="," item="no">
+					#{no,jdbcType=VARCHAR}
+				</foreach>
+			</if>
+		</where>
+	</sql>
+
+	<select id="count" parameterType="drug.dto.listModel.LGenView"
+		resultType="java.lang.Integer">
+		select count(*) from genView
+		<include refid="list_where" />
+	</select>
+
+	<select id="selectList" parameterType="drug.dto.listModel.LGenView"
+		resultMap="GenView">
+		select
+		<include refid="column" />
+		from genView
+		<include refid="list_where" />
+			<if test="order != null and !&quot;&quot;.equals(order.trim())">
+			order by ${order}
+			<if test="sort != null and !&quot;&quot;.equals(sort.trim())">
+				${sort}
+			</if>
+		</if>
+		<if test="page != null and rows != null">
+			limit #{page},#{rows};
+		</if>
+	</select>
+	
+	<select id="selectById" parameterType="java.lang.Integer"
+		resultMap="GenView">
+		select
+		<include refid="column" />
+		from genView
+		where id in
+		<foreach collection="ids" separator="," open="(" close=")" item="id">
+			#{id}
+		</foreach>
+	</select>
+</mapper>

@@ -24,7 +24,7 @@ import drug.service.UpDownService;
 
 @Service("drugViewDown")
 /**
- * 耐药率信息导出/导入
+ * 耐药率信息导出
  */
 public class DrugViewDownServiceImpl implements UpDownService {
 

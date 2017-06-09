@@ -33,7 +33,7 @@ import drug.service.DrugViewService;
 import drug.service.UpDownService;
 
 @Controller
-@RequestMapping("druganalysis")
+@RequestMapping("/druganalysis")
 public class DrugViewAction extends BaseAction{
 	
 	@Autowired
