@@ -28,7 +28,7 @@ import drug.commons.exception.DataViolationException;
 import drug.commons.exception.ExcelException;
 import drug.dto.AjaxResult;
 import drug.dto.listModel.LSample;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PSample;
 import drug.dto.pageModel.PageResultModel;
 import drug.service.SampleService;
@@ -176,7 +176,7 @@ public class SampleAction extends BaseAction {
 		if (file == null) {
 			return new AjaxResult(false, "上传的文件为空");
 		}
-		ImportResultModel resultModel = null;
+		UploadResultModel resultModel = null;
 		
 		// 导入功能的日志记录下放至service层
 		try {

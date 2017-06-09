@@ -26,7 +26,7 @@ import drug.dao.DetailAnimalDAO;
 import drug.dao.FarmsDAO;
 import drug.dao.SampleDAO;
 import drug.dao.SourceDAO;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PSample;
 import drug.model.CollectionPart;
 import drug.model.DetailAnimal;
@@ -54,7 +54,7 @@ public class SampleUpDownServiceimpl implements UpDownService{
 	private FarmsDAO farmsDAO;
 	
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user)
+	public UploadResultModel importDatas(InputStream input, String user)
 			throws ExcelException {
 		String[] importColumns = SampleExcel.getImportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
@@ -94,7 +94,7 @@ public class SampleUpDownServiceimpl implements UpDownService{
 				log.error("【导入样品信息异常】："+psample+ e +"【"+user+"】");
 			}
 		}
-		ImportResultModel result = new ImportResultModel(errorList, bodyList.size());
+		UploadResultModel result = new UploadResultModel(errorList, bodyList.size());
 		return result;
 	}
 

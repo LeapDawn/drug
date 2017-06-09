@@ -2,8 +2,10 @@ package drug.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import drug.commons.exception.DataViolationException;
 import drug.commons.util.Transfer;
 import drug.commons.util.YearStyleUtil;
+import drug.dao.DetailAnimalDAO;
 import drug.dao.DrugViewDAO;
 import drug.dao.StandardMicDAO;
 import drug.dto.analysisModel.ADrugView;
@@ -26,6 +29,11 @@ public class DrugViewServiceImpl implements DrugViewService {
 
 	@Autowired
 	private DrugViewDAO drugViewDAO;
+	@Autowired
+	private DetailAnimalDAO animalDAO;
+	public void setAnimalDAO(DetailAnimalDAO animalDAO) {
+		this.animalDAO = animalDAO;
+	}
 	public void setDrugViewDAO(DrugViewDAO drugViewDAO) {
 		this.drugViewDAO = drugViewDAO;
 	}
@@ -41,6 +49,7 @@ public class DrugViewServiceImpl implements DrugViewService {
 		if (ldrugView == null) {
 			ldrugView = new LDrugView();
 		}
+		animalNosHandle(ldrugView);
 		int total = drugViewDAO.count(ldrugView);
 		PageResultModel<PDrugView> resultModel =
 				new PageResultModel<PDrugView>(total, ldrugView.getRows(), ldrugView.getPage());
@@ -61,6 +70,7 @@ public class DrugViewServiceImpl implements DrugViewService {
 		if (adrugView == null) {
 			throw new DataViolationException("");
 		}
+		animalNosHandle(adrugView);
 		String drug = adrugView.getDrug();
 		String strain = adrugView.getStrain();
 		String[] drugs = drug.split(",");
@@ -161,5 +171,26 @@ public class DrugViewServiceImpl implements DrugViewService {
 			}
 		}
 		return returnList;
+	}
+	
+	/**
+	 * 动物筛选条件，对大类做处理
+	 * @param ldrugView
+	 */
+	private void animalNosHandle(LDrugView ldrugView) {
+		String[] animalNames = ldrugView.getAnimalName();
+		if (animalNames != null && animalNames.length > 0) {
+			Set<Integer> nos = animalDAO.selectNosByName(animalNames);
+			Set<Integer> superNos = new HashSet<Integer>();
+			for (Integer i : nos) {
+				if (i % 10 == 0) {
+					superNos.add(i);
+				}
+			}
+			if (superNos.size() > 0) {
+				nos.addAll(animalDAO.selectNosBySuper(superNos));
+			}
+			ldrugView.setAnimalNos(nos);
+		}
 	}
 }

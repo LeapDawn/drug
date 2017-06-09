@@ -22,9 +22,10 @@ import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCharacterDAO;
 import drug.dao.StrainCodingDAO;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PStrainCharacter;
 import drug.model.StrainCharacter;
+import drug.model.StrainCoding;
 import drug.service.UpDownService;
 
 @Service("characterUpDown")
@@ -47,7 +48,7 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 	}
 
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user)
+	public UploadResultModel importDatas(InputStream input, String user)
 			throws ExcelException {
 		String[] importColumns = CharacterExcel.getImportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
@@ -85,7 +86,7 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 				log.error("【导入基因信息异常】："+pcharacter+ e +"【"+user+"】");
 			}
 		}
-		ImportResultModel result = new ImportResultModel(errorList, bodyList.size());
+		UploadResultModel result = new UploadResultModel(errorList, bodyList.size());
 		return result;
 	}
 
@@ -132,7 +133,7 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 				continue;
 			}
 			
-			List<String> strainnoList = codingDAO.selectStrainNoByAliasOrNo(strainno, genalias);
+			List<StrainCoding> strainnoList = codingDAO.selectStrainNoByAliasOrNo(strainno, genalias);
 			if (strainnoList == null || strainnoList.size() == 0) {
 				pch.setOtherMsg("没有与菌株编号/内部编号对应的菌株信息(菌株不存在)");
 				errorList.add(pch);
@@ -146,7 +147,7 @@ public class CharacterUpDownServiceImpl implements UpDownService {
 				errorList.add(pch);
 				continue;
 			} else {
-				pch.setStrainno(strainnoList.get(0));
+				pch.setStrainno(strainnoList.get(0).getStrainno());
 				addList.add(Transfer.changeToEntity(pch));
 			}
 		}

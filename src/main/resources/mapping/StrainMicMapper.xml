@@ -70,6 +70,20 @@
 		remark, micAlias, addTime, addUser, gramStain
 	</sql>
 
+	<select id="selectByNoOrAlias" parameterType="java.lang.String" resultType="StrainMic">
+		select
+		 strainNo,micAlias,gramStain
+		from strainmic
+		<where>
+			<if test="strainno != null and !&quot;&quot;.equals(strainno.trim())">
+				and strainNo = #{strainno, jdbcType=VARCHAR}
+			</if>
+			<if test="alias != null and !&quot;&quot;.equals(alias.trim())">
+				and micAlias = #{alias, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
 	<select id="selectByNos" parameterType="java.lang.String" resultType="StrainMic">
 		select
 		<include refid="column"/>
@@ -1491,5 +1505,31 @@
 			</if>
 		</set>
 		where strainNo = #{strainno,jdbcType=VARCHAR} and gramStain = #{gramstain,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" item="map" separator="">
+			update strainmic
+			<set>
+				<foreach collection="map.keys" item="key" separator="">
+					<if test="!key.equals(&quot;strainNo&quot;.trim()) and !key.equals(&quot;micAlias&quot;.trim())">
+						${key} = #{map[${key}]},
+					</if>
+				</foreach>
+			</set>
+			where strainNo = #{map[strainNo]};
+		</foreach>
+	</update>
+	
+	<update id="updateByMap" parameterType="java.util.Map">
+		update strainmic
+		<set>
+			<foreach collection="map.keys" item="key" separator="">
+				<if test="!key.equals(&quot;strainNo&quot;.trim()) and !key.equals(&quot;micAlias&quot;.trim())">
+					${key} = #{map[${key}]},
+				</if>
+			</foreach>
+		</set>
+		where strainNo = #{map[strainNo]};
 	</update>
 </mapper>

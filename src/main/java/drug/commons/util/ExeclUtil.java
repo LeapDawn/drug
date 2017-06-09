@@ -52,7 +52,7 @@ public class ExeclUtil {
 		}
 		Sheet sheet = book.getSheet(0);
 		// 获取表头
-		headArray = new String[sheet.getColumns() + 1];
+		headArray = new String[sheet.getColumns()];
 	    for (int i = 0, size = sheet.getColumns(); i < size; i++) {
 	    	headArray[i] = sheet.getCell(i, 0).getContents().trim();
 		}

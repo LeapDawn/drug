@@ -18,7 +18,7 @@ import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCodingDAO;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PStrainCoding;
 import drug.model.StrainCoding;
 import drug.service.UpDownService;
@@ -45,7 +45,7 @@ public static Logger log = Logger.getLogger("R");
 	 * @throws ExcelException
 	 */
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user) throws ExcelException{
+	public UploadResultModel importDatas(InputStream input, String user) throws ExcelException{
 		String[] importColumns = StrainExcel.getStrainColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
@@ -80,7 +80,7 @@ public static Logger log = Logger.getLogger("R");
 				log.error("【导入分型信息异常】："+pstrain+ e +"【"+user+"】");
 			}
 		}
-		ImportResultModel result = new ImportResultModel(errorList, bodyList.size());
+		UploadResultModel result = new UploadResultModel(errorList, bodyList.size());
 		return result;
 	}
 

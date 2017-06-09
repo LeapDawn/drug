@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.GenotypingDAO">
+  <resultMap id="Genotyping" type="drug.model.Genotyping">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="genName" jdbcType="VARCHAR" property="genname" />
+    <result column="genotyping" jdbcType="VARCHAR" property="genotyping" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Column">
+    id, genName, genotyping, remark
+  </sql>
+  <select id="countGenotypings" parameterType="java.util.Set" resultType="java.lang.Integer">
+  	select count(*) from genotyping where genotyping in
+  	<foreach collection="genotypingSet" separator="," open="(" close=")" item="genotyping">
+  	   #{genotyping, jdbcType=VARCHAR}
+  	</foreach>
+  </select>
+  <select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">
+  	select count(*) from genotyping 
+  	<if test="genotyping != null and !&quot;&quot;.equals(genotyping.trim())">
+		where genotyping = #{genotyping, jdbcType=VARCHAR}
+  	</if>
+  </select>
+  <select id="selectList" resultMap="Genotyping">
+    select 
+    <include refid="Column" />
+    from genotyping
+    <if test="genotyping != null and !&quot;&quot;.equals(genotyping.trim())">
+		where genotyping = #{genotyping, jdbcType=VARCHAR}
+  	</if>
+  	 limit #{skip}, #{rows}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from genotyping
+    where id in
+    <foreach collection="array" close=")" open="(" separator="," item="id">
+	     #{id,jdbcType=INTEGER}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="drug.model.Genotyping">
+    insert into genotyping
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="genname != null">
+        genName,
+      </if>
+      <if test="genotyping != null">
+        genotyping,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="genname != null">
+        #{genname,jdbcType=VARCHAR},
+      </if>
+      <if test="genotyping != null">
+        #{genotyping,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="drug.model.Genotyping">
+    update genotyping
+    <set>
+      <if test="genname != null">
+        genName = #{genname,jdbcType=VARCHAR},
+      </if>
+      <if test="genotyping != null">
+        genotyping = #{genotyping,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateGenotyping" parameterType="java.lang.String">
+    update genotyping
+    <set>
+        genotyping = #{tar,jdbcType=VARCHAR},
+    </set>
+    where genotyping = #{src,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,6 +1,8 @@
 package drug.commons.util;
 
 import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import drug.commons.exception.DataViolationException;
 import drug.dto.pageModel.PStrainMic;
@@ -54,6 +56,15 @@ public class MicDataCheck {
 		}
 	}
 
+	public static void checkAllDate(Map<String, Double> map) {
+		for (Entry<String, Double> entry : map.entrySet()) {
+			if (!checkData(entry.getValue())) {
+				throw new DataViolationException(entry.getKey()
+						+ "数值不符合浓度数值格式");
+			}
+		}
+	}
+	
 	public static boolean checkData(Double f) {
 		if (0.03 == f || 0.06 == f || 1 == f || 0.12 == f || 0.015 == f
 				|| 0.008 == f || 0.032 == f || 0.128 == f || 0.004 == f

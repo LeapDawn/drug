@@ -1,5 +1,7 @@
 package drug.dto.listModel;
 
+import java.util.Set;
+
 public class LDrugView {
 
 	private String gram;
@@ -11,6 +13,7 @@ public class LDrugView {
 	private String farmname;
 	private String farmaddr;
 	private String[] category;
+	private Set<Integer> animalNos; 
 	private String[] animalName;
 	private String[] partName;
 	private String[] source;
@@ -114,6 +117,14 @@ public class LDrugView {
 	private int rows;
 	private String sort;
 	private String order;
+
+	public Set<Integer> getAnimalNos() {
+		return animalNos;
+	}
+
+	public void setAnimalNos(Set<Integer> animalNos) {
+		this.animalNos = animalNos;
+	}
 
 	public String getStrainno() {
 		return strainno;

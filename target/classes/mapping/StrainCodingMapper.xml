@@ -185,12 +185,16 @@
 		where strainNo like #{no}
 	</select>
 
-	<select id="selectStrainNoByAliasOrNo" parameterType="java.lang.String" resultType="java.lang.String">
-		select s.strainNo from straincoding s 
-		where strainNo like #{no}
-		<if test="alias != null and !&quot;&quot;.equals(alias.trim())">
-			or strainAlias like #{alias,jdbcType=VARCHAR}
-		</if>
+	<select id="selectStrainNoByAliasOrNo" parameterType="java.lang.String" resultMap="StrainCoding">
+		select s.strainNo,s.strainAlias,s.gramStain from straincoding s 
+		<where>
+			<if test="no != null and !&quot;&quot;.equals(no.trim())">
+				or strainNo like #{no,jdbcType=VARCHAR}
+			</if>
+			<if test="alias != null and !&quot;&quot;.equals(alias.trim())">
+				or strainAlias like #{alias,jdbcType=VARCHAR}
+			</if>
+		</where>
 	</select>
 	
 	<select id="selectStrainNoByAliasAndNo" parameterType="java.lang.String" resultType="java.lang.String">

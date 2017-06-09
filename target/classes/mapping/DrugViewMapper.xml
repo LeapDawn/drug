@@ -138,6 +138,14 @@
 					#{item,jdbcType=VARCHAR}
 				</foreach>
 			</if>
+			<if test="animalNos != null and animalNos.size() &gt;0">
+				and animalNo in
+				<foreach collection="animalNos" open="(" close=")"
+					separator="," item="no">
+					#{no}
+				</foreach>
+			</if>
+			<!-- 
 			<if test="animalName != null and animalName.length &gt;0">
 				and animalName in
 				<foreach collection="animalName" open="(" close=")"
@@ -145,6 +153,7 @@
 					#{name,jdbcType=VARCHAR}
 				</foreach>
 			</if>
+			 -->
 			<if test="partName != null and partName.length &gt;0">
 				and sampleCollectionPart in
 				<foreach collection="partName" open="(" close=")" separator=","
@@ -612,11 +621,20 @@
 					'${item}'
 				</foreach>
 			</if>
+			<!-- 
 			<if test="animalName != null and animalName.length &gt;0">
 				and animalName in
 				<foreach collection="animalName" open="(" close=")"
 					separator="," item="name">
 					'${name}'
+				</foreach>
+			</if>
+			 -->
+			<if test="animalNos != null and animalNos.size() &gt;0">
+				and animalNo in
+				<foreach collection="animalNos" open="(" close=")"
+					separator="," item="no">
+					${no}
 				</foreach>
 			</if>
 			<if test="partName != null and partName.length &gt;0">

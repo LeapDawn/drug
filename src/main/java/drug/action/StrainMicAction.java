@@ -28,11 +28,12 @@ import drug.commons.exception.DataViolationException;
 import drug.commons.exception.ExcelException;
 import drug.dto.AjaxResult;
 import drug.dto.listModel.LStrainMic;
-import drug.dto.pageModel.ImportResultModel;
 import drug.dto.pageModel.PStrainMic;
 import drug.dto.pageModel.PageResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.service.StrainMicService;
 import drug.service.UpDownService;
+import drug.service.impl.UploadUpdateService;
 
 @Controller
 @RequestMapping("/mic")
@@ -44,6 +45,11 @@ public class StrainMicAction extends BaseAction {
 	private UpDownService positiveUpDown;
 	@Resource(name="negativeMicUpDown")
 	private UpDownService negativeUpDown;
+	@Resource(name="negativeMicUpDown")
+	private UploadUpdateService negaitveUploadUpdate;
+	public void setNegaitveUploadUpdate(UploadUpdateService negaitveUploadUpdate) {
+		this.negaitveUploadUpdate = negaitveUploadUpdate;
+	}
 	public void setMicService(StrainMicService micService) {
 		this.micService = micService;
 	}
@@ -183,6 +189,37 @@ public class StrainMicAction extends BaseAction {
 		return result;
 	}
 	
+	@RequestMapping(value="/{gram}/upload/update", method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult uploadUpdateStrain(@RequestParam("file") MultipartFile file, @PathVariable("gram") String gram){
+		UploadUpdateService uploadUpdateService = negaitveUploadUpdate;
+		if (file == null) {
+			return new AjaxResult(false, "上传的文件为空");
+		}
+		UploadResultModel resultModel = null;
+		
+		// 批量修改功能的日志记录下放至service层
+		try {
+			resultModel = uploadUpdateService.uploadUpdate(file.getInputStream(), 
+					gram.equals("negative")?"阴性":"阳性", user.getUsername());
+		} catch (IOException e) {
+			return new AjaxResult(false, "获取上传的文件失败");
+		} catch (ExcelException e) {
+			return new AjaxResult(false, e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AjaxResult(false, "未知异常");
+		}
+		
+		// 是否全部修改成功
+		if (resultModel.getError() > 0) {
+			result = new AjaxResult(false, resultModel);
+		} else {
+			result = new AjaxResult(true, "成功修改" + resultModel.getSuccess() + "条MIC记录");
+		}
+		return result;
+	}
+	
 	@RequestMapping(value="/{gram}/upload", method=RequestMethod.POST)
 	@ResponseBody
 	public AjaxResult uploadStrain(@RequestParam("file") MultipartFile file, @PathVariable("gram") String gram){
@@ -197,7 +234,7 @@ public class StrainMicAction extends BaseAction {
 		if (file == null) {
 			return new AjaxResult(false, "上传的文件为空");
 		}
-		ImportResultModel resultModel = null;
+		UploadResultModel resultModel = null;
 		
 		// 导入功能的日志记录下放至service层
 		try {

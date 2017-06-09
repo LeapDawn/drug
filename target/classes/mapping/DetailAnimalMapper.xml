@@ -103,4 +103,17 @@
 		</set>
 		where animalNo = #{animalno,jdbcType=INTEGER}
 	</update>
+	
+	<select id="selectNosByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select animalNo from detailanimal where animalName in
+			<foreach collection="array" separator="," open="(" close=")" item="name">
+				#{name,jdbcType=VARCHAR}			
+			</foreach>
+	</select>
+	<select id="selectNosBySuper" parameterType="java.util.Set" resultType="java.lang.Integer">
+		select animalNo from detailanimal where 
+			<foreach collection="nos" separator=" or " item="no">
+		     	(animalNo &gt; ${no}+1 and animalNo &lt; ${no}+10)  		
+			</foreach>
+	</select>
 </mapper>

@@ -151,9 +151,9 @@ public class StrainCodingServiceImpl implements StrainCodingService {
 		}
 		String strainNo = pstrain.getStrainno();
 		String strainalias = pstrain.getStrainalias();
-		List<String> list = strainDAO.selectStrainNoByAliasOrNo(strainNo, strainalias);
+		List<StrainCoding> list = strainDAO.selectStrainNoByAliasOrNo(strainNo, strainalias);
 		if (list != null && list.size() > 0) {
-			String no = list.get(0);
+			String no = list.get(0).getStrainno();
 			if (no.equals(strainNo)) {
 				throw new DataViolationException("已存在样品编号["+pstrain.getSampleno() + "]["+pstrain.getStraincategory() + "-"+pstrain.getStraintype() +"]"
 						+ "对应的菌株信息");

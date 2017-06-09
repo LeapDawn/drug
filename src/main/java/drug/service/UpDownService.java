@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import drug.commons.exception.ExcelException;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 
 public interface UpDownService {
 	
@@ -15,7 +15,7 @@ public interface UpDownService {
 	 * @return
 	 * @throws ExcelException 
 	 */
-	public ImportResultModel importDatas(InputStream input, String user) throws ExcelException;
+	public UploadResultModel importDatas(InputStream input, String user) throws ExcelException;
 	
 	/**
 	 * 导出信息

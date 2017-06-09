@@ -24,7 +24,7 @@ public interface StrainCodingDAO {
     
     StrainCoding select(@Param("no") String strainno);
     
-    List<String> selectStrainNoByAliasOrNo(@Param("no") String no, @Param("alias")String alias);
+    List<StrainCoding> selectStrainNoByAliasOrNo(@Param("no") String no, @Param("alias")String alias);
     
     List<String> selectStrainNoByAliasAndNo(@Param("no") String no, @Param("alias")String alias);
     

@@ -17,7 +17,7 @@ import drug.commons.exception.ExcelException;
 import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.DrugViewDAO;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PDrugView;
 import drug.model.DrugView;
 import drug.service.UpDownService;
@@ -37,7 +37,7 @@ public class DrugViewDownServiceImpl implements UpDownService {
 	}
 
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user)
+	public UploadResultModel importDatas(InputStream input, String user)
 			throws ExcelException {
 		return null;
 	}

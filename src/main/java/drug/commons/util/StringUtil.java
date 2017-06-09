@@ -26,6 +26,15 @@ public class StringUtil {
 		return date;
 	}
 	
+	public static boolean search(String[] array, String key) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i].equals(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	// 讲字符串转为Double,空字符串转为0
 	public static Double parseDouble(String str) {
 		if (str == null || str.equals("")) {

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="drug.dao.GenotypingDirDAO">
+  <resultMap id="GentypingDir" type="drug.model.GenotypingDir">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="genotyping1" jdbcType="VARCHAR" property="genotyping1" />
+    <result column="genotyping2" jdbcType="VARCHAR" property="genotyping2" />
+    <result column="genotyping3" jdbcType="VARCHAR" property="genotyping3" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Column">
+    id, genotyping1, genotyping2, genotyping3, remark
+  </sql>
+  
+  <select id="count" resultType="java.lang.Integer">
+  	select count(*) from genotypingdir
+  </select>
+  
+  <select id="selectList" parameterType="java.lang.Integer" resultMap="GentypingDir">
+  	select 
+	<include refid="Column"/>
+	from genotypingdir limit #{skip}, #{rows}
+  </select>
+  
+  <select id="selectGentyping3ByIds" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select genotyping3 from genotypingdir
+  	 where id in  
+    <foreach collection="array" separator="," open="(" close=")" item="id">
+	    #{id,jdbcType=INTEGER}
+    </foreach>
+  </select>
+  <select id="selectGentyping1" resultType="java.lang.String">
+  	select distinct genotyping1 from genotypingdir
+  </select>
+  <select id="selectGentyping2" parameterType="java.lang.String" resultType="java.lang.String">
+  	select distinct genotyping2 from genotypingdir
+  		<if test="genotyping1 != null and !&quot;&quot;.equals(genotyping1.trim())">
+  			where genotyping1 = #{genotyping1, jdbcType=VARCHAR}
+  		</if>
+  </select>
+  <select id="selectGentyping3" parameterType="java.lang.String" resultType="java.lang.String">
+  	select distinct genotyping3 from genotypingdir
+  		<if test="genotyping2 != null and !&quot;&quot;.equals(genotyping2.trim())">
+  			where genotyping2 = #{genotyping2, jdbcType=VARCHAR}
+  		</if>
+  </select>
+  
+  <select id="selectByIds" parameterType="java.lang.Integer" resultMap="GentypingDir">
+    select 
+    <include refid="Column" />
+    from genotypingdir
+    where id in  
+    <foreach collection="array" separator="," open="(" close=")" item="id">
+	    #{id,jdbcType=INTEGER}
+    </foreach>
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from genotypingdir
+    where id in
+    <foreach collection="array" separator="," open="(" close=")" item="id">
+	    #{id,jdbcType=INTEGER}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="drug.model.GenotypingDir">
+    insert into genotypingdir
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="genotyping1 != null">
+        genotyping1,
+      </if>
+      <if test="genotyping2 != null">
+        genotyping2,
+      </if>
+      <if test="genotyping3 != null">
+        genotyping3,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="genotyping1 != null">
+        #{genotyping1,jdbcType=VARCHAR},
+      </if>
+      <if test="genotyping2 != null">
+        #{genotyping2,jdbcType=VARCHAR},
+      </if>
+      <if test="genotyping3 != null">
+        #{genotyping3,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="drug.model.GenotypingDir">
+    update genotypingdir
+    set genotyping1 = #{genotyping1,jdbcType=VARCHAR},
+      genotyping2 = #{genotyping2,jdbcType=VARCHAR},
+      genotyping3 = #{genotyping3,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

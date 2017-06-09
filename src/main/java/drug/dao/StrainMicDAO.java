@@ -1,6 +1,7 @@
 package drug.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,10 @@ public interface StrainMicDAO {
 	int update(StrainMic record);
 	
 	List<StrainMic> selectByNos(@Param("strainnos")String[] nos, @Param("gram")String gram);
+	
+	List<StrainMic> selectByNoOrAlias(@Param("strainno")String strainno, @Param("alias")String alias);
+	
+	int updateBatch(@Param("list")List<Map<String, Object>> list);
+	
+	int updateByMap(@Param("map")Map<String, Object> map);
 }

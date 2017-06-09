@@ -22,7 +22,7 @@ import drug.commons.util.ExeclUtil;
 import drug.commons.util.Transfer;
 import drug.dao.StrainCodingDAO;
 import drug.dao.StrainToNotesDAO;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PStrainCoding;
 import drug.model.StrainCoding;
 import drug.model.StrainToNotes;
@@ -42,7 +42,7 @@ public class CodingUpDownServiceImpl implements UpDownService{
 	private StrainToNotesDAO notesDAO;
 	
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user)
+	public UploadResultModel importDatas(InputStream input, String user)
 			throws ExcelException {
 		String[] importColumns = StrainExcel.getCodingColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
@@ -80,7 +80,7 @@ public class CodingUpDownServiceImpl implements UpDownService{
 				log.error("【导入菌株信息异常】："+pstrain+ e +"【"+user+"】");
 			}
 		}
-		ImportResultModel result = new ImportResultModel(errorList, bodyList.size());
+		UploadResultModel result = new UploadResultModel(errorList, bodyList.size());
 		return result;
 	}
 
@@ -182,9 +182,9 @@ public class CodingUpDownServiceImpl implements UpDownService{
 			flag = false;
 			String strainNo = pstrain.getStrainno();
 			String strainalias = pstrain.getStrainalias();
-			List<String> list = strainDAO.selectStrainNoByAliasOrNo(strainNo, strainalias);
+			List<StrainCoding> list = strainDAO.selectStrainNoByAliasOrNo(strainNo, strainalias);
 			if (list != null && list.size() > 0) {
-				String no = list.get(0);
+				String no = list.get(0).getStrainno();
 				if (no.equals(strainNo)) {
 					pstrain.setOtherMsg("已存在样品编号["+pstrain.getSampleno() + "]["+pstrain.getStraincategory() + "-"+pstrain.getStraintype() +"]"
 							+ "对应的菌株信息");

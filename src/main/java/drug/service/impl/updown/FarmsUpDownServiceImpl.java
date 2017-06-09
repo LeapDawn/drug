@@ -21,7 +21,7 @@ import drug.commons.util.ExeclUtil;
 import drug.commons.util.Province;
 import drug.commons.util.Transfer;
 import drug.dao.FarmsDAO;
-import drug.dto.pageModel.ImportResultModel;
+import drug.dto.pageModel.UploadResultModel;
 import drug.dto.pageModel.PFarms;
 import drug.model.Farms;
 import drug.service.UpDownService;
@@ -41,7 +41,7 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 	}
 	
 	@Override
-	public ImportResultModel importDatas(InputStream input, String user) throws ExcelException {
+	public UploadResultModel importDatas(InputStream input, String user) throws ExcelException {
 		String[] importColumns = FarmExcel.getImportColumns();
 		ExeclUtil execlUtil = new ExeclUtil();
 		execlUtil.setModelArray(importColumns);
@@ -74,7 +74,7 @@ public class FarmsUpDownServiceImpl implements UpDownService {
 				errorList.add(pfarms);
 			}
 		}
-		ImportResultModel result = new ImportResultModel(errorList, bodyList.size());
+		UploadResultModel result = new UploadResultModel(errorList, bodyList.size());
 		return result;
 	}
 
