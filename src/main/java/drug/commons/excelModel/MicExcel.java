@@ -66,9 +66,9 @@ public class MicExcel {
 	}
 
 	public static String[] getNegativeExportColumns() {
-		return new String[] { STRAINNO, MICALIAS, AMK, AMP, APR, CAZ, CL, CHL,
-				CIP, CTX, CQM, DOX, FOX, FFC, FOS, GEN, IMP, OQX, NEO, SXT,
-				STR, TET, MEM, REMARK };
+		return new String[] { STRAINNO, MICALIAS, AMP, CAZ, CQM, CTX, FOX, AMK,
+				APR, GEN, NEO, STR, DOX, TET, CHL, FFC, CL, IMP, MEM, FOS, SXT,
+				CIP, OQX, REMARK };
 	}
 
 	public static String[] getPositiveExportColumns() {
@@ -77,9 +77,9 @@ public class MicExcel {
 	}
 
 	public static String[] getNeededUpdateColumns() {
-		return new String[] { STRAINNO, MICALIAS};
+		return new String[] { STRAINNO, MICALIAS };
 	}
-	
+
 	public static String[] getNegativeUpdateColumns() {
 		return new String[] { AMK, AMP, APR, CAZ, CL, CHL, CIP, CTX, CQM, DOX,
 				FOX, FFC, FOS, GEN, IMP, OQX, NEO, SXT, STR, TET, MEM,
@@ -91,11 +91,11 @@ public class MicExcel {
 				PEN, RIF, TET, TIA, VAL, VAN, OPERATOR, MICDETECTIONTYPE,
 				REMARK };
 	}
-	
+
 	public static String[] getDrugColumns() {
 		return new String[] { AMK, AMP, APR, AZM, CFZ, FEP, CTX, FOX, CAZ, CRO,
 				CQM, CHL, CIP, TIA, CLI, CL, DOX, VAL, ERY, FFC, FOS, GEN, IMP,
 				LEV, LZD, MEM, MIN, NAL, NEO, NET, NIT, NOR, OFX, OXA, PEN,
-				PIP, TZP, RIF, STR, TEC, TET, TOB, TMP, SXT, VAN, OQX};
+				PIP, TZP, RIF, STR, TEC, TET, TOB, TMP, SXT, VAN, OQX };
 	}
 }

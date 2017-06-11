@@ -152,4 +152,37 @@ public class TestClass {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void test6() {
+		ExeclUtil util = new ExeclUtil();
+		util.setModelArray(new String[]{"菌株编号","AMK"});
+		String[] files = new String[]{"e://Negative_mic.xls"};
+		try {
+			File file = new File("e://sql");
+			FileWriter writer = new FileWriter(file, true);
+			for (String string : files) {
+				util.readExecl(new FileInputStream(string));
+				List<Map<String, Object>> bodyList = util.getBodyList();
+				String str="";
+				for (Map<String, Object> map : bodyList) {
+					str = "update strainMic set AMK=" + map.get("AMK") 
+							+ " where strainNo = '" + map.get("菌株编号") + "';";
+					System.out.println(str);
+					writer.write(str + "\n");
+				}
+				writer.flush();
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExcelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

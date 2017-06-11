@@ -69,7 +69,7 @@ public class DrugViewAllAction extends BaseAction {
 	
 	@RequestMapping(value = "/analysis", method=RequestMethod.POST)
 	@ResponseBody
-	public AjaxResult list(@RequestBody(required=false) ADrugViewAll drugViewAll) {
+	public AjaxResult analysis(@RequestBody(required=false) ADrugViewAll drugViewAll) {
 		String errorMsg = "";
 		try {
 			List<?> analysisData = dvaService.getAnalysisData(drugViewAll);

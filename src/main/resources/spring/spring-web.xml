@@ -40,7 +40,6 @@
 	<!-- 扫描WEB相关的bean -->
 	<context:component-scan base-package="drug.action" />
 	
-	<!-- 
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
@@ -59,5 +58,4 @@
 				<bean class="drug.commons.interceptor.FunctionInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-	 -->
 </beans>

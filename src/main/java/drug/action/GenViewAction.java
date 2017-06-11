@@ -2,6 +2,7 @@ package drug.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import drug.commons.exception.DataViolationException;
 import drug.commons.exception.ExcelException;
 import drug.dto.AjaxResult;
+import drug.dto.analysisModel.AGenView;
 import drug.dto.listModel.LGenView;
 import drug.dto.pageModel.PGenView;
 import drug.dto.pageModel.PageResultModel;
@@ -133,5 +135,51 @@ public class GenViewAction extends BaseAction{
 	        }
 		}
 		return retObj;
+	}
+	
+	@RequestMapping(value = "/analysis", method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult analysis(@RequestBody AGenView agenView) {
+		String errorMsg = "";
+		try {
+			List<?> analysisData = genViewService.getAnalysisData(agenView);
+			result = new AjaxResult(true, analysisData);
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (e instanceof DataViolationException) {
+				errorMsg = e.getMessage();
+			} else if (e instanceof CannotCreateTransactionException 
+					|| e instanceof DataAccessResourceFailureException) {
+				errorMsg = "数据库服务异常,请重新获取";
+			} else {
+				errorMsg = "获取基因检出率分析数据时发生未知异常,请联系维护人员";
+			}
+			log.info("【获取基因检出率分析数据异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
+			result = new AjaxResult(false, errorMsg);
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/interval/analysis", method=RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult intervalAnalysis(@RequestBody AGenView agenView) {
+		String errorMsg = "";
+		try {
+			List<?> analysisData = genViewService.getAnalysisData(agenView);
+			result = new AjaxResult(true, analysisData);
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (e instanceof DataViolationException) {
+				errorMsg = e.getMessage();
+			} else if (e instanceof CannotCreateTransactionException 
+					|| e instanceof DataAccessResourceFailureException) {
+				errorMsg = "数据库服务异常,请重新获取";
+			} else {
+				errorMsg = "获取基因(区间)检出率分析数据时发生未知异常,请联系维护人员";
+			}
+			log.info("【获取基因(区间)检出率分析数据异常】：" + errorMsg + e +"【"+user.getUsername()+"】");
+			result = new AjaxResult(false, errorMsg);
+		}
+		return result;
 	}
 }

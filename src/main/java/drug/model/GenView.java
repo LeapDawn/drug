@@ -31,7 +31,17 @@ public class GenView {
 
     private String sampleSource;
     
-    public String getSampleSource() {
+    private String farmName;
+    
+    public String getFarmName() {
+		return farmName;
+	}
+
+	public void setFarmName(String farmName) {
+		this.farmName = farmName;
+	}
+
+	public String getSampleSource() {
 		return sampleSource;
 	}
 

@@ -28,7 +28,17 @@ public class PGenView {
 	private String genotyping3;
 
 	private String sampleSource;
-	
+
+	private String farmName;
+
+	public String getFarmName() {
+		return farmName;
+	}
+
+	public void setFarmName(String farmName) {
+		this.farmName = farmName;
+	}
+
 	public String getSampleSource() {
 		return sampleSource;
 	}

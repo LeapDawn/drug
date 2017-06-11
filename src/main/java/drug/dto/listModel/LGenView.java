@@ -30,11 +30,21 @@ public class LGenView {
 	private String[] genotyping3;
 
 	private String[] sampleSource;
+	
+	private String farmName;
 
 	private int rows;
 	private int page;
 	private String sort;
 	private String order;
+	
+	public String getFarmName() {
+		return farmName;
+	}
+
+	public void setFarmName(String farmName) {
+		this.farmName = farmName;
+	}
 
 	public String getSort() {
 		return sort;

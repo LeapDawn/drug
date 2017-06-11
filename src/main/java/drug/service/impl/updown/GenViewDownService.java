@@ -85,6 +85,7 @@ public class GenViewDownService implements UpDownService {
 			map.put(GenViewExcel.SAMPLEDATE, pgv.getSampledate());
 			map.put(GenViewExcel.SAMPLEPROVINCE, pgv.getSampleProvince());
 			map.put(GenViewExcel.SAMPLESOURCE, pgv.getSampleSource());
+			map.put(GenViewExcel.FARMNAME, pgv.getFarmName());
 			list.add(map);
 		}
 		return list;

@@ -22,4 +22,11 @@ public interface GenViewService {
 	 * @return
 	 */
 	public List<?> getAnalysisData(AGenView agenView);
+	
+	/**
+	 * 获取区间检出率分析结果
+	 * @param agenView
+	 * @return
+	 */
+	public List<?> getIntervalAnalysisData(AGenView agenView);
 }

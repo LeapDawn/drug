@@ -1,6 +1,5 @@
 package drug.service;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.CannotCreateTransactionException;
 
-import drug.commons.exception.ExcelException;
 import drug.dto.listModel.LFarms;
 import drug.dto.pageModel.PFarms;
 import drug.dto.pageModel.PageResultModel;
