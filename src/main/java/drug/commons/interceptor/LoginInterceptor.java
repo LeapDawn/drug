@@ -1,5 +1,7 @@
 package drug.commons.interceptor;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -7,7 +9,10 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import drug.action.BaseAction;
+import drug.dto.AjaxResult;
 import drug.dto.UsersFunction;
 
 /**
@@ -20,6 +25,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 			HttpServletResponse response, Object handler) throws Exception {
 		Object object = request.getSession().getAttribute("user");
 		if (object == null) { //未登录
+			PrintWriter writer = response.getWriter();
+			String str = new ObjectMapper().writeValueAsString(new AjaxResult(false, "登录超时，请重新登录"));
+			writer.write(str);
+			writer.flush();
+			writer.close();
 			return false;
 		} else {
 			if (HandlerMethod.class.equals(handler.getClass())) {

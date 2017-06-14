@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import drug.dto.AjaxResult;
 import drug.dto.analysisModel.ADrugView;
 import drug.dto.listModel.LFarms;
 import drug.model.Farms;
@@ -137,7 +138,8 @@ public class FarmDAOTest {
 			}
 		}
 //		ADrugViewAll adva = new ADrugViewAll();
-		String s = new ObjectMapper().writeValueAsString(drugView);
+//		String s = new ObjectMapper().writeValueAsString(drugView);
+		String s = new ObjectMapper().writeValueAsString(new AjaxResult(false, "登录超时，请重新登录"));
 		System.out.println(s);
 		
 //		Double a = 2048D;

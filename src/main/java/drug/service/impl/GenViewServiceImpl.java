@@ -58,15 +58,15 @@ public class GenViewServiceImpl implements GenViewService {
 
 	@Override
 	public List<?> getAnalysisData(AGenView agenView) {
-		return analyse(agenView);
+		return analyse(agenView, false);
 	}
 	
 	@Override
 	public List<?> getIntervalAnalysisData(AGenView agenView) {
-		return analyse(agenView);
+		return analyse(agenView, true);
 	}
 	
-	private List<?> analyse(AGenView agenView) {
+	private List<?> analyse(AGenView agenView, boolean isInterval) {
 		if (agenView == null) {
 			agenView = new AGenView();
 		}
@@ -75,7 +75,13 @@ public class GenViewServiceImpl implements GenViewService {
 		List<List<Map<String, Object>>> listPerGen = new ArrayList<List<Map<String, Object>>>();
 		for (int i = 0; i < gens.length; i++) {
 			agenView.setGen(gens[i]);
-			List<Map<String, Object>> tempList = genViewDAO.genCheckPro(agenView);
+			List<Map<String, Object>> tempList = null;
+			if (isInterval) {
+				tempList = genViewDAO.genIntervalCheckPro(agenView);
+			} else {
+				tempList = genViewDAO.genCheckPro(agenView);
+			}
+			
 			listPerGen.add(tempList);
 		}
 		

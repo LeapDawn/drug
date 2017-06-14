@@ -165,7 +165,7 @@ public class GenViewAction extends BaseAction{
 	public AjaxResult intervalAnalysis(@RequestBody AGenView agenView) {
 		String errorMsg = "";
 		try {
-			List<?> analysisData = genViewService.getAnalysisData(agenView);
+			List<?> analysisData = genViewService.getIntervalAnalysisData(agenView);
 			result = new AjaxResult(true, analysisData);
 		} catch (Exception e) {
 			e.printStackTrace();
